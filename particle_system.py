@@ -8,7 +8,7 @@ class ParticleSystem:
         self.radius: int = radius
         self._particles = self.init_particles()
         self.step_size: float = step_size
-    
+
     @property
     def particles(self):
         return self._particles
@@ -27,7 +27,7 @@ class ParticleSystem:
     
     def move_particles(self):
         move_arr = np.random.normal(0, self.step_size, size=(self.particles.shape[0], 2))
-        self._particles = np.mod(self._particles[:,:2] + move_arr, (self.width, self.height))
+        self._particles[:,:2] = np.mod(self._particles[:,:2] + move_arr, (self.width, self.height)) 
 
     def collsion_check(self):
         pass
@@ -54,10 +54,12 @@ class ParticleSystem:
         
 
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=100, height=100, color_distribution=[((255, 0, 0, 255), 1), ((0, 255, 0, 255), 1)], step_size=.5, radius=.5)
+    part_sys = ParticleSystem(width=100, height=100, color_distribution=[((1, 0, 0, 1), 1), ((0, 1, 0, 1), 1)], step_size=.5, radius=.5)
     #print(part_sys.particles.compute())
     #part_sys.create_collsion_array()
-    while True:
-        part_sys.move_particles()
-        part_sys.naive_collsion_check()
+    print(part_sys.particles[:, 2:])
+   
+    # while True:
+    #     part_sys.move_particles()
+    #     part_sys.naive_collsion_check()
     
