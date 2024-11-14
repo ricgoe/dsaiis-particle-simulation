@@ -1,6 +1,5 @@
 import numpy as np
 from particle import Particle
-from matplotlib import pyplot as plt
 
 class ParticleSystem:
     def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], step_size: float = 5, radius: int = 10):
@@ -35,28 +34,8 @@ class ParticleSystem:
     def check_collision(self):
         pass
 
-    
-
-    def plot_particles(self):
-        self.init_particles()
-        plt.ion()
-        fig, ax = plt.subplots()
-        ax.set_xlim(0, self.width)
-        ax.set_ylim(0, self.height)
-
-        while True:
-            ax.clear()
-            ax.set_xlim(0, self.width)
-            ax.set_ylim(0, self.height)
-            for particle in self.particles:
-                col = (particle.color[0]/255, particle.color[1]/255, particle.color[2]/255)
-                ax.scatter(particle.x_pos, particle.y_pos, color=col)
-                
-            plt.pause(0.01) 
-            self.move_particles()
 
             
 if __name__ == "__main__":
     particle_system = ParticleSystem(width=1000, height=1000, color_distribution=[((255, 0, 0), 100)], step_size= 10)
-    particle_system.plot_particles()
     
