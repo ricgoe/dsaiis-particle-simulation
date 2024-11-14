@@ -27,7 +27,7 @@ class Particle:
         self.y_pos = y_pos
         
 if __name__ == "__main__":
-    particle = Particle(x_range= 10, y_range = 10, color=(255, 0, 0))
+    particle = Particle(color=(255, 0, 0), x_pos=0, y_pos=0)
 
     
     
