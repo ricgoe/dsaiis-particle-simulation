@@ -1,4 +1,5 @@
 import numpy as np
+from numba import njit
 
 class ParticleSystem:
     def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int]], interaction_matrix:dict[tuple:int], radius: int = 5, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .3, drag: float = .1):
@@ -13,7 +14,7 @@ class ParticleSystem:
         self._particles, self._colors, self._color_index = self.init_particles()
         self._interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
         self.velocity = np.zeros((self._particles.shape[0], 2)) # x and y velocties
-    
+        check_collisions_numba(np.array([[0.0, 0.0], [1.0, 1.0]]), self.radius)
     @property
     def particles(self):
         return self._particles
@@ -73,18 +74,18 @@ class ParticleSystem:
         Returns:
             None
         """
-        interaction_radius = 2*self.radius
+        interaction_radius = 5*self.radius
         brwn_increment = np.random.normal(0, self.brownian_std, self.velocity.shape)
         self.velocity += brwn_increment
         # update positions using current velocity
         new_positions = self._particles + self.velocity * self.delta_t
         new_positions = np.mod(new_positions, (self.width, self.height))
         # detect collisions with tentative new positions
-        colliding_pairs = self.check_collisions(new_positions)
+        colliding_pairs = self.check_collisions2(new_positions)
         # update velocities for each colliding pair
         self.update_collision_velocities(new_positions, colliding_pairs, mode='collision')
         if interaction_radius:
-            interaction_pairs = self.check_collisions(new_positions, radius=interaction_radius)
+            interaction_pairs = self.check_collisions2(new_positions, radius=interaction_radius)
             self.update_collision_velocities(new_positions, interaction_pairs, mode='interaction', interaction_radius=interaction_radius)
         
         # calc speeds of particles
@@ -94,6 +95,16 @@ class ParticleSystem:
         self.velocity += drag_acceleration * self.delta_t
         final_positions = self._particles + self.velocity * self.delta_t
         self._particles = np.mod(final_positions, (self.width, self.height))
+
+    
+    def check_collisions2(self, positions: np.ndarray, radius: float = None):
+        """
+        Wrapper für die numba-optimierte `check_collisions_numba`-Funktion.
+        """
+        if radius is None:
+            radius = self.radius
+        return check_collisions_numba(positions, radius)
+
 
            
     def check_collisions(self, positions: np.ndarray, radius: float = None):
@@ -261,6 +272,55 @@ class ParticleSystem:
                 
     def calculate_resistance_force(self, velocity: np.ndarray) -> np.ndarray:
         return 0.5*(velocity**2)
+    
+@njit()
+def check_collisions_numba(positions, radius):
+    """
+    Sweep & Prune algorithm for collision detection.
+    not included in ParticleSystem, to use numba to speed it up
+    
+    Parameters:
+        positions (np.ndarray): array with particle positions x,y 
+        radius (float): radius to use for collision detection/ interaction
+
+    Returns:
+        np.ndarray: array with indices of colliding particles.
+    """
+    n = positions.shape[0]
+    radius_sq = (2 * radius) ** 2  # to avoid sqrt
+
+    # sort particles by x coordinate, int32 for faster indexing
+    x_sorted_indices = np.argsort(positions[:, 0]).astype(np.int32)
+    x_sorted = positions[x_sorted_indices]
+
+    candidate_pairs = []
+    for i in range(n):
+        x_i = x_sorted[i, 0]
+        y_i = x_sorted[i, 1]
+        
+        # search for all particles to the right
+        for j in range(i + 1, n):
+            x_j = x_sorted[j, 0]
+            y_j = x_sorted[j, 1]
+
+            # stop if the particles are too far apart along the x-axis
+            # every other particle is guaranteed to be too far away along the x-axis
+            # x_j - x_i is also guaranteed to be positive or zero
+            if x_j - x_i > 2 * radius:
+                break
+
+            # calculate distance to the other particle
+            dx = x_j - x_i
+            dy = y_j - y_i
+            dist_sq = dx * dx + dy * dy
+
+            # check if the particles are within the defined radius
+            if dist_sq <= radius_sq:
+                candidate_pairs.append((x_sorted_indices[i], x_sorted_indices[j]))
+
+    return np.array(candidate_pairs, dtype=np.int32)
+
+
 
     
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ from vispy import app, scene
 import numpy as np
 from vispy.app import Timer
 from particle_system import ParticleSystem
+import cProfile
 
 class DummyVisualizer:
     def __init__(self, canvas_width: int = 1000, canvas_height: int = 1000, num_parts:int = 500, fps: int = 30, gui_sim_ratio:float = 1):
@@ -69,7 +70,8 @@ class DummyVisualizer:
         """
         Update function to move particles and update scatter data.
         """
-        self.part_sys.move_particles()
+        cProfile.runctx("self.part_sys.move_particles()", globals(), locals(), filename="profile_results.prof")
+        #self.part_sys.move_particles()
         x, y = self.part_sys.particles[:, 0], self.part_sys.particles[:, 1]
         self.scatter.set_data(
             np.column_stack((x, y)),
