@@ -16,8 +16,10 @@ class GUI:
         dpg.create_viewport()
         dpg.setup_dearpygui()
         self.color_distrubution = {}
+        self.color_relationships = {}
         self.matrix_btns = []
         self.should_stop = True
+        self.hovered_matrix = ""
         # Add control panel
         with dpg.window(tag="exwin",label="Example Window", no_resize=True, no_move=True, no_collapse=True, no_close=True):
             self.adder = dpg.add_button(label="+", callback=self.add_particle_picker)
@@ -25,8 +27,7 @@ class GUI:
             self.pause = dpg.add_button(label="Pause", callback=self.pause_callback)
             self.reset = dpg.add_button(label="Stop", callback=self.stop_callback)
             with dpg.drawlist(tag="matrix", width=0, height=0):
-                passs
-            
+                pass
             self.add_particle_picker()
             
         dpg.hide_item(self.pause)
@@ -36,6 +37,9 @@ class GUI:
         with dpg.window(tag="exwin2", label="Example Window", no_resize=True, no_move=True, no_collapse=True, no_close=True):
             with dpg.drawlist(tag="particle_canvas", width=0, height=0):
                 pass
+        with dpg.handler_registry():
+            dpg.add_mouse_move_handler(callback=self.hover_callback)
+            dpg.add_mouse_click_handler(callback=self.click_callback)
                 
         # Dymamic resize logic
         dpg.set_viewport_resize_callback(self.on_window_resize)
@@ -43,6 +47,7 @@ class GUI:
         dpg.show_viewport()
         dpg.start_dearpygui()
         dpg.destroy_context()
+        
         
     def add_particle_picker(self):
         if len(self.color_distrubution) < NPARTICLES:
@@ -58,30 +63,33 @@ class GUI:
             if len(self.color_distrubution) >= NPARTICLES:
                 dpg.hide_item(self.adder)
             
+            
     def adjust_matrix(self, btn):
         _c_map = [tup[0] for tup in self.color_distrubution.values()]
         n = len(_c_map)
         w_h = 25 # TODO: Make this dynamic
         color = _c_map[-1]
+        self.color_relationships[n] = {}
         h = dpg.draw_rectangle((n*w_h, 0), ((n+1)*w_h, w_h), tag= f"h_matrix_{btn}", fill=color, color=(100, 100, 100, 255), parent="matrix")
         v = dpg.draw_rectangle((0, n*w_h), (w_h, (n+1)*w_h), tag= f"v_matrix_{btn}", fill=color,  color=(100, 100, 100, 255), parent="matrix")
         # dpg.draw_rectangle((n*w_h, n*w_h), ((n+1)*w_h, (n+1)*w_h), tag= f"filler_{btn}", fill=(50, 50, 50, 255), parent="matrix")
         for i in range(1, n+1):
             for j in range(1, n+1):
                 if i == n or j == n:
-                    dpg.draw_rectangle((i*w_h, j*w_h), ((i+1)*w_h, (j+1)*w_h), fill=(50, 50, 50, 255), color=(70, 70, 70, 255), parent="matrix")
-
-
-    def on_matrix_hover(self, sender, app_data):
-        dpg.configure_item(sender, fill=(255, 255, 255, 255))
+                    dpg.draw_rectangle((i*w_h, j*w_h), ((i+1)*w_h, (j+1)*w_h), fill=(50, 50, 50, 255), color=(70, 70, 70, 255), parent="matrix", tag=f"matrix_{i}_{j}")
+                    self.color_relationships[i][j] = 0
+                    self.color_relationships[j][i] = 0
+    
     
     def slider_callback(self, sender, app_data):
         self.color_distrubution[int(dpg.get_item_alias(sender).split(":")[1])][1] = app_data
+    
     
     def color_picker(self, btn, app_data):
         if dpg.does_item_exist(f"cp_popup_{btn}"):
             dpg.show_item(f"cp_popup_{btn}")
             return
+        
         
         def cp_callback(cp, app_data):
             c = tuple([i*255 for i in app_data])
@@ -97,9 +105,38 @@ class GUI:
         dpg.add_color_picker(tag=f"cp_{btn}", label="color picker", default_value=(255, 0, 0, 255), parent=pop, callback=cp_callback)
         
     
-    def hover_callback(self, sender, app_data):
-        print("elo")
+    def on_matrix_hover(self, sender):
+        self.hovered_matrix = sender
+        dpg.configure_item(sender, color=(255, 255, 255, 255))
         
+        
+    def click_callback(self):
+        if self.hovered_matrix:
+            m, c1, c2 = self.hovered_matrix.split("_")
+            sorted_label = f"{m}_{max(c1, c2)}_{min(c1, c2)}"
+            if dpg.does_item_exist(f"{sorted_label}_popup"):
+                dpg.show_item(f"{sorted_label}_popup")
+                return
+            pop = dpg.add_window(tag=f"{sorted_label}_popup", popup=True, min_size=(0,0))
+            dpg.add_slider_int(tag=f"{sorted_label}_slider", parent=pop, callback=self.relationship_slider_callback)
+    
+    
+    def hover_callback(self, sender, app_data):
+        if self.hovered_matrix:
+            dpg.configure_item(self.hovered_matrix, color=(70, 70, 70, 255))
+            self.hovered_matrix = ""
+        from_x, from_y = dpg.get_item_rect_min("matrix")
+        to_x, to_y = dpg.get_item_rect_max("matrix")
+        if to_x > app_data[0] > from_x and to_y > app_data[1] > from_y:
+            n_colors = len(self.color_distrubution)
+            for i in range(1, n_colors+1):
+                for j in range(1, n_colors+1):
+                    from_m_x, from_m_y = dpg.get_item_configuration(f"matrix_{i}_{j}")["pmin"]
+                    to_m_x, to_m_y = dpg.get_item_configuration(f"matrix_{i}_{j}")["pmax"]
+                    if from_x+to_m_x > app_data[0] > from_x+from_m_x and from_y+to_m_y > app_data[1] > from_y+from_m_y:
+                        self.on_matrix_hover(f"matrix_{i}_{j}")
+                        # dpg.set_frame_callback(callback=self.on_matrix_hover, sender=f"matrix_{i}_{j}")
+        # print(dpg.get_item_configuration("matrix_2_2")) # pmax pmin
     
     
     def tick(self):
@@ -111,26 +148,26 @@ class GUI:
             dpg.set_frame_callback(frames+next_tick_in, self.tick)
         
         
-    # def render_movement(self):
-    #     print("render movement called")
-        
-    #     for idx, rendered in enumerate(self.rendered_particles):
-    #         dpg.delete_item(rendered)
-    #         dpg.draw_circle((self.particle_system.particles[idx].x_pos, self.particle_system.particles[idx].y_pos), CIRCLE_SION, color=self.particle_system.particles[idx].color, parent=self.drawlist)
-    
+    def render_movement(self):
+        for idx, rendered in enumerate(self.rendered_particles):
+            dpg.configure_item(rendered, center=(self.particle_system.particles[idx].x_pos, self.particle_system.particles[idx].y_pos))
+            
+            
     def clear_particles(self):
         for rendered in self.rendered_particles:
             dpg.delete_item(rendered)
         self.rendered_particles = []
-    
-    def render_movement(self):
-        self.clear_particles()
-        self.rendered_particles = self.render_particles()
-    
+        
+        
     def render_particles(self):
         return [dpg.draw_circle((particle.x_pos, particle.y_pos), CIRCLE_SION, color=particle.color, parent="particle_canvas", fill=particle.color) for particle in self.particle_system.particles]
 
-            
+
+    def relationship_slider_callback(self, slider, app_data):
+        _, c1, c2, _ = dpg.get_item_alias(slider).split("_")
+        self.color_relationships[int(c1)][int(c2)] = app_data
+        self.color_relationships[int(c2)][int(c1)] = app_data
+    
     
     def on_window_resize(self):
         dpg.set_item_width("exwin", dpg.get_viewport_width()//SPLIT)
@@ -143,7 +180,6 @@ class GUI:
         dpg.set_item_width("matrix", dpg.get_item_width("exwin")-PADDING*2)
         dpg.set_item_height("matrix", dpg.get_item_width("exwin")-PADDING*2)
         
-        
     
     def pause_callback(self, btn, app_data):
         if not self.should_stop:
@@ -155,9 +191,9 @@ class GUI:
             dpg.configure_item(btn, label="Pause")
         
         
-    
     def save_callback(self):
         _c_d_map = [tup for tup in self.color_distrubution.values()]
+        print(self.color_relationships)
         self.particle_system = ParticleSystem(width=1000, height=1000, color_distribution=_c_d_map, step_size=10)
         self.rendered_particles = self.render_particles()
         self.should_stop = False
@@ -166,7 +202,6 @@ class GUI:
         dpg.show_item(self.pause)
         dpg.show_item(self.reset)
         
-
         
     def stop_callback(self):
         self.should_stop = True
@@ -174,6 +209,26 @@ class GUI:
         dpg.hide_item(self.pause)
         dpg.hide_item(self.reset)
         dpg.show_item(self.save)
+        
+        
+    def viridis_gradient(step_count):
+        def interpolate(t, coefficients):
+            return sum(c * t**i for i, c in enumerate(coefficients))
+        
+        # Coefficients for Viridis RGB components
+        r_coeffs = [0.26759, -1.148, 2.584, -1.763]
+        g_coeffs = [0.0048, 1.0375, -4.172, 5.103]
+        b_coeffs = [0.25391, -0.1161, 2.5743, -3.285]
+        
+        rgba_colors = []
+        for i in range(step_count):
+            t = i / (step_count - 1)  # Normalize step to [0, 1]
+            r = max(0, min(255, int(interpolate(t, r_coeffs) * 255)))
+            g = max(0, min(255, int(interpolate(t, g_coeffs) * 255)))
+            b = max(0, min(255, int(interpolate(t, b_coeffs) * 255)))
+            a = 255  # Fully opaque
+            rgba_colors.append((r, g, b, a))
+        return rgba_colors
 
     
     
