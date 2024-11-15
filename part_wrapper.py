@@ -2,7 +2,7 @@ import numpy as np
 from particle import Particle
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], step_size: float = 5, radius: int = 10):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int]], step_size: float = 5, radius: int = 10):
         self.color_distribution = color_distribution
         self.width: int = width
         self.height: int = height
@@ -15,11 +15,11 @@ class ParticleSystem:
     
     def init_particles(self):
         tmp = []
-        for rgb, num in self.color_distribution:
+        for rgba, num in self.color_distribution:
             __x = np.random.uniform(0, self.width, num)
             __y = np.random.uniform(0, self.height, num)
             for x, y in zip(__x, __y):
-                tmp.append(Particle(color=rgb, x_pos=x, y_pos=y))
+                tmp.append(Particle(color=rgba, x_pos=x, y_pos=y))
         return tmp
                 
     def move_particles(self):
