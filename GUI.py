@@ -16,6 +16,7 @@ class GUI:
         dpg.create_viewport()
         dpg.setup_dearpygui()
         self.color_distrubution = {}
+        self.matrix_btns = []
         self.should_stop = True
         # Add control panel
         with dpg.window(tag="exwin",label="Example Window", no_resize=True, no_move=True, no_collapse=True, no_close=True):
@@ -24,9 +25,8 @@ class GUI:
             self.pause = dpg.add_button(label="Pause", callback=self.pause_callback)
             self.reset = dpg.add_button(label="Stop", callback=self.stop_callback)
             with dpg.drawlist(tag="matrix", width=0, height=0):
-                pass
+                passs
             
-            self.add_particle_picker()
             self.add_particle_picker()
             
         dpg.hide_item(self.pause)
@@ -54,18 +54,26 @@ class GUI:
                 with dpg.theme_component():
                     dpg.add_theme_color(dpg.mvThemeCol_Button, (255, 0, 0, 255))
             dpg.bind_item_theme(btn, btn_theme)
-            # self.adjust_matrix()
+            self.adjust_matrix(btn)
             if len(self.color_distrubution) >= NPARTICLES:
                 dpg.hide_item(self.adder)
             
-    def adjust_matrix(self):
+    def adjust_matrix(self, btn):
         _c_map = [tup[0] for tup in self.color_distrubution.values()]
         n = len(_c_map)
-        w_h = 15
+        w_h = 25 # TODO: Make this dynamic
         color = _c_map[-1]
-        dpg.draw_rectangle((n*w_h, 0), (n*w_h, n*w_h), color=color, parent="particle_canvas")
-        dpg.draw_rectangle((0, n*w_h), (n*w_h, n*w_h), color=color, parent="particle_canvas")
+        h = dpg.draw_rectangle((n*w_h, 0), ((n+1)*w_h, w_h), tag= f"h_matrix_{btn}", fill=color, color=(100, 100, 100, 255), parent="matrix")
+        v = dpg.draw_rectangle((0, n*w_h), (w_h, (n+1)*w_h), tag= f"v_matrix_{btn}", fill=color,  color=(100, 100, 100, 255), parent="matrix")
+        # dpg.draw_rectangle((n*w_h, n*w_h), ((n+1)*w_h, (n+1)*w_h), tag= f"filler_{btn}", fill=(50, 50, 50, 255), parent="matrix")
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                if i == n or j == n:
+                    dpg.draw_rectangle((i*w_h, j*w_h), ((i+1)*w_h, (j+1)*w_h), fill=(50, 50, 50, 255), color=(70, 70, 70, 255), parent="matrix")
 
+
+    def on_matrix_hover(self, sender, app_data):
+        dpg.configure_item(sender, fill=(255, 255, 255, 255))
     
     def slider_callback(self, sender, app_data):
         self.color_distrubution[int(dpg.get_item_alias(sender).split(":")[1])][1] = app_data
@@ -76,14 +84,21 @@ class GUI:
             return
         
         def cp_callback(cp, app_data):
+            c = tuple([i*255 for i in app_data])
             with dpg.theme() as btn_theme:
                 with dpg.theme_component():
-                    dpg.add_theme_color(dpg.mvThemeCol_Button, tuple([i*255 for i in app_data]))
+                    dpg.add_theme_color(dpg.mvThemeCol_Button, c)
             dpg.bind_item_theme(btn, btn_theme)
-            self.color_distrubution[btn][0] = tuple([i*255 for i in app_data])
+            self.color_distrubution[btn][0] = c
+            dpg.configure_item(f"h_matrix_{btn}", fill=c)
+            dpg.configure_item(f"v_matrix_{btn}", fill=c)
 
         pop = dpg.add_window(tag=f"cp_popup_{btn}", no_resize=True, no_move=True, no_collapse=True, no_close=True, popup=True)
         dpg.add_color_picker(tag=f"cp_{btn}", label="color picker", default_value=(255, 0, 0, 255), parent=pop, callback=cp_callback)
+        
+    
+    def hover_callback(self, sender, app_data):
+        print("elo")
         
     
     
