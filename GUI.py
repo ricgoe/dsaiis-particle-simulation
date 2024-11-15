@@ -4,7 +4,9 @@ from part_wrapper import ParticleSystem
 PADDING = 5
 SPLIT = 5
 TICK_RATE = 20
-CIRCLE_SION = 2
+CIRCLE_SION = 3
+BORDER = 40
+NPARTICLES = 5
 
 
 class GUI:
@@ -17,43 +19,53 @@ class GUI:
         self.should_stop = True
         # Add control panel
         with dpg.window(tag="exwin",label="Example Window", no_resize=True, no_move=True, no_collapse=True, no_close=True):
-            with dpg.group(horizontal=True):
-                btn1 = dpg.add_button(label="  ", callback=self.color_picker)
-                dpg.add_slider_int(tag=f"btn_id:{btn1}", label="", callback=self.slider_callback, default_value=50)
-                self.color_distrubution[btn1] = [(255, 0, 0, 255), 50]
-            with dpg.group(horizontal=True):
-                btn2 = dpg.add_button(label="  ", callback=self.color_picker)
-                dpg.add_slider_int(tag=f"btn_id:{btn2}", label="", callback=self.slider_callback, default_value=50)
-                self.color_distrubution[btn2] = [(255, 0, 0, 255), 50]
-            with dpg.group(horizontal=True):
-                btn3 = dpg.add_button(label="  ", callback=self.color_picker)
-                dpg.add_slider_int(tag=f"btn_id:{btn3}", label="", callback=self.slider_callback, default_value=50)
-                self.color_distrubution[btn3] = [(255, 0, 0, 255), 50]
-            with dpg.theme() as btn_theme:
-                with dpg.theme_component():
-                    dpg.add_theme_color(dpg.mvThemeCol_Button, (255, 0, 0, 255))
-            dpg.bind_item_theme(btn1, btn_theme)
-            dpg.bind_item_theme(btn2, btn_theme)
-            dpg.bind_item_theme(btn3, btn_theme)
+            self.adder = dpg.add_button(label="+", callback=self.add_particle_picker)
             self.save = dpg.add_button(label="Save", callback=self.save_callback)
             self.pause = dpg.add_button(label="Pause", callback=self.pause_callback)
             self.reset = dpg.add_button(label="Stop", callback=self.stop_callback)
+            with dpg.drawlist(tag="matrix", width=0, height=0):
+                pass
+            
+            self.add_particle_picker()
+            self.add_particle_picker()
             
         dpg.hide_item(self.pause)
         dpg.hide_item(self.reset)
         
-        
-        self.particle_system = ParticleSystem(width=1000, height=1000, color_distribution=[((255, 0, 0), 100), ((255, 255, 0), 100), ((255, 22, 255), 100)], step_size=10)
         # Add particle simulation window
-        with dpg.window(tag="exwin2",label="Example Window", no_resize=True, no_move=True, no_collapse=True, no_close=True):
-            with dpg.drawlist(tag="exdrawlist", width=dpg.get_item_width("exwin2"), height=dpg.get_item_height("exwin2")) as self.drawlist:
+        with dpg.window(tag="exwin2", label="Example Window", no_resize=True, no_move=True, no_collapse=True, no_close=True):
+            with dpg.drawlist(tag="particle_canvas", width=0, height=0):
                 pass
+                
         # Dymamic resize logic
         dpg.set_viewport_resize_callback(self.on_window_resize)
         # Necessary run logic
         dpg.show_viewport()
         dpg.start_dearpygui()
         dpg.destroy_context()
+        
+    def add_particle_picker(self):
+        if len(self.color_distrubution) < NPARTICLES:
+            with dpg.group(horizontal=True, before=self.adder):
+                btn = dpg.add_button(label="  ", callback=self.color_picker)
+                dpg.add_slider_int(tag=f"btn_id:{btn}", label="", callback=self.slider_callback, default_value=50)
+                self.color_distrubution[btn] = [(255, 0, 0, 255), 50]
+            with dpg.theme() as btn_theme:
+                with dpg.theme_component():
+                    dpg.add_theme_color(dpg.mvThemeCol_Button, (255, 0, 0, 255))
+            dpg.bind_item_theme(btn, btn_theme)
+            # self.adjust_matrix()
+            if len(self.color_distrubution) >= NPARTICLES:
+                dpg.hide_item(self.adder)
+            
+    def adjust_matrix(self):
+        _c_map = [tup[0] for tup in self.color_distrubution.values()]
+        n = len(_c_map)
+        w_h = 15
+        color = _c_map[-1]
+        dpg.draw_rectangle((n*w_h, 0), (n*w_h, n*w_h), color=color, parent="particle_canvas")
+        dpg.draw_rectangle((0, n*w_h), (n*w_h, n*w_h), color=color, parent="particle_canvas")
+
     
     def slider_callback(self, sender, app_data):
         self.color_distrubution[int(dpg.get_item_alias(sender).split(":")[1])][1] = app_data
@@ -101,7 +113,7 @@ class GUI:
         self.rendered_particles = self.render_particles()
     
     def render_particles(self):
-        return [dpg.draw_circle((particle.x_pos, particle.y_pos), CIRCLE_SION, color=particle.color, parent=self.drawlist) for particle in self.particle_system.particles]
+        return [dpg.draw_circle((particle.x_pos, particle.y_pos), CIRCLE_SION, color=particle.color, parent="particle_canvas", fill=particle.color) for particle in self.particle_system.particles]
 
             
     
@@ -111,8 +123,11 @@ class GUI:
         dpg.set_item_width("exwin2", dpg.get_viewport_width()-dpg.get_item_width("exwin")-PADDING)
         dpg.set_item_height("exwin2", dpg.get_viewport_height())
         dpg.set_item_pos("exwin2", (dpg.get_item_width("exwin")+PADDING,0))
-        dpg.set_item_width("exdrawlist", dpg.get_item_width("exwin2"))
-        dpg.set_item_height("exdrawlist", dpg.get_item_height("exwin2"))
+        dpg.set_item_width("particle_canvas", dpg.get_item_width("exwin2"))
+        dpg.set_item_height("particle_canvas", dpg.get_item_height("exwin2")-BORDER)
+        dpg.set_item_width("matrix", dpg.get_item_width("exwin")-PADDING*2)
+        dpg.set_item_height("matrix", dpg.get_item_width("exwin")-PADDING*2)
+        
         
     
     def pause_callback(self, btn, app_data):
@@ -132,6 +147,7 @@ class GUI:
         self.rendered_particles = self.render_particles()
         self.should_stop = False
         self.tick()
+        dpg.hide_item(self.save)
         dpg.show_item(self.pause)
         dpg.show_item(self.reset)
         
@@ -142,6 +158,7 @@ class GUI:
         self.clear_particles()
         dpg.hide_item(self.pause)
         dpg.hide_item(self.reset)
+        dpg.show_item(self.save)
 
     
     
