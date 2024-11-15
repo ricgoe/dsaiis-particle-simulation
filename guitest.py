@@ -2,10 +2,12 @@ from vispy import app, scene
 import numpy as np
 from vispy.app import Timer
 from particle_system import ParticleSystem
+from collision_test import test_ParticleSystem
 
 
 
-part_sys = ParticleSystem(width=10000, height=10000, color_distribution=[((1, 0, 0, 1), 100000), ((0, 1, 0, 1), 100000)], step_size=.5, radius=.5)
+part_sys = test_ParticleSystem()
+# part_sys = ParticleSystem(width=10000, height=10000, color_distribution=[((1, 0, 0, 1), 100000), ((0, 1, 0, 1), 100000)], step_size=.5, radius=.5)
 
 canvas = scene.SceneCanvas(keys="interactive", show=True)
 view = canvas.central_widget.add_view()
