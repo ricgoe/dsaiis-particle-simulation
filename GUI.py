@@ -8,8 +8,9 @@ TICK_RATE = 20
 CIRCLE_SION = 3
 BORDER = 40
 NPARTICLES = 5
-RELATIONSHIPS = 10
+RELATIONSHIPS = NPARTICLES*2
 MAX_PARTICLES = 10000
+COLOR_MAP = "inferno"
 
 
 class GUI:
@@ -24,7 +25,7 @@ class GUI:
         self.matrix_btns = []
         self.should_stop = True
         self.hovered_matrix = ""
-        self.cmap = get_cmap("Spectral", RELATIONSHIPS+1)
+        self.cmap = get_cmap(COLOR_MAP, RELATIONSHIPS+1)
         # Add control panel
         with dpg.window(tag="exwin",label="Example Window", no_resize=True, no_move=True, no_collapse=True, no_close=True):
             self.adder = dpg.add_button(label="+", callback=self.add_particle_picker)
