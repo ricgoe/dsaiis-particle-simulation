@@ -11,6 +11,8 @@ NPARTICLES = 5
 RELATIONSHIPS = NPARTICLES*2
 MAX_PARTICLES = 10000
 COLOR_MAP = "inferno"
+STEP_SIZE = 3
+
 
 
 class GUI:
@@ -210,7 +212,7 @@ class GUI:
     def save_callback(self):
         _c_d_map = [tup for tup in self.color_distrubution.values()]
         print(self.color_relationships) # handle appropriatly
-        self.particle_system = ParticleSystem(width=dpg.get_item_width("particle_canvas"), height=dpg.get_item_width("particle_canvas"), color_distribution=_c_d_map, step_size=1)
+        self.particle_system = ParticleSystem(width=dpg.get_item_width("particle_canvas"), height=dpg.get_item_width("particle_canvas"), color_distribution=_c_d_map, step_size=STEP_SIZE)
         self.rendered_particles = self.render_particles()
         self.should_stop = False
         self.tick()
