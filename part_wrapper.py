@@ -1,9 +1,10 @@
 import numpy as np
 from particle import Particle
+from scipy.spatial import KDTree
 
 class ParticleSystem:
 
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], step_size: float = 5, radius: int = 10, min_distance: float = 500):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], step_size: float = 5, radius: int = 10, min_distance: float = 200):
 
 
         self.color_distribution = color_distribution
@@ -27,7 +28,11 @@ class ParticleSystem:
         return tmp
                 
     def move_particles(self):
-       for particle in self.particles:
+       positions = np.array([[particle.x_pos, particle.y_pos] for particle in self.particles])
+
+       tree = KDTree(positions)
+
+       for i,particle in  enumerate (self.particles):
             
             # normaler step wie vorher, *0.2 , weil sonst zu viel anteil an randomness. 0.2 erstaml zufällig gewählt
             step = np.random.normal(0, self.step_size, 2)
@@ -37,15 +42,22 @@ class ParticleSystem:
             # anziehung und abstoßung
             repulsion_x, repulsion_y = 0, 0
             attraction_x, attraction_y = 0, 0
-            for other in self.particles:
+
+            # alle Partikel, die im radius min_distance liegen
+            neighbors = tree.query_ball_point((particle.x_pos, particle.y_pos), r=self.min_distance)
+
+            for neighbor in neighbors:
+
+                other = self.particles[neighbor]
 
                 # distanz zu jedem anderen particle
                 x_distance = particle.x_pos - other.x_pos
                 y_distance = particle.y_pos - other.y_pos
+
                 distance = np.sqrt(x_distance**2 + y_distance**2)
 
 
-                if distance > 0:
+                if distance <= self.min_distance:
                     
                     # bei unterschiedlicher farbe: abstoßung und wenn in der distanz liegt, die beeinflusst werden soll
                     if particle.color != other.color and distance < self.min_distance:
