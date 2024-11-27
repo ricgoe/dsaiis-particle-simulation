@@ -53,6 +53,7 @@ class GUI:
         dpg.set_viewport_resize_callback(self.on_window_resize)
         # Necessary run logic
         dpg.show_viewport()
+        self.on_window_resize()
         dpg.start_dearpygui()
         dpg.destroy_context()
         
