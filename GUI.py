@@ -53,6 +53,7 @@ class GUI:
         dpg.set_viewport_resize_callback(self.on_window_resize)
         # Necessary run logic
         dpg.show_viewport()
+        dpg.set_frame_callback(20, callback=lambda: dpg.output_frame_buffer(callback=self.init_frame_buffer))
         self.on_window_resize()
         dpg.start_dearpygui()
         dpg.destroy_context()
@@ -158,6 +159,43 @@ class GUI:
             frames = dpg.get_frame_count()
             next_tick_in = int(dpg.get_frame_rate()//TICK_RATE)
             dpg.set_frame_callback(frames+next_tick_in, self.tick)
+            
+    def init_frame_buffer(self, sender, buffer):
+        print("init")
+        with dpg.mutex():
+            p_w = dpg.get_item_width("particle_canvas")
+            p_h = dpg.get_item_height("particle_canvas")
+            w_h = dpg.get_viewport_client_height()
+            w_w = dpg.get_viewport_client_width()
+            with dpg.texture_registry():
+                dpg.add_raw_texture(width=w_w, height=w_h, default_value=buffer, format=dpg.mvFormat_Float_rgba, tag="prev-frame-texture")
+            dpg.add_image('prev-frame-texture',tag='prev-frame', width=p_w, parent='flowfield', pos=(0,0), uv_min=(0,0), uv_max=(p_w/w_w, 1))
+            dpg.set_frame_callback(dpg.get_frame_count()+1, callback=lambda: dpg.output_frame_buffer(callback=self.clear_frame))
+
+    def clear_frame(self, sender, buffer):
+        print("clear")
+        with dpg.mutex():
+            if dpg.is_item_shown('prev-frame'):
+                dpg.hide_item('prev-frame')
+                dpg.set_frame_callback(dpg.get_frame_count()+1, callback=lambda: dpg.output_frame_buffer(callback=self.clear_frame))
+            else:
+                dpg.set_value('prev-frame', buffer)
+                dpg.show_item('prev-frame')
+                dpg.set_frame_callback(dpg.get_frame_count()+1, callback=lambda: dpg.output_frame_buffer(callback=self.handle_frame_buffer))
+
+    def handle_frame_buffer(self, sender, buffer):
+        with dpg.mutex():
+            dpg.set_value('prev-frame-texture', buffer)
+            if not self.should_stop:
+                if not self.rendered_particles:
+                    self.rendered_particles = self.render_particles()
+                self.render_movement()
+            dpg.set_frame_callback(dpg.get_frame_count()+10, callback=lambda: dpg.output_frame_buffer(callback=self.handle_frame_buffer))   
+
+    def on_matrix_hover(sender):
+        hovered_matrix = sender
+        dpg.configure_item(sender, color=(255, 255, 255, 255))
+             
         
         
     def render_movement(self):
@@ -214,9 +252,9 @@ class GUI:
         _c_d_map = [tup for tup in self.color_distrubution.values()]
         print(self.color_relationships) # handle appropriatly
         self.particle_system = ParticleSystem(width=dpg.get_item_width("particle_canvas"), height=dpg.get_item_width("particle_canvas"), color_distribution=_c_d_map, step_size=STEP_SIZE)
-        self.rendered_particles = self.render_particles()
+        # self.rendered_particles = self.render_particles()
         self.should_stop = False
-        self.tick()
+        # self.tick()
         dpg.hide_item(self.save)
         dpg.show_item(self.pause)
         dpg.show_item(self.reset)
