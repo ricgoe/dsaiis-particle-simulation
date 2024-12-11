@@ -1,6 +1,7 @@
 import numpy as np
 from particle import Particle
 from matplotlib import pyplot as plt
+import numba
 
 class ParticleSystem:
     def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], step_size: float = 5, radius: int = 10):
@@ -22,15 +23,16 @@ class ParticleSystem:
             for x, y in zip(__x, __y):
                 tmp.append(Particle(color=rgb, x_pos=x, y_pos=y))
         return tmp
-                
+    
+    @numba.jit(nopython=True)
     def move_particles(self):
-        for particle in self.particles:
+        for particle in numba.prange(len(self.particles)):
             # step = np.random.normal(0, self.step_size, 2)
             x_step = np.random.normal(0, self.step_size)
             y_step = np.random.normal(0, self.step_size)
-            new_x = np.mod(particle.x_pos + x_step, self.width)
-            new_y = np.mod(particle.y_pos + y_step, self.height)
-            particle.move(new_x, new_y)
+            new_x = np.mod(self.particles[particle].x_pos + x_step, self.width)
+            new_y = np.mod(self.particles[particle].y_pos + y_step, self.height)
+            self.particles[particle].move(new_x, new_y)
             
     def check_collision(self):
         pass
