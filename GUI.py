@@ -1,15 +1,15 @@
 import dearpygui.dearpygui as dpg
-from part_wrapper import ParticleSystem
+from particle_system import ParticleSystem
 from matplotlib.pyplot import get_cmap
 
 PADDING = 5
 SPLIT = 5
 TICK_RATE = 20
-CIRCLE_SION = 3
+CIRCLE_SION = 2
 BORDER = 40
 NPARTICLES = 5
 RELATIONSHIPS = NPARTICLES*2
-MAX_PARTICLES = 10000
+MAX_PARTICLES = 750
 COLOR_MAP = "inferno"
 STEP_SIZE = 3
 
@@ -162,7 +162,7 @@ class GUI:
         
     def render_movement(self):
         for idx, rendered in enumerate(self.rendered_particles):
-            dpg.configure_item(rendered, center=(self.particle_system.particles[idx].x_pos, self.particle_system.particles[idx].y_pos))
+            dpg.configure_item(rendered, center=(self.particle_system.particles[idx, 0], self.particle_system.particles[idx, 1]))
             
             
     def clear_particles(self):
@@ -172,7 +172,7 @@ class GUI:
         
         
     def render_particles(self):
-        return [dpg.draw_circle((particle.x_pos, particle.y_pos), CIRCLE_SION, color=particle.color, parent="particle_canvas", fill=particle.color) for particle in self.particle_system.particles]
+        return [dpg.draw_circle((particle[0], particle[1]), CIRCLE_SION, color=(particle[2], particle[3], particle[4], particle[5]), parent="particle_canvas", fill=(particle[2], particle[3], particle[4], particle[5])) for particle in self.particle_system.particles]
 
 
     def relationship_slider_callback(self, slider, app_data):
