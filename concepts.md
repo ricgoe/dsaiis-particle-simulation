@@ -167,7 +167,12 @@ Betrachten wir also zunächst 2 Teilchen $A$ und $B$ mit Positionen $\vec{P}_A�
 Die Kollsisionachse beschreibt die Linie, die senkrecht auf der Verbindungslinie der beiden Teilchen steht, als auch durch den Kollisionspunkt geht. 
 Darstellen lässt sich die Verbindungslinine als Gerade $g_{connect} = \vec{{OP}_1} + r \cdot (\vec{P_2} - \vec{P_1})$
 Nun benötigen wir eine Normale zur Geraden g, die durch den Kollisionspunkt geht.
-Diese Normale ist die Kollisionsachse $\vec{C}: 
+Diese Normale ist die Kollisionsachse $g_{collision}$.
+
+##### Berechnung der Kollisionsachse
+Die Kollisionsachse lässt sich folgendermaßen berechnen:
+Wir suchen zunächst den Punkt $Q$ auf $g_{connect}$, der senkrecht auf $g_{connect}$ steht und Schnittpunkt von $g_{connect}$ und $g_{collision}$ ist.
+$Q$ 
 
 Nun müssen wir die Richtungsvektoren $\vec{v_A}$ und $\vec{v_B}$ der beiden Teilchen jeweils in zwei Komponenten zerlegen.
 Die eine Komponente zeigt parallel zur Kollisionsachse, die andere steht senkrecht dazu.
