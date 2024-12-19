@@ -1,7 +1,6 @@
 import numpy as np
 from particle import Particle
 from matplotlib import pyplot as plt
-import numba
 
 class ParticleSystem:
     def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], step_size: float = 5, radius: int = 10):
@@ -24,9 +23,8 @@ class ParticleSystem:
                 tmp.append(Particle(color=rgb, x_pos=x, y_pos=y))
         return tmp
     
-    @numba.jit(nopython=True)
     def move_particles(self):
-        for particle in numba.prange(len(self.particles)):
+        for particle in range(len(self.particles)):
             # step = np.random.normal(0, self.step_size, 2)
             x_step = np.random.normal(0, self.step_size)
             y_step = np.random.normal(0, self.step_size)
@@ -60,5 +58,5 @@ class ParticleSystem:
             
 if __name__ == "__main__":
     particle_system = ParticleSystem(width=1000, height=1000, color_distribution=[((255, 0, 0), 100)], step_size= 10)
-    particle_system.plot_particles()
+    
     
