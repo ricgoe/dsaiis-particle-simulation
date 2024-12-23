@@ -138,9 +138,7 @@ class MainWindow(QMainWindow):
         btn.setStyleSheet(tmp_css)
         label.setText(str(val))
         self.relationships[(i, j)] = val
-        
-        
-          
+                
     def show_color_picker(self, btn: QPushButton, boxes=list[QWidget]):
         pop = PopupWidget(self)
         pop.setStyleSheet("background-color: #31313a;")
@@ -156,7 +154,6 @@ class MainWindow(QMainWindow):
         btn.setStyleSheet(f"background-color: {color.name()};")
         for i in boxes: i.setStyleSheet(f"background-color: {color.name()};")
         self.color_distrubution[btn][0] = color.toTuple()
-        
         
     def n_particle_slider_changed(self, val, label: QLabel, btn: QPushButton):
         label.setText(str(val))
