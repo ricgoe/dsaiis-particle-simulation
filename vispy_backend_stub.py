@@ -35,17 +35,13 @@ from vispy import scene
 class Canvas(scene.SceneCanvas):
     def __init__(self):
         super().__init__(keys="interactive", show=True, bgcolor='#24242b')#Hintergrundfarbe wie in PySide-GUI
+        self.unfreeze() #to allow setting new attributes
+        self.CANVAS_MARGIN_FACTOR = 0.05  # 5% Rand pro ohne Punkte
 
-        CANVAS_MARGIN_FACTOR = 0.05  # 5% Rand pro ohne Punkte
+        self.view = self.central_widget.add_view()
+        self.view.camera = scene.PanZoomCamera(aspect=1)
 
-        view = self.central_widget.add_view()
-        view.camera = scene.PanZoomCamera(aspect=1)
-
-        # Datenerzeugung
-        n_points = 100
-        positions = np.random.rand(n_points, 2) * 10  # 2D array mit n_points vielen zufälligen Punkten, *10 um die Punkte auf dem Bildschirm zu verteilen
-        colors = np.ones((n_points, 4))  # 4 weil rgba, letzter wert ist alpha, machen wir mal immer 1
-        colors[:, :3] = np.random.rand(n_points, 3)  # rgb werte zufällig generieren
+    def insert_data(self, positions, colors):
 
         # Um jedem Punkt auf Canvas sichtbar zu haben: Mini-und Maxima der x und y Werte bestimmen
         x_min, y_min = positions.min(axis=0)  # Minimum x und y
@@ -54,10 +50,10 @@ class Canvas(scene.SceneCanvas):
         # Um die Kamera auf die Punkte zu zoomen: Streuweiten bestimmen und um 5% vergrößern
         x_range = x_max - x_min
         y_range = y_max - y_min
-        x_margin = x_range * CANVAS_MARGIN_FACTOR
-        y_margin = y_range * CANVAS_MARGIN_FACTOR
+        x_margin = x_range * self.CANVAS_MARGIN_FACTOR
+        y_margin = y_range * self.CANVAS_MARGIN_FACTOR
 
-        view.camera.set_range(
+        self.view.camera.set_range(
             x=(x_min - x_margin, x_max + x_margin),
             y=(y_min - y_margin, y_max + y_margin)
         )
@@ -70,4 +66,4 @@ class Canvas(scene.SceneCanvas):
         # scatter plot erstellen und daten übergeben
         scatter = scene.visuals.Markers()
         scatter.set_data(pos=positions, face_color=colors, size=canvas_relative_particle_size)
-        view.add(scatter)
+        self.view.add(scatter)
