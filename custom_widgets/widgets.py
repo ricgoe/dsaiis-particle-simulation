@@ -30,7 +30,6 @@ class CustomColorPicker(QColorDialog):
 class SquareWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self.setMaximumHeight(self.width())
         
     def resizeEvent(self, event):
         print(self.width())
