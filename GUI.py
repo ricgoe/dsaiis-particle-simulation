@@ -25,7 +25,8 @@ class MainWindow(QMainWindow):
         self.color_distrubution = {}
         
         self.setWindowTitle("Basic PySide6 GUI")
-        self.setGeometry(100, 100, 1200, 800)
+        self.setGeometry(100, 100, 1500, 800)
+        self.setFixedSize(self.width(), self.height())
         self.setStyleSheet("background-color: #24242b;")
         
         container = QWidget()
@@ -51,7 +52,9 @@ class MainWindow(QMainWindow):
         
         rel_matrix = SquareWidget()
         # rel_matrix.setStyleSheet("background-color: #c29233;")
-        self.rel_layout = QGridLayout(rel_matrix)
+        self.rel_layout = QGridLayout(rel_matrix, )
+        self.rel_layout.setContentsMargins(1,1,1,1)
+        self.rel_layout.setSpacing(1)
         ctrl_layout.addWidget(rel_matrix)
         ctrl_layout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Expanding))
     
@@ -69,8 +72,9 @@ class MainWindow(QMainWindow):
             self.color_distrubution[btn] = [(255, 0, 0, 255), int(MAX_PARTICLES//2)]
             btn.clicked.connect(lambda: self.show_color_picker(btn, (color_box1, color_box2)))
             _c_layout.addWidget(btn, 1)
-            self.rel_layout.addWidget(color_box1, len(self.color_distrubution), 0)
-            self.rel_layout.addWidget(color_box2, 0, len(self.color_distrubution))
+            n = len(self.color_distrubution)
+            self.rel_layout.addWidget(color_box1, n, 0)
+            self.rel_layout.addWidget(color_box2, 0, n)
             
             label = QLabel(str(MAX_PARTICLES//2), styleSheet="color: white;")
             slider = QSlider(Qt.Horizontal)
@@ -79,7 +83,12 @@ class MainWindow(QMainWindow):
             slider.valueChanged.connect(lambda val: self.slider_changed(val, label, btn))
             _c_layout.addWidget(slider, SPLIT+1)
             _c_layout.addWidget(label, 1)
-             
+            for i in range(1, n+1):
+                for j in range(1, n+1):
+                    if i == n or j == n:
+                        rel_btn = QPushButton(styleSheet="background-color: #36a840;")
+                        rel_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                        self.rel_layout.addWidget(rel_btn, i, j)
             if len(self.color_distrubution) >= NPARTICLES:
                 self.adder_btn.hide()
                         
