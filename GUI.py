@@ -5,6 +5,7 @@ from PySide6.QtGui import QColor
 import re
 from matplotlib.pyplot import get_cmap
 from vispy_backend_stub import Canvas
+from fake_data import POSITIONS, COLORS
 
 
 from custom_widgets.widgets import PopupWidget, CustomColorPicker, SquareWidget
@@ -74,6 +75,7 @@ class MainWindow(QMainWindow):
         
         
         canvas = Canvas() # EMIL
+        canvas.insert_data(positions=POSITIONS, colors=COLORS) # load new data into canvas
         self.canvas_layout.addWidget(canvas.native)
         
         self.show()
