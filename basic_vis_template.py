@@ -1,6 +1,6 @@
 import numpy as np
+from vispy.app import run, Timer
 from vispy import scene
-from vispy.app import run
 
 CANVAS_MARGIN_FACTOR = 0.05  # 5% Rand pro ohne Punkte
 PARTICLE_RADIUS = 5
@@ -40,6 +40,19 @@ canvas_relative_particle_size = min(canvas_size) * 0.02  # 2% der kleineren Dime
 scatter = scene.visuals.Markers()
 scatter.set_data(pos=positions, face_color=colors, size=canvas_relative_particle_size)
 view.add(scatter)
+
+#plot update
+def update(ev):
+    global positions, colors, canvas_relative_particle_size
+    positions += np.random.randn(n_points, 2) * 0.01
+    scatter.set_data(pos=positions, face_color=colors, size=canvas_relative_particle_size)
+    canvas.update()
+
+#timer
+timer = Timer(interval=0.01) #1 Update pro hunderstel Sekunde
+timer.connect(update)
+timer.start()
+
 
 if __name__ == '__main__':
     run()
