@@ -1,53 +1,25 @@
-# from vispy import scene
-# import numpy as np
-# from vispy import app
-
-# # Ensure VisPy uses the PySide6 backend
-# app.use_app("pyside6")
-
-# class Canvas(scene.SceneCanvas):
-#     def __init__(self):
-#         super().__init__(keys="interactive")
-        
-#         # self.unfreeze()
-#         # Generate random x and y data
-#         num_points = 100
-#         x = np.random.rand(num_points)  # Random x values between 0 and 1
-#         y = np.random.rand(num_points)  # Random y values between 0 and 1
-#         positions = np.c_[x, y]
-
-#         # Optional: Assign random colors and sizes to points
-#         sizes = np.random.rand(num_points) * 100  # Random sizes between 0 and 100
-
-#         view = self.central_widget.add_view()
-
-#         view.camera = scene.PanZoomCamera(aspect=1)
-#         view.camera.set_range(x=(0, 100), y=(0, 100))
-
-#         scatter = scene.visuals.Markers()
-#         scatter.set_data(positions, size=sizes, face_color=(1, 0, 0, 1))
-#         view.add(scatter)
-#         # self.freeze()
-
+from vispy import scene, app
 import numpy as np
-from vispy import scene
 
 class Canvas(scene.SceneCanvas):
     def __init__(self):
-        super().__init__(keys="interactive", show=True, bgcolor='#24242b')#Hintergrundfarbe wie in PySide-GUI
-        self.unfreeze() #to allow setting new attributes
+        super().__init__(keys='interactive', show=True, bgcolor='#24242b')  # Hintergrundfarbe wie in PySide-GUI
+        self.unfreeze()  # Allow addition of new attributes
         self.CANVAS_MARGIN_FACTOR = 0.05  # 5% Rand pro ohne Punkte
-
+        self.particle_scaling_factor = 0.002  # Skalierungsfaktor für Partikelgrößen
         self.view = self.central_widget.add_view()
         self.view.camera = scene.PanZoomCamera(aspect=1)
+        self.scatter = scene.visuals.Markers()
+        self.update_interval = 0.01  # 1 Update pro hunderstel Sekunde -> 100Hz
+        self.timer = app.Timer(interval=self.update_interval, connect=self.update_positions)
 
-    def insert_data(self, positions, colors):
+    def insert_data(self, positions, colors, sizes):
+        self.positions = positions
+        self.colors = colors
+        self.sizes = sizes
 
-        # Um jedem Punkt auf Canvas sichtbar zu haben: Mini-und Maxima der x und y Werte bestimmen
-        x_min, y_min = positions.min(axis=0)  # Minimum x und y
-        x_max, y_max = positions.max(axis=0)  # Maximum x und y
-
-        # Um die Kamera auf die Punkte zu zoomen: Streuweiten bestimmen und um 5% vergrößern
+        x_min, y_min = positions.min(axis=0)
+        x_max, y_max = positions.max(axis=0)
         x_range = x_max - x_min
         y_range = y_max - y_min
         x_margin = x_range * self.CANVAS_MARGIN_FACTOR
@@ -58,12 +30,19 @@ class Canvas(scene.SceneCanvas):
             y=(y_min - y_margin, y_max + y_margin)
         )
 
-        # um die Punktgröße an das Canvas anzupassen
-        # -> VisPy nimmt bei set_data die size nur in pixel an, nicht die relative Größe
-        canvas_size = self.size  # Pixelgröße des Canvas
-        canvas_relative_particle_size = min(canvas_size) * 0.02  # 2% der kleineren Dimension
+        # Punktgrößen relativ zur Canvas-Größe skalieren
+        canvas_size = self.size # Canvas-größe in Pixeln  (Breite, Höhe)
+        scale_factor = min(canvas_size) * self.particle_scaling_factor
+        self.relative_particle_sizes = np.array(self.sizes) * scale_factor
 
-        # scatter plot erstellen und daten übergeben
-        scatter = scene.visuals.Markers()
-        scatter.set_data(pos=positions, face_color=colors, size=canvas_relative_particle_size)
-        self.view.add(scatter)
+        # Scatter-Plot hinzufügen
+        self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
+        self.view.add(self.scatter)
+
+        # Timer für Updates
+        self.timer.start()
+
+    def update_positions(self, ev):
+        self.positions += np.random.randn(*self.positions.shape) * 0.01
+        self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
+        self.update()
