@@ -6,7 +6,7 @@ class Canvas(scene.SceneCanvas):
         super().__init__(keys='interactive', show=True, bgcolor='#24242b')  # Hintergrundfarbe wie in PySide-GUI
         self.unfreeze()  # Allow addition of new attributes
         self.CANVAS_MARGIN_FACTOR = 0.05  # 5% Rand pro ohne Punkte
-        self.particle_scaling_factor = 0.002  # Skalierungsfaktor für Partikelgrößen
+        self.particle_scaling_factor = 0.001  # Skalierungsfaktor für Partikelgrößen
         self.view = self.central_widget.add_view()
         self.view.camera = scene.PanZoomCamera(aspect=1)
         self.scatter = scene.visuals.Markers()
@@ -32,8 +32,8 @@ class Canvas(scene.SceneCanvas):
 
         # Punktgrößen relativ zur Canvas-Größe skalieren
         canvas_size = self.size # Canvas-größe in Pixeln  (Breite, Höhe)
-        scale_factor = min(canvas_size) * self.particle_scaling_factor
-        self.relative_particle_sizes = np.array(self.sizes) * scale_factor
+        scale_factor = min(canvas_size) * self.particle_scaling_factor # Skalierungsfaktor für Partikelgrößen
+        self.relative_particle_sizes = np.array(self.sizes) * scale_factor # wird an Scatterplot übergeben 
 
         # Scatter-Plot hinzufügen
         self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
