@@ -3,7 +3,6 @@ from vispy.app import run, Timer
 from vispy import scene
 
 CANVAS_MARGIN_FACTOR = 0.05  # 5% Rand pro ohne Punkte
-PARTICLE_RADIUS = 5
 
 canvas = scene.SceneCanvas(keys='interactive', show=True, bgcolor='#24242b') #Hintergrundfarbe wie in PySide-GUI
 
