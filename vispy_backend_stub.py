@@ -1,5 +1,7 @@
 from vispy import scene, app
 import numpy as np
+from fake_data import get_colors, get_positions, get_particle_size
+
 
 class Canvas(scene.SceneCanvas):
     def __init__(self, bgcolor):
@@ -13,13 +15,13 @@ class Canvas(scene.SceneCanvas):
         self.update_interval = 0.01  # 1 Update pro hunderstel Sekunde -> 100Hz
         self.timer = app.Timer(interval=self.update_interval, connect=self.update_positions)
 
-    def insert_data(self, positions, colors, sizes):
-        self.positions = positions
-        self.colors = colors
-        self.sizes = sizes
+    def insert_data(self):
+        self.positions = get_positions()
+        self.colors = get_colors()
+        self.sizes = get_particle_size()
 
-        x_min, y_min = positions.min(axis=0)
-        x_max, y_max = positions.max(axis=0)
+        x_min, y_min = self.positions.min(axis=0)
+        x_max, y_max = self.positions.max(axis=0)
         x_range = x_max - x_min
         y_range = y_max - y_min
         x_margin = x_range * self.CANVAS_MARGIN_FACTOR
@@ -43,6 +45,11 @@ class Canvas(scene.SceneCanvas):
         self.timer.start()
 
     def update_positions(self, ev):
-        self.positions += np.random.randn(*self.positions.shape) * 0.01
+        self.positions = get_positions()
         self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
         self.update()
+        
+        
+    def reset(self):
+        self.timer.stop()
+        self.scatter.parent = None
