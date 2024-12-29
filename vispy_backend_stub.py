@@ -2,8 +2,8 @@ from vispy import scene, app
 import numpy as np
 
 class Canvas(scene.SceneCanvas):
-    def __init__(self):
-        super().__init__(keys='interactive', show=True, bgcolor='#24242b')  # Hintergrundfarbe wie in PySide-GUI
+    def __init__(self, bgcolor):
+        super().__init__(keys='interactive', bgcolor=bgcolor)  # Hintergrundfarbe wie in PySide-GUI
         self.unfreeze()  # Allow addition of new attributes
         self.CANVAS_MARGIN_FACTOR = 0.05  # 5% Rand pro ohne Punkte
         self.particle_scaling_factor = 0.001  # Skalierungsfaktor für Partikelgrößen

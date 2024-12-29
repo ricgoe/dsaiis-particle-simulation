@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
         self.color_distrubution = {}
         self.relationships = {}
         
-        self.setWindowTitle("Basic PySide6 GUI")
+        self.setWindowTitle("Particle Simulation")
         self.setGeometry(100, 100, 1500, 800)
         self.setFixedSize(self.width(), self.height())
         self.setStyleSheet("background-color: #24242b;")
@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
         ctrl_layout.addWidget(self.reset_btn)
         
         
-        canvas = Canvas() # EMIL
+        canvas = Canvas(bgcolor='#24242b') # EMIL
         canvas.insert_data(POSITIONS, COLORS, PARTICLE_SIZE) # load data
         self.canvas_layout.addWidget(canvas.native)
         
