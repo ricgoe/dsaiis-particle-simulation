@@ -5,7 +5,6 @@ from PySide6.QtGui import QColor
 import re
 from matplotlib.pyplot import get_cmap
 from vispy_backend_stub import Canvas
-from fake_data import POSITIONS, COLORS, PARTICLE_SIZE
 
 
 from custom_widgets.widgets import PopupWidget, CustomColorPicker, SquareWidget
@@ -74,9 +73,8 @@ class MainWindow(QMainWindow):
         ctrl_layout.addWidget(self.reset_btn)
         
         
-        canvas = Canvas(bgcolor='#24242b') # EMIL
-        canvas.insert_data(POSITIONS, COLORS, PARTICLE_SIZE) # load data
-        self.canvas_layout.addWidget(canvas.native)
+        self.canvas = Canvas(bgcolor='#24242b') # EMIL
+        self.canvas_layout.addWidget(self.canvas.native)
         
         self.show()
         
@@ -174,6 +172,7 @@ class MainWindow(QMainWindow):
     
     def saved(self):
         _c_map = list(self.color_distrubution.values())
+        self.canvas.insert_data() # load data
         print(_c_map)
         print(self.relationships)
         
@@ -182,7 +181,10 @@ class MainWindow(QMainWindow):
         self.relationships = {}
         self.clear_layout(self.particle_layout)
         self.clear_layout(self.rel_layout)
+        self.canvas.reset()
         self.adder_btn.show()
+        self.save_btn.hide()
+        self.reset_btn.hide()
 
         
 
