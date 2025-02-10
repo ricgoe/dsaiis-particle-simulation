@@ -14,9 +14,9 @@ class DummyVisualizer:
         self.sim_radius = 10
         self.fps = fps
         self.interval = 1/self.fps
-        interaction_matrix = np.array([[1, 0, 0], 
-                                       [0, 1, 0], 
-                                       [0, 0, 1]])
+        interaction_matrix = np.array([[1, -1, 0], 
+                                       [-1, 1, 1], 
+                                       [0, 1, 1]])
         #interaction_matrix = np.random.uniform(-1, 1, (3, 3))
         #interaction_matrix = (interaction_matrix + interaction_matrix.T) / 2
         
@@ -37,8 +37,8 @@ class DummyVisualizer:
         # mapping from color indices to RGBA (workaround)
         self.color_map = np.array([
             [1, 0, 0, 1],
-            [0, 0, 1, 1],
-            [0, 1, 0, 1]
+            [0, 1, 0, 1],
+            [0, 0, 1, 1]
         ])
 
         self.particle_colors = self.color_map[self.part_sys.particles[:, 5].astype(int)]
@@ -82,18 +82,15 @@ class DummyVisualizer:
         """
         Update function to move particles and update scatter data.
         """
-        try:
-            self.part_sys.move_particles(interaction_radius=60)
-            x, y = self.part_sys.particles[:, 0], self.part_sys.particles[:, 1]
-            self.scatter.set_data(
-                np.column_stack((x, y)),
-                edge_color=self.particle_colors,
-                face_color=self.particle_colors,
-                size=self.pixel_radius
-            )
-        except KeyboardInterrupt:
-            with open('max_vel.txt', 'w') as f:
-                f.write(str(self.part_sys.max_vel))
+        self.part_sys.move_particles(interaction_radius=10)
+        x, y = self.part_sys.particles[:, 0], self.part_sys.particles[:, 1]
+        self.scatter.set_data(
+            np.column_stack((x, y)),
+            edge_color=self.particle_colors,
+            face_color=self.particle_colors,
+            size=self.pixel_radius
+        )
+
 
 
 if __name__ == "__main__":

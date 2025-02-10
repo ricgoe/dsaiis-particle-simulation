@@ -1,7 +1,7 @@
 import numpy as np
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], interaction_matrix:np.ndarray[float], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .1, drag: float = .05):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], interaction_matrix:np.ndarray[float], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .5, drag: float = .05):
         self.color_distribution = color_distribution
         self.width: int = width
         self.height: int = height
@@ -13,7 +13,6 @@ class ParticleSystem:
         self._particles = self.init_particles()
         self.interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
         self.velocity = np.zeros((self._particles.shape[0], 2)) # x and y velocties
-        self.max_vel = None
     
     @property
     def particles(self):
@@ -78,7 +77,6 @@ class ParticleSystem:
         final_positions = self._particles[:, :2] + self.velocity * self.delta_t
         final_positions = np.mod(final_positions, (self.width, self.height))
         self._particles = np.hstack((final_positions, self._particles[:, 2:])) 
-        self.max_vel = np.max(np.abs(self.velocity))
 
            
     def check_collisions(self, particles_with_colors: np.ndarray, radius: float = None):
@@ -99,7 +97,6 @@ class ParticleSystem:
             
         positions = particles_with_colors[:, :2]  # get only x and y pos
         n = positions.shape[0]
-        radius = self.radius
 
         # compute bounding boxes for each particle for x and y axis
         x_intervals = [(positions[i, 0] - radius, positions[i, 0] + radius, i) for i in range(n)]
@@ -190,12 +187,12 @@ class ParticleSystem:
 
             if mode == 'collision':
                 # pull particles apart along normal
-                sep_force = self.calc_seperation_force(distance, 1510)
+                sep_force = self.calc_seperation_force(distance, 80)
                 self.velocity[i] += sep_force*normal*self.delta_t # TODO: integrate mass 
                 self.velocity[j] -= sep_force*normal*self.delta_t
             
             elif mode == 'interaction':
-                sep_force = self.calc_seperation_force(distance, 1500, interaction_radius)
+                sep_force = self.calc_seperation_force(distance, 70, interaction_radius)
                 interaction_direction = self.interaction_matrix[int(self._particles[i, -1]), int(self._particles[j, -1])]
                 self.velocity[i] -= interaction_direction*sep_force*normal*self.delta_t # TODO: integrate mass 
                 self.velocity[j] += interaction_direction*sep_force*normal*self.delta_t
