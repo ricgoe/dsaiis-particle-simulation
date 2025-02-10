@@ -1,6 +1,6 @@
 from vispy import scene, app
 import numpy as np
-from fake_data import get_colors, get_positions, get_particle_size
+from Middleware import get_colors, get_positions, get_particle_size
 
 
 class Canvas(scene.SceneCanvas):

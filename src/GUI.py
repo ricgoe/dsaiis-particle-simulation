@@ -4,10 +4,10 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QScreen
 import re
 from matplotlib.pyplot import get_cmap
-from vispy_backend_stub import Canvas
+from Vispy_Stack import Canvas
 
 
-from custom_widgets.widgets import PopupWidget, CustomColorPicker, SquareWidget
+from custom_widgets.Widgets import PopupWidget, CustomColorPicker, SquareWidget
 
 PADDING = 5
 SPLIT = 4
