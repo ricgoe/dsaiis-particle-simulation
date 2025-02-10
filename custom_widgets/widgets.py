@@ -33,6 +33,7 @@ class SquareWidget(QWidget):
         
     def resizeEvent(self, event):
         self.setMaximumHeight(self.width())
+        self.setMinimumHeight(self.width())
         super().resizeEvent(event)
 
         
