@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QGridLayout, QWidget, 
 QPushButton, QHBoxLayout, QSlider, QLabel, QSizePolicy, QSpacerItem)
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QScreen
 import re
 from matplotlib.pyplot import get_cmap
 from vispy_backend_stub import Canvas
@@ -72,8 +72,8 @@ class MainWindow(QMainWindow):
         self.reset_btn.clicked.connect(self.reset)
         ctrl_layout.addWidget(self.reset_btn)
         
-        
-        self.canvas = Canvas(bgcolor='#24242b') # EMIL
+        refresh_rate = round(app.primaryScreen().refreshRate())
+        self.canvas = Canvas(bgcolor='#24242b', screen_refresh_rate=refresh_rate) # EMIL
         self.canvas_layout.addWidget(self.canvas.native)
         
         self.show()
