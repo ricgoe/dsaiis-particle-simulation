@@ -4,15 +4,15 @@ from fake_data import get_colors, get_positions, get_particle_size
 
 
 class Canvas(scene.SceneCanvas):
-    def __init__(self, bgcolor):
-        super().__init__(keys='interactive', bgcolor=bgcolor)  # Hintergrundfarbe wie in PySide-GUI
+    def __init__(self, bgcolor, screen_refresh_rate=60):
+        super().__init__(keys='interactive', bgcolor=bgcolor)
         self.unfreeze()  # Allow addition of new attributes
         self.CANVAS_MARGIN_FACTOR = 0.05  # 5% Rand pro ohne Punkte
         self.particle_scaling_factor = 0.001  # Skalierungsfaktor für Partikelgrößen
         self.view = self.central_widget.add_view()
         self.view.camera = scene.PanZoomCamera(aspect=1)
         self.scatter = scene.visuals.Markers()
-        self.update_interval = 0.01  # 1 Update pro hunderstel Sekunde -> 100Hz
+        self.update_interval = 1 / screen_refresh_rate
         self.timer = app.Timer(interval=self.update_interval, connect=self.update_positions)
 
     def insert_data(self):
@@ -48,7 +48,6 @@ class Canvas(scene.SceneCanvas):
         self.positions = get_positions()
         self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
         self.update()
-        
         
     def reset(self):
         self.timer.stop()
