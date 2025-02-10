@@ -1,7 +1,7 @@
 import numpy as np
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .05, drag: float = .01):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], interaction_matrix:np.ndarray[float], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .1, drag: float = .05):
         self.color_distribution = color_distribution
         self.width: int = width
         self.height: int = height
@@ -11,7 +11,9 @@ class ParticleSystem:
         self.brownian_std: float = brownian_std
         self.drag: float = drag
         self._particles = self.init_particles()
+        self.interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
         self.velocity = np.zeros((self._particles.shape[0], 2)) # x and y velocties
+        self.max_vel = None
     
     @property
     def particles(self):
@@ -36,7 +38,7 @@ class ParticleSystem:
         return np.concatenate(part_arrays, axis=0)
     
     
-    def move_particles(self):
+    def move_particles(self, interaction_radius: int = None):
         """
         Moves particles for one timestep and updates their velocities based on collision responses.
         The initial velocity is set only on the first call; subsequent calls use and update the current velocity.
@@ -60,14 +62,25 @@ class ParticleSystem:
         # detect collisions with tentative new positions
         colliding_pairs = self.check_collisions(temp_particles)
         # update velocities for each colliding pair
-        self.update_collision_velocities(new_positions, colliding_pairs)
-        self.velocity *= (1 - self.drag)
+        self.update_collision_velocities(new_positions, colliding_pairs, mode='collision')
+        if interaction_radius:
+            interaction_pairs = self.check_collisions(temp_particles, radius=interaction_radius)
+            self.update_collision_velocities(new_positions, interaction_pairs, mode='interaction', interaction_radius=interaction_radius)
+        
+        speeds = np.linalg.norm(self.velocity, axis=1, keepdims=True)
+    
+        # Compute drag acceleration: -gamma * speed * velocity.
+        # If you incorporate mass, divide by mass; here we assume mass = 1.
+        drag_acceleration = -self.drag * speeds * self.velocity
+        
+        # Update velocity with drag force over the timestep.
+        self.velocity += drag_acceleration * self.delta_t
         final_positions = self._particles[:, :2] + self.velocity * self.delta_t
         final_positions = np.mod(final_positions, (self.width, self.height))
         self._particles = np.hstack((final_positions, self._particles[:, 2:])) 
+        self.max_vel = np.max(np.abs(self.velocity))
 
-        
-        
+           
     def check_collisions(self, particles_with_colors: np.ndarray, radius: float = None):
         """
         Detects colliding pairs using a sweep and prune approach.
@@ -129,7 +142,8 @@ class ParticleSystem:
 
         return colliding_pairs
     
-    def calc_seperation_force(self, distance: float, max_force: int) -> float:
+    
+    def calc_seperation_force(self, distance: float, max_force: int, radius: float = None) -> float:
         """
         Returns seperation force that is always smaller than 10. 
         The force gets scaled by the radius, so the values of the function at dist = 2r is always clipped at 10
@@ -140,14 +154,17 @@ class ParticleSystem:
         Returns:
             force: force that is used to pull two particles apart along connection between center points
         """
-
+        if radius is None:
+            radius = self.radius
+        
         try:
-            force = min(1/(distance/(max_force*2*self.radius)), max_force)
+            force = min(1/(distance/(max_force*2*radius)), max_force)
         except ZeroDivisionError:
             force = max_force
         return force
     
-    def update_collision_velocities(self, positions: np.ndarray, colliding_pairs: list[tuple[int, int]]) -> None:
+    
+    def update_collision_velocities(self, positions: np.ndarray, colliding_pairs: list[tuple[int, int]], mode: str = "collsion", interaction_radius: float = None, **kwargs) -> None:
         """
         Updates velocities for each pair in colliding_pairs.
         
@@ -158,6 +175,7 @@ class ParticleSystem:
         Returns:
             None
         """
+        
         for i, j in colliding_pairs:
             # calculate vector between particle centers
             dx = positions[i, 0] - positions[j, 0]
@@ -170,10 +188,20 @@ class ParticleSystem:
             else:
                 normal = np.array([dx, dy]) / distance
 
-            # pull particles apart along normal
-            sep_force = self.calc_seperation_force(distance, 10)
-            self.velocity[i] += sep_force*normal
-            self.velocity[j] -= sep_force*normal
+            if mode == 'collision':
+                # pull particles apart along normal
+                sep_force = self.calc_seperation_force(distance, 1510)
+                self.velocity[i] += sep_force*normal*self.delta_t # TODO: integrate mass 
+                self.velocity[j] -= sep_force*normal*self.delta_t
+            
+            elif mode == 'interaction':
+                sep_force = self.calc_seperation_force(distance, 1500, interaction_radius)
+                interaction_direction = self.interaction_matrix[int(self._particles[i, -1]), int(self._particles[j, -1])]
+                self.velocity[i] -= interaction_direction*sep_force*normal*self.delta_t # TODO: integrate mass 
+                self.velocity[j] += interaction_direction*sep_force*normal*self.delta_t
+                
+    def calculate_resistance_force(self, velocity: np.ndarray) -> np.ndarray:
+        return 0.5*(velocity**2)
 
     
 if __name__ == "__main__":
