@@ -4,13 +4,14 @@ from vispy.app import Timer
 from particle_system import ParticleSystem
 
 class DummyVisualizer:
-    def __init__(self, canvas_width, canvas_height, num_parts, fps):
+    def __init__(self, canvas_width: int = 1000, canvas_height: int = 1000, num_parts:int = 500, fps: int = 30, gui_sim_ratio:float = 1):
         self.canvas_width = canvas_width
         self.canvas_height = canvas_height
         self.num_parts = num_parts
-        self.sim_width = 10
-        self.sim_height = 10
-        self.sim_radius = 1
+        self.gui_sim_ratio = gui_sim_ratio
+        self.sim_width = self.canvas_width/self.gui_sim_ratio
+        self.sim_height = self.canvas_height/self.gui_sim_ratio
+        self.sim_radius = 5
         self.fps = fps
         self.interval = 1/self.fps
         
@@ -83,7 +84,7 @@ class DummyVisualizer:
 
 
 if __name__ == "__main__":
-    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=4, fps=30)
+    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=5000, fps=30, gui_sim_ratio = 1)
     vissy.create_canvas()
     timer = Timer(vissy.interval, connect=vissy.update, start=True)
     app.run()
