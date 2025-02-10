@@ -11,7 +11,7 @@ class ParticleSystem:
         self.brownian_std: float = brownian_std
         self.drag: float = drag
         self._particles = self.init_particles()
-        self.velocity = np.zeros((self._particles.shape[0], 2))
+        self.velocity = np.zeros((self._particles.shape[0], 2)) # x and y velocties
     
     @property
     def particles(self):
@@ -129,6 +129,23 @@ class ParticleSystem:
 
         return colliding_pairs
     
+    def calc_seperation_force(self, distance: float, max_force: int) -> float:
+        """
+        Returns seperation force that is always smaller than 10. 
+        The force gets scaled by the radius, so the values of the function at dist = 2r is always clipped at 10
+
+        Args:
+            distance (float): distance between two (colliding) particles
+
+        Returns:
+            force: force that is used to pull two particles apart along connection between center points
+        """
+
+        try:
+            force = min(1/(distance/(max_force*2*self.radius)), max_force)
+        except ZeroDivisionError:
+            force = max_force
+        return force
     
     def update_collision_velocities(self, positions: np.ndarray, colliding_pairs: list[tuple[int, int]]) -> None:
         """
@@ -153,18 +170,13 @@ class ParticleSystem:
             else:
                 normal = np.array([dx, dy]) / distance
 
-            # reflect velocities along collision normal:
-            # v' = v - 2*(v · n)*n
-            v_i = self.velocity[i]
-            v_j = self.velocity[j]
-            self.velocity[i] = v_i - 2 * np.dot(v_i, normal) * normal
-            self.velocity[j] = v_j - 2 * np.dot(v_j, normal) * normal
+            # pull particles apart along normal
+            sep_force = self.calc_seperation_force(distance, 10)
+            self.velocity[i] += sep_force*normal
+            self.velocity[j] -= sep_force*normal
 
-            
-    
-    
     
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0), 2), ((0, 1, 0), 2)], step_size=.5, radius=20)
+    part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0), 2), ((0, 1, 0), 2)], radius=20)
     part_sys.particles = np.array([[1, 1, 0, 1, 0], [1, 2, 0, 1, 0]])
     part_sys.move_particles()
