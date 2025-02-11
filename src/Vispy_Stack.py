@@ -1,6 +1,6 @@
 from vispy import scene, app
 import numpy as np
-from Middleware import get_colors, get_positions, get_particle_size
+from particle_system import ParticleSystem
 
 
 class Canvas(scene.SceneCanvas):
@@ -12,13 +12,17 @@ class Canvas(scene.SceneCanvas):
         self.view = self.central_widget.add_view()
         self.view.camera = scene.PanZoomCamera(aspect=1)
         self.scatter = scene.visuals.Markers()
+        self.part_sys = None
         self.update_interval = 1 / screen_refresh_rate
         self.timer = app.Timer(interval=self.update_interval, connect=self.update_positions)
 
-    def insert_data(self):
-        self.positions = get_positions()
-        self.colors = get_colors()
-        self.sizes = get_particle_size()
+    def insert_data(self, color_distribution, interaction_matrix):
+        if self.part_sys is None:
+            self.part_sys = ParticleSystem(self.native.width(), self.native.height(), color_distribution, interaction_matrix)
+        
+        self.positions = self.part_sys.positions
+        self.colors = self.part_sys.colors
+        self.sizes = self.part_sys.size
 
         x_min, y_min = self.positions.min(axis=0)
         x_max, y_max = self.positions.max(axis=0)
@@ -45,7 +49,7 @@ class Canvas(scene.SceneCanvas):
         self.timer.start()
 
     def update_positions(self, ev):
-        self.positions = get_positions()
+        self.positions = self.part_sys.positions
         self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
         self.update()
         
