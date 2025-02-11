@@ -11,12 +11,10 @@ class DummyVisualizer:
         self.gui_sim_ratio = gui_sim_ratio
         self.sim_width = self.canvas_width/self.gui_sim_ratio
         self.sim_height = self.canvas_height/self.gui_sim_ratio
-        self.sim_radius = 1
+        self.sim_radius = 4
         self.fps = fps
         self.interval = 1/self.fps
-        interaction_matrix = np.array([[.7, 0, .3], 
-                                       [0, .6, 0], 
-                                       [.3, 0, .8]])
+        interaction_matrix = {(1, 1): 1, (1, 2): -1, (1, 3): -1, (2, 1): -1, (2, 2): 1, (2, 3): -1, (3, 1): -1, (3, 2): -1, (3, 3): 1}
         #interaction_matrix = np.random.uniform(-1, 1, (3, 3))
         #interaction_matrix = (interaction_matrix + interaction_matrix.T) / 2
         
@@ -33,7 +31,7 @@ class DummyVisualizer:
             interaction_matrix = interaction_matrix
         )
 
-        print(interaction_matrix)
+        print(self.part_sys.particles)
         # mapping from color indices to RGBA (workaround)
         self.color_map = np.array([
             [1, 0, 0, 1],
@@ -41,7 +39,7 @@ class DummyVisualizer:
             [0, 0, 1, 1]
         ])
 
-        self.particle_colors = self.color_map[self.part_sys.particles[:, 5].astype(int)]
+        self.particle_colors = self.color_map[self.part_sys.particles[:, 5].astype(int)-1]
 
 
     def create_canvas(self):
@@ -94,7 +92,7 @@ class DummyVisualizer:
 
 
 if __name__ == "__main__":
-    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=12000, fps=60, gui_sim_ratio = 1.2)
+    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=1200, fps=60, gui_sim_ratio = 1.2)
     vissy.create_canvas()
     timer = Timer(vissy.interval, connect=vissy.update, start=True)
     app.run()

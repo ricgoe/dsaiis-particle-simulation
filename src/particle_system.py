@@ -1,7 +1,7 @@
 import numpy as np
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], interaction_matrix:np.ndarray[float], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .3, drag: float = .1):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], interaction_matrix:dict[tuple:int], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .3, drag: float = .1):
         self.color_distribution = color_distribution
         self.width: int = width
         self.height: int = height
@@ -39,7 +39,7 @@ class ParticleSystem:
         Each particle row: [x, y, r, g, b, color_index]
         """
         part_arrays = []
-        for color_index, (rgb, num_part) in enumerate(self.color_distribution):
+        for color_index, (rgb, num_part) in enumerate(self.color_distribution, start=1):
             tmp_arr = np.random.uniform(0, self.width, size=(num_part, 2))
             rgb_arr = np.array(rgb)
             rgb_repeated = np.repeat(rgb_arr[None, :], repeats=num_part, axis=0)
@@ -246,9 +246,9 @@ class ParticleSystem:
             #     self.velocity[j] += interaction_direction*sep_force*normal*self.delta_t
             
             elif mode == 'interaction':
-                interaction_direction = self.interaction_matrix[int(self._particles[i, -1]), int(self._particles[j, -1])]
+                interaction_direction = self.interaction_matrix[(int(self._particles[i, -1]), int(self._particles[j, -1]))]
                 equilibrium_distance = 4 * self.radius
-                interaction_force = self.calc_interaction_force(distance, normal, interaction_strength=100, interaction_type=interaction_direction, equilibrium_distance=equilibrium_distance)
+                interaction_force = self.calc_interaction_force(distance, normal, interaction_strength=100, interaction_direction=interaction_direction, equilibrium_distance=equilibrium_distance)
                 self.velocity[i] -= interaction_force * self.delta_t  # TODO: integrate mass
                 self.velocity[j] += interaction_force * self.delta_t
                 
@@ -257,6 +257,6 @@ class ParticleSystem:
 
     
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0), 2), ((0, 1, 0), 2)], radius=20)
-    part_sys.particles = np.array([[1, 1, 0, 1, 0], [1, 2, 0, 1, 0]])
+    part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0), 2), ((0, 1, 0), 2)], radius=20, interaction_matrix={(1, 1): 1, (1, 2): -1, (2, 1): -1, (2, 2): 1})
     part_sys.move_particles()
+    
