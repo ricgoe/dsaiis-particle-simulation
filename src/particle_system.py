@@ -1,7 +1,7 @@
 import numpy as np
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], interaction_matrix:np.ndarray[float], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .5, drag: float = .05):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], interaction_matrix:np.ndarray[float], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .3, drag: float = .1):
         self.color_distribution = color_distribution
         self.width: int = width
         self.height: int = height
@@ -66,13 +66,10 @@ class ParticleSystem:
             interaction_pairs = self.check_collisions(temp_particles, radius=interaction_radius)
             self.update_collision_velocities(new_positions, interaction_pairs, mode='interaction', interaction_radius=interaction_radius)
         
+        # calc speeds of particles
         speeds = np.linalg.norm(self.velocity, axis=1, keepdims=True)
-    
-        # Compute drag acceleration: -gamma * speed * velocity.
-        # If you incorporate mass, divide by mass; here we assume mass = 1.
-        drag_acceleration = -self.drag * speeds * self.velocity
-        
-        # Update velocity with drag force over the timestep.
+        # compute drag acceleration: -gamma (drag coefficient) * speed * velocity
+        drag_acceleration = -self.drag * speeds * self.velocity*1
         self.velocity += drag_acceleration * self.delta_t
         final_positions = self._particles[:, :2] + self.velocity * self.delta_t
         final_positions = np.mod(final_positions, (self.width, self.height))
@@ -140,7 +137,7 @@ class ParticleSystem:
         return colliding_pairs
     
     
-    def calc_seperation_force(self, distance: float, max_force: int, radius: float = None) -> float:
+    def calc_seperation_force(self, distance: float, max_force: int, normal, radius: float = None) -> float:
         """
         Returns seperation force that is always smaller than 10. 
         The force gets scaled by the radius, so the values of the function at dist = 2r is always clipped at 10
@@ -158,7 +155,43 @@ class ParticleSystem:
             force = min(1/(distance/(max_force*2*radius)), max_force)
         except ZeroDivisionError:
             force = max_force
+        return -force * normal
+    
+    def calc_repulsion_force(self, distance: float, normal: float, v_rel: float, k: float, c: float = .5) -> float:
+        v_n = np.dot(v_rel, normal)
+        delta = 2*self.radius-distance
+        if delta > 0:
+            force = (-k*delta-c*v_n)*normal
+        
         return force
+    
+    def calc_interaction_force(self, distance: float, normal: np.ndarray, interaction_strength: float, interaction_direction: float, equilibrium_distance: float, max_force: float = 10) -> np.ndarray:
+        """
+        Calculates the interaction force between particles based on interaction matrix
+        
+        Parameters:
+            distance (float): Distance between two particles.
+            normal (np.ndarray): Normalized direction vector between particles.
+            interaction_strength (float): Strength of interaction from interaction_matrix.
+            interaction_type (float): Positive for attraction, negative for repulsion.
+            equilibrium_distance (float): Preferred distance for stable interactions.
+            max_force (float): Maximum force limit.
+
+        Returns:
+            np.ndarray: Force vector applied to the particles.
+        """
+        
+        # stronger at short distances, weaker at long distances
+        if distance > 0:
+            force_magnitude = interaction_strength * (1 - np.exp(-abs(distance - equilibrium_distance))) * interaction_direction
+        else:
+            force_magnitude = max_force
+
+        # prevent excessive attraction/repulsion
+        force_magnitude = np.clip(force_magnitude, -max_force, max_force)
+        return force_magnitude * normal
+    
+    
     
     
     def update_collision_velocities(self, positions: np.ndarray, colliding_pairs: list[tuple[int, int]], mode: str = "collsion", interaction_radius: float = None, **kwargs) -> None:
@@ -186,16 +219,26 @@ class ParticleSystem:
                 normal = np.array([dx, dy]) / distance
 
             if mode == 'collision':
-                # pull particles apart along normal
-                sep_force = self.calc_seperation_force(distance, 80)
-                self.velocity[i] += sep_force*normal*self.delta_t # TODO: integrate mass 
-                self.velocity[j] -= sep_force*normal*self.delta_t
+                # pull particles apart along normal<
+                #sep_force = self.calc_seperation_force(distance, 80)
+                v_rel = self.velocity[i] - self.velocity[j]
+                sep_force = self.calc_repulsion_force(distance, normal=normal, v_rel=v_rel, k=50, c=0.5)
+                
+                self.velocity[i] -= sep_force*self.delta_t # TODO: integrate mass 
+                self.velocity[j] += sep_force*self.delta_t
+            
+            # elif mode == 'interaction':
+            #     sep_force = self.calc_seperation_force(distance, 20, interaction_radius)
+            #     interaction_direction = self.interaction_matrix[int(self._particles[i, -1]), int(self._particles[j, -1])]
+            #     self.velocity[i] -= interaction_direction*sep_force*normal*self.delta_t # TODO: integrate mass 
+            #     self.velocity[j] += interaction_direction*sep_force*normal*self.delta_t
             
             elif mode == 'interaction':
-                sep_force = self.calc_seperation_force(distance, 70, interaction_radius)
                 interaction_direction = self.interaction_matrix[int(self._particles[i, -1]), int(self._particles[j, -1])]
-                self.velocity[i] -= interaction_direction*sep_force*normal*self.delta_t # TODO: integrate mass 
-                self.velocity[j] += interaction_direction*sep_force*normal*self.delta_t
+                equilibrium_distance = 4 * self.radius
+                interaction_force = self.calc_interaction_force(distance, normal, interaction_strength=100, interaction_type=interaction_direction, equilibrium_distance=equilibrium_distance)
+                self.velocity[i] -= interaction_force * self.delta_t  # TODO: integrate mass
+                self.velocity[j] += interaction_force * self.delta_t
                 
     def calculate_resistance_force(self, velocity: np.ndarray) -> np.ndarray:
         return 0.5*(velocity**2)
