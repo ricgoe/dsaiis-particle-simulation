@@ -22,9 +22,9 @@ class DummyVisualizer:
             width=self.sim_width,
             height=self.sim_height,
             color_distribution=[
-                ((1, 0, 0), int(self.num_parts/3)),  
-                ((0, 1, 0), int(self.num_parts/3)),
-                ((0, 0, 1), int(self.num_parts/3)),
+                ((1, 0, 0, 1), int(self.num_parts/3)),  
+                ((0, 1, 0, 1), int(self.num_parts/3)),
+                ((0, 0, 1, 1), int(self.num_parts/3)),
             ],
             radius=self.sim_radius,
             delta_t= self.interval,
@@ -39,7 +39,7 @@ class DummyVisualizer:
             [0, 0, 1, 1]
         ])
 
-        self.particle_colors = self.color_map[self.part_sys.particles[:, 5].astype(int)-1]
+        self.particle_colors = self.color_map[self.part_sys.particles[:, 6].astype(int)-1]
 
 
     def create_canvas(self):

@@ -1,7 +1,7 @@
 import numpy as np
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int], int]], interaction_matrix:dict[tuple:int], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .3, drag: float = .1):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int]], interaction_matrix:dict[tuple:int], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .3, drag: float = .1):
         self.color_distribution = color_distribution
         self.width: int = width
         self.height: int = height
@@ -24,7 +24,7 @@ class ParticleSystem:
     
     @property
     def colors(self):
-        return self._particles[:, 3:5]
+        return self._particles[:, 2:6]
     
     @property
     def size(self):
@@ -36,15 +36,15 @@ class ParticleSystem:
 
     def init_particles(self):
         """
-        Each particle row: [x, y, r, g, b, color_index]
+        Each particle row: [x, y, r, g, b, a, color_index]
         """
         part_arrays = []
-        for color_index, (rgb, num_part) in enumerate(self.color_distribution, start=1):
+        for color_index, (rgba, num_part) in enumerate(self.color_distribution, start=1):
             tmp_arr = np.random.uniform(0, self.width, size=(num_part, 2))
-            rgb_arr = np.array(rgb)
-            rgb_repeated = np.repeat(rgb_arr[None, :], repeats=num_part, axis=0)
+            rgba_arr = np.array(rgba)
+            rgba_repeated = np.repeat(rgba_arr[None, :], repeats=num_part, axis=0)
             color_idx_column = np.full((num_part, 1), color_index)
-            combined_arr = np.concatenate([tmp_arr, rgb_repeated, color_idx_column], axis=1)
+            combined_arr = np.concatenate([tmp_arr, rgba_repeated, color_idx_column], axis=1)
             part_arrays.append(combined_arr)
         return np.concatenate(part_arrays, axis=0)
     
@@ -257,6 +257,6 @@ class ParticleSystem:
 
     
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0), 2), ((0, 1, 0), 2)], radius=20, interaction_matrix={(1, 1): 1, (1, 2): -1, (2, 1): -1, (2, 2): 1})
+    part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0, 1), 2), ((0, 1, 0, 1), 2)], radius=20, interaction_matrix={(1, 1): 1, (1, 2): -1, (2, 1): -1, (2, 2): 1})
     part_sys.move_particles()
     
