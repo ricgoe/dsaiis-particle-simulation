@@ -49,6 +49,7 @@ class Canvas(scene.SceneCanvas):
         self.timer.start()
 
     def update_positions(self, ev):
+        self.part_sys.move_particles()
         self.positions = self.part_sys.positions
         self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
         self.update()

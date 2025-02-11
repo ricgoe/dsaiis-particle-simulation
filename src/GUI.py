@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
             color_box2 = QWidget(styleSheet="background-color: #ff0000;")
             color_box1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             color_box2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            self.color_distrubution[btn] = [(255, 0, 0, 255), int(MAX_PARTICLES//2)]
+            self.color_distrubution[btn] = [(1.0, 0, 0, 1.0), int(MAX_PARTICLES//2)]
             btn.clicked.connect(lambda: self.show_color_picker(btn, [color_box1, color_box2]))
             _c_layout.addWidget(btn, 1)
             n = len(self.color_distrubution)
@@ -153,7 +153,7 @@ class MainWindow(QMainWindow):
     def color_changed(self, color: QColor, btn: QPushButton, boxes=list[QWidget]):
         btn.setStyleSheet(f"background-color: {color.name()};")
         for i in boxes: i.setStyleSheet(f"background-color: {color.name()};")
-        self.color_distrubution[btn][0] = color.toTuple()
+        self.color_distrubution[btn][0] = tuple(x/255 for x in color.toTuple())
         
     def n_particle_slider_changed(self, val, label: QLabel, btn: QPushButton):
         label.setText(str(val))
