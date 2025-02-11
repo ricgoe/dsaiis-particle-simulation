@@ -11,12 +11,12 @@ class DummyVisualizer:
         self.gui_sim_ratio = gui_sim_ratio
         self.sim_width = self.canvas_width/self.gui_sim_ratio
         self.sim_height = self.canvas_height/self.gui_sim_ratio
-        self.sim_radius = 10
+        self.sim_radius = 1
         self.fps = fps
         self.interval = 1/self.fps
-        interaction_matrix = np.array([[1, -1, 0], 
-                                       [-1, 1, 1], 
-                                       [0, 1, 1]])
+        interaction_matrix = np.array([[.7, 0, .3], 
+                                       [0, .6, 0], 
+                                       [.3, 0, .8]])
         #interaction_matrix = np.random.uniform(-1, 1, (3, 3))
         #interaction_matrix = (interaction_matrix + interaction_matrix.T) / 2
         
@@ -54,7 +54,7 @@ class DummyVisualizer:
         
         # create scatter visual
         self.pixel_radius = self.compute_pixel_radius()
-        self.scatter = scene.visuals.Markers()
+        self.scatter = scene.visuals.Markers(scaling = 'scene')
         x, y = self.part_sys.particles[:, 0], self.part_sys.particles[:, 1]
         self.scatter.set_data(
             np.column_stack((x, y)),
@@ -82,7 +82,7 @@ class DummyVisualizer:
         """
         Update function to move particles and update scatter data.
         """
-        self.part_sys.move_particles(interaction_radius=10)
+        self.part_sys.move_particles(2)
         x, y = self.part_sys.particles[:, 0], self.part_sys.particles[:, 1]
         self.scatter.set_data(
             np.column_stack((x, y)),
@@ -94,7 +94,7 @@ class DummyVisualizer:
 
 
 if __name__ == "__main__":
-    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=1500, fps=30, gui_sim_ratio = 1)
+    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=12000, fps=60, gui_sim_ratio = 1.2)
     vissy.create_canvas()
     timer = Timer(vissy.interval, connect=vissy.update, start=True)
     app.run()
