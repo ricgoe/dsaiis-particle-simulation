@@ -18,6 +18,18 @@ class ParticleSystem:
     def particles(self):
         return self._particles
     
+    @property
+    def positions(self):
+        return self._particles[:, :2]
+    
+    @property
+    def colors(self):
+        return self._particles[:, 3:5]
+    
+    @property
+    def size(self):
+        return np.full(self._particles.shape[0], self.radius)
+    
     @particles.setter
     def particles(self, value):
         self._particles = value
