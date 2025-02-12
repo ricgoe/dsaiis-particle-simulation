@@ -21,6 +21,14 @@ jobs:
     - with:
       - python-version: ${{ matrix.python-version }}
 
+    - name: Make sphinx_doc_builder.sh executable
+      run: |
+        chmod +x docs/sphinx_doc_builder.sh
+    
+    - name: Run sphinx_doc_builder.sh
+      run: |
+        sphinx_doc_builder.sh
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
