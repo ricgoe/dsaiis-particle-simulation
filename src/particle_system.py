@@ -10,7 +10,7 @@ class ParticleSystem:
         self.delta_t: float = delta_t
         self.brownian_std: float = brownian_std
         self.drag: float = drag
-        self._particles = self.init_particles()
+        self._particles, self._colors, self._color_index = self.init_particles()
         self.interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
         self.velocity = np.zeros((self._particles.shape[0], 2)) # x and y velocties
     
@@ -20,11 +20,11 @@ class ParticleSystem:
     
     @property
     def positions(self):
-        return self._particles[:, :2]
+        return self._particles
     
     @property
     def colors(self):
-        return self._particles[:, 2:6]
+        return self._colors
     
     @property
     def size(self):
@@ -36,17 +36,19 @@ class ParticleSystem:
 
     def init_particles(self):
         """
-        Each particle row: [x, y, r, g, b, a, color_index]
+        Each particle row: [x, y, color_index]
         """
-        part_arrays = []
-        for color_index, (rgba, num_part) in enumerate(self.color_distribution, start=1):
-            tmp_arr = np.random.uniform(0, self.width, size=(num_part, 2))
-            rgba_arr = np.array(rgba)
-            rgba_repeated = np.repeat(rgba_arr[None, :], repeats=num_part, axis=0)
-            color_idx_column = np.full((num_part, 1), color_index)
-            combined_arr = np.concatenate([tmp_arr, rgba_repeated, color_idx_column], axis=1)
-            part_arrays.append(combined_arr)
-        return np.concatenate(part_arrays, axis=0)
+        particles = [
+            (
+                np.random.uniform(0, self.width, size=(num, 2)), 
+                np.tile(np.array(rgba), (num, 1)), 
+                np.full((num, 1), idx)
+            ) 
+            for idx, (rgba, num) in enumerate(self.color_distribution, start=1)
+        ]
+        positions, colors, color_indices = map(lambda arrays: np.concatenate(arrays, axis=0), zip(*particles))
+    
+        return positions, colors, color_indices
     
     
     def move_particles(self):
@@ -66,16 +68,14 @@ class ParticleSystem:
         brwn_increment = np.random.normal(0, self.brownian_std, self.velocity.shape)
         self.velocity += brwn_increment
         # update positions using current velocity
-        new_positions = self._particles[:, :2] + self.velocity * self.delta_t
+        new_positions = self._particles + self.velocity * self.delta_t
         new_positions = np.mod(new_positions, (self.width, self.height))
-        # keep extra attributes (color distribution) in temp particle array
-        temp_particles = np.hstack((new_positions, self._particles[:, 2:]))
         # detect collisions with tentative new positions
-        colliding_pairs = self.check_collisions(temp_particles)
+        colliding_pairs = self.check_collisions(new_positions)
         # update velocities for each colliding pair
         self.update_collision_velocities(new_positions, colliding_pairs, mode='collision')
         if interaction_radius:
-            interaction_pairs = self.check_collisions(temp_particles, radius=interaction_radius)
+            interaction_pairs = self.check_collisions(new_positions, radius=interaction_radius)
             self.update_collision_velocities(new_positions, interaction_pairs, mode='interaction', interaction_radius=interaction_radius)
         
         # calc speeds of particles
@@ -83,12 +83,11 @@ class ParticleSystem:
         # compute drag acceleration: -gamma (drag coefficient) * speed * velocity
         drag_acceleration = -self.drag * speeds * self.velocity*1
         self.velocity += drag_acceleration * self.delta_t
-        final_positions = self._particles[:, :2] + self.velocity * self.delta_t
-        final_positions = np.mod(final_positions, (self.width, self.height))
-        self._particles = np.hstack((final_positions, self._particles[:, 2:])) 
+        final_positions = self._particles + self.velocity * self.delta_t
+        self._particles = np.mod(final_positions, (self.width, self.height))
 
            
-    def check_collisions(self, particles_with_colors: np.ndarray, radius: float = None):
+    def check_collisions(self, positions: np.ndarray, radius: float = None):
         """
         Detects colliding pairs using a sweep and prune approach.
         
@@ -104,7 +103,6 @@ class ParticleSystem:
         if radius is None:
             radius = self.radius
             
-        positions = particles_with_colors[:, :2]  # get only x and y pos
         n = positions.shape[0]
 
         # compute bounding boxes for each particle for x and y axis
@@ -246,7 +244,7 @@ class ParticleSystem:
             #     self.velocity[j] += interaction_direction*sep_force*normal*self.delta_t
             
             elif mode == 'interaction':
-                interaction_direction = self.interaction_matrix[(int(self._particles[i, -1]), int(self._particles[j, -1]))]
+                interaction_direction = self.interaction_matrix[(self._color_index[i, 0], self._color_index[j, 0])]
                 equilibrium_distance = 4 * self.radius
                 interaction_force = self.calc_interaction_force(distance, normal, interaction_strength=100, interaction_direction=interaction_direction, equilibrium_distance=equilibrium_distance)
                 self.velocity[i] -= interaction_force * self.delta_t  # TODO: integrate mass
@@ -258,5 +256,6 @@ class ParticleSystem:
     
 if __name__ == "__main__":
     part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0, 1), 2), ((0, 1, 0, 1), 2)], radius=20, interaction_matrix={(1, 1): 1, (1, 2): -1, (2, 1): -1, (2, 2): 1})
-    part_sys.move_particles()
+    print(part_sys.particles)
+    #part_sys.move_particles()
     
