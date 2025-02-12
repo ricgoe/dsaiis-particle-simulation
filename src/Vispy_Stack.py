@@ -11,7 +11,7 @@ class Canvas(scene.SceneCanvas):
         self.particle_scaling_factor = 0.001  # Skalierungsfaktor für Partikelgrößen
         self.view = self.central_widget.add_view()
         self.view.camera = scene.PanZoomCamera(aspect=1)
-        self.scatter = scene.visuals.Markers()
+        self.scatter = scene.visuals.Markers(scaling = 'scene')
         self.part_sys = None
         self.update_interval = 1 / screen_refresh_rate
         self.timer = app.Timer(interval=self.update_interval, connect=self.update_positions)
@@ -41,7 +41,7 @@ class Canvas(scene.SceneCanvas):
         self.relative_particle_sizes = np.array(self.sizes) * scale_factor # wird an Scatterplot übergeben 
 
         # Scatter-Plot hinzufügen
-        self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
+        self.scatter.set_data(pos=self.positions, face_color=self.colors, edge_color=self.colors, size=self.relative_particle_sizes)
         self.view.add(self.scatter)
 
         # Timer für Updates
@@ -50,7 +50,7 @@ class Canvas(scene.SceneCanvas):
     def update_positions(self, ev):
         self.part_sys.move_particles()
         self.positions = self.part_sys.positions
-        self.scatter.set_data(pos=self.positions, face_color=self.colors, size=self.relative_particle_sizes)
+        self.scatter.set_data(pos=self.positions, face_color=self.colors, edge_color=self.colors, size=self.relative_particle_sizes)
         self.update()
         
     def reset(self):
