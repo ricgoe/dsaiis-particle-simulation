@@ -17,8 +17,7 @@ class Canvas(scene.SceneCanvas):
         self.timer = app.Timer(interval=self.update_interval, connect=self.update_positions)
 
     def insert_data(self, color_distribution, interaction_matrix):
-        if self.part_sys is None:
-            self.part_sys = ParticleSystem(self.native.width(), self.native.height(), color_distribution, interaction_matrix)
+        self.part_sys = ParticleSystem(self.native.width(), self.native.height(), color_distribution, interaction_matrix)
         
         self.positions = self.part_sys.positions
         self.colors = self.part_sys.colors
