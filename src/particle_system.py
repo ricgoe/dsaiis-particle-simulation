@@ -1,7 +1,7 @@
 import numpy as np
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int]], interaction_matrix:dict[tuple:int], radius: int = 1, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .3, drag: float = .1):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int]], interaction_matrix:dict[tuple:int], radius: int = 5, mass: int = 1, delta_t: float = 0.1, brownian_std: float = .3, drag: float = .1):
         self.color_distribution = color_distribution
         self.width: int = width
         self.height: int = height
@@ -49,7 +49,7 @@ class ParticleSystem:
         return np.concatenate(part_arrays, axis=0)
     
     
-    def move_particles(self, interaction_radius: int = None):
+    def move_particles(self):
         """
         Moves particles for one timestep and updates their velocities based on collision responses.
         The initial velocity is set only on the first call; subsequent calls use and update the current velocity.
@@ -62,7 +62,7 @@ class ParticleSystem:
         Returns:
             None
         """
-
+        interaction_radius = 2*self.radius
         brwn_increment = np.random.normal(0, self.brownian_std, self.velocity.shape)
         self.velocity += brwn_increment
         # update positions using current velocity
