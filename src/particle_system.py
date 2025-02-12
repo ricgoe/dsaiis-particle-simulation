@@ -11,7 +11,7 @@ class ParticleSystem:
         self.brownian_std: float = brownian_std
         self.drag: float = drag
         self._particles, self._colors, self._color_index = self.init_particles()
-        self.interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
+        self._interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
         self.velocity = np.zeros((self._particles.shape[0], 2)) # x and y velocties
     
     @property
@@ -30,9 +30,18 @@ class ParticleSystem:
     def size(self):
         return np.full(self._particles.shape[0], self.radius)
     
+    @property
+    def interaction_matrix(self):
+        return self._interaction_matrix
+    
     @particles.setter
     def particles(self, value):
         self._particles = value
+    
+    @interaction_matrix.setter
+    def interaction_matrix(self, value):
+        self._interaction_matrix = value
+    
 
     def init_particles(self):
         """
