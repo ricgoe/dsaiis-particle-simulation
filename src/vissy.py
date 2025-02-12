@@ -15,8 +15,6 @@ class DummyVisualizer:
         self.fps = fps
         self.interval = 1/self.fps
         interaction_matrix = {(1, 1): 1, (1, 2): -1, (1, 3): -1, (2, 1): -1, (2, 2): 1, (2, 3): -1, (3, 1): -1, (3, 2): -1, (3, 3): 1}
-        #interaction_matrix = np.random.uniform(-1, 1, (3, 3))
-        #interaction_matrix = (interaction_matrix + interaction_matrix.T) / 2
         
         self.part_sys = ParticleSystem(
             width=self.sim_width,
@@ -30,23 +28,14 @@ class DummyVisualizer:
             delta_t= self.interval,
             interaction_matrix = interaction_matrix
         )
-
-        print(self.part_sys.particles)
-        # mapping from color indices to RGBA (workaround)
-        self.color_map = np.array([
-            [1, 0, 0, 1],
-            [0, 1, 0, 1],
-            [0, 0, 1, 1]
-        ])
-
-        self.particle_colors = self.color_map[self.part_sys.particles[:, 6].astype(int)-1]
+        self.particle_colors = self.part_sys.colors
 
 
     def create_canvas(self):
         self.canvas = scene.SceneCanvas(keys="interactive", show=True, size=(self.canvas_width, self.canvas_height))
         self.view = self.canvas.central_widget.add_view()
 
-        # set up camera.
+        # set up camera
         self.view.camera = scene.PanZoomCamera(aspect=self.sim_width / self.sim_height)
         self.view.camera.set_range(x=(0, self.sim_width), y=(0, self.sim_height))
         
@@ -80,7 +69,7 @@ class DummyVisualizer:
         """
         Update function to move particles and update scatter data.
         """
-        self.part_sys.move_particles(2)
+        self.part_sys.move_particles()
         x, y = self.part_sys.particles[:, 0], self.part_sys.particles[:, 1]
         self.scatter.set_data(
             np.column_stack((x, y)),
