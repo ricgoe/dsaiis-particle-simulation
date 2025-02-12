@@ -172,9 +172,7 @@ class MainWindow(QMainWindow):
     
     def saved(self):
         _c_map = list(self.color_distrubution.values())
-        print(_c_map)
         self.canvas.insert_data(_c_map, self.relationships) # load data
-        print(self.relationships)
         
     def reset(self):
         self.color_distrubution = {}
