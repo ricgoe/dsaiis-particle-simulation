@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - Docs_Integration
 jobs:
   build:
     strategy:
