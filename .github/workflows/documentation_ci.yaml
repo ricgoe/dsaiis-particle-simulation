@@ -59,6 +59,9 @@ jobs:
         cd docs
         chmod +x master_index_builder.sh
     
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$(pwd)/src" >> $GITHUB_ENV
+    
     - name: Generate Master index.rst
       shell: bash
       run: |
