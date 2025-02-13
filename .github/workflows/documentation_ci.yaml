@@ -49,6 +49,7 @@ jobs:
         sphinx-apidoc -o docs/ src/
 
     - name: Prepare build-process of index.rst
+      shell: bash
       run: |
         cd docs
         chmod +x master_index_builder.sh
