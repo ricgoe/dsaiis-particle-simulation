@@ -41,15 +41,14 @@ jobs:
         cd docs
         ./sphinx_doc_builder.sh
     
+    - name: Generate RST files with sphinx-apidoc
+      run: |
+        sphinx-apidoc -o docs/ src/
+    
     - name: Build Documentation with sphinx-build
       run: |
         cd docs
         sphinx-build -M html . _build/html
-
-    - name: Build documentation
-      run: |
-        cd docs
-        make html
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
