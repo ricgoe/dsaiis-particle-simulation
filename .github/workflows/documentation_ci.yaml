@@ -46,6 +46,11 @@ jobs:
     - name: Generate RST files with sphinx-apidoc
       run: |
         sphinx-apidoc -o docs/ src/
+
+    - name: Prepare build-process of index.rst
+      run: |
+        cd docs
+        chmod +x master_index_builder.sh
     
     - name: Generate Master index.rst
       run: |
