@@ -75,7 +75,7 @@ jobs:
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: build-artifacts
+        name: build-artifacts-${{ matrix.operating-system }}-${{ matrix.python-version }}
         path: docs/_build/html
     
     - name: Debug Build Output
