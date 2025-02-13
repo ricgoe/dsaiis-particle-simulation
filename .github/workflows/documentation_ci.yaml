@@ -80,7 +80,7 @@ jobs:
     - name: Debug Build Directory
       shell: bash
       run: |
-        ls -R docs/_build/html#
+        ls -R docs/_build/html
 
     - name: Debug -> Verify HTML Files before Deploy
       shell: bash
