@@ -1,26 +1,26 @@
 import numpy as np
-from numba import njit
+
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int]], radius: int = .5, mass: int = 0.5, restitution: float = .8, delta_t: float = 0.1, brownian_std: float = .1, drag: float = .1):
-        self.color_distribution = color_distribution
-        self.width: int = width
-        self.height: int = height
-        self.radius: int = radius
-        self.mass: int = mass # not used for now
-        self._delta_t: float = delta_t
-        self.brownian_std: float = brownian_std
-        self.drag: float = drag
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int]], interaction_matrix: dict[tuple[int, int], float], radius: int = .5, mass: int = 0.5, restitution: float = .7, delta_t: float = 0.3, brownian_std: float = .2, drag: float = 0):
         self._particles = None
         self._colors = None
         self._color_index = None
+        self.width: int = width
+        self.height: int = height
+        self.radius: int = radius
+        self._delta_t: float = delta_t
+        self.brownian_std: float = brownian_std
+        self._drag = drag
+        self._color_distribution = color_distribution
         self._particles, self._colors, self._color_index = self.init_particles()
+        self._velocity = np.zeros((self._particles.shape[0], 2)) # x and y velocties
         self._mass = np.full(self._particles.shape[0], mass)
         self._restitution = np.full(self._particles.shape[0], restitution)
-        #self._interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
-        self._velocity = np.zeros((self._particles.shape[0], 2)) # x and y velocties
-        self._drag = drag
-        
+        self._interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
+        #self._velocity = np.array([[1.2, 1.2], [-.7, 1]], dtype=float)
+    
+    
     @property
     def particles(self):
         return self._particles
@@ -71,14 +71,17 @@ class ParticleSystem:
                 np.tile(np.array(rgba), (num, 1)), 
                 np.full((num, 1), idx)
             ) 
-            for idx, (rgba, num) in enumerate(self.color_distribution, start=1)
+            for idx, (rgba, num) in enumerate(self._color_distribution, start=1)
         ]
         positions, colors, color_indices = map(lambda arrays: np.concatenate(arrays, axis=0), zip(*particles))
     
         return positions, colors, color_indices
     
+    
     def move_position(self, position: np.ndarray, amout: np.ndarray) -> np.ndarray:
         return position + amout
+    
+    
     def angle_between(self, x, y):
         # Compute the angle in radians between the positive x-axis and [x, y]
         angle_rad = np.arctan2(y, x)
@@ -86,13 +89,14 @@ class ParticleSystem:
         angle_deg = np.degrees(angle_rad) % 360
         return angle_deg
     
-    def move_particles(self):
+
+    def move_particles(self, skip_interaction: bool = False):
         """
         Moves particles for one timestep and updates their velocities based on collision responses.
         The initial velocity is set only on the first call; subsequent calls use and update the current velocity.
         
         The method uses the current velocity to update particle positions, detects collisions, and then
-        updates the velocity for each colliding pair by calling update_collision_positions.
+        updates the velocity for each colliding pair by calling update_velocities_collisions.
         The particles’ positions are then updated with the modified velocity. This allows collision forces 
         (reflected in the velocity changes) to persist over time.
         
@@ -100,36 +104,50 @@ class ParticleSystem:
             Nones
         """
 
+        interaction_radius = 10*self.radius
         self._velocity += np.random.normal(0, self.brownian_std, self._particles.shape)
         delta_pos = self._velocity*self._delta_t
         new_pos = np.mod(self._particles + delta_pos, (self.width, self.height))
         # detect collisions with tentative new positions
         colliding_pairs = self.check_collisions(new_pos) # sorted from left to right and bottom to top
         if not colliding_pairs:
-            self._particles = new_pos # if there a re no collisions, just set the new position
+            self._particles = new_pos # if there are no collisions, just set the new position
             self._velocity *= (1 - self._drag)
+            # calc speeds of particles
+            speeds = np.linalg.norm(self._velocity, axis=1, keepdims=True)
+            # compute drag acceleration: -gamma (drag coefficient) * speed * velocity
+            drag_acceleration = -self._drag * speeds * self._velocity*1
+            self._velocity += drag_acceleration * self.delta_t
             return
         increments = self.get_brwn_increment_from_involved_particles(colliding_pairs) # get the delta v's from the particles that are involved in the collision
         resulting_vector = np.sum(delta_pos[increments], axis=0) # calculate the resulting vector from the brwn increments
         if np.sum(resulting_vector) == 0: # if the resulting vector is zero, there is no movement
             return
-        not_increments = np.delete(np.arange(len(self._particles)), increments, axis=0) # get the indices of the brwn increments that are not involved in the collision
-
         angle = int(self.angle_between(resulting_vector[0], resulting_vector[1])) # calculate the angle between the resulting vector and the positive x-axis
         if angle <= 90 or angle > 270:
             colliding_pairs.reverse() # if the angle is less than 90 or greater than 270, reverse the order of the colliding pairs
-        self.update_collision_positions(new_pos, colliding_pairs, mode='collision') # update the positions using the colliding pairs
-        self._particles[not_increments] = new_pos[not_increments] # update the positions of the particles that are not involved in the collision
-        new_pos = self._particles.copy()
+        self.update_velocities_collisions(new_pos, colliding_pairs, mode='collision') # update the velocities using the colliding pairs
+        if interaction_radius and not skip_interaction:
+            interaction_pairs = self.check_collisions(new_pos, radius=interaction_radius, mode = 'interaction')
+            self.update_velocities_collisions(new_pos, interaction_pairs, mode='interaction', interaction_radius=interaction_radius)
+        # calc speeds of particles
+        speeds = np.linalg.norm(self._velocity, axis=1, keepdims=True)
+        # compute drag acceleration: -gamma (drag coefficient) * speed * velocity
+        drag_acceleration = -self._drag * speeds * self._velocity*.5
+        self._velocity += drag_acceleration * self.delta_t
+        #self.calculate_drag()
 
-
-    def get_brwn_increment_from_involved_particles(self, colling_pairs: list[tuple[int]]) -> np.ndarray:
-        # returns all the brwn increments that are involved in the collision to calculate a resulting vector from all brwn increments
-        return list({num for pair in colling_pairs for num in pair})
+    def calculate_drag(self):
+        drag = 0.5*self._velocity**2
+        self._velocity *= (1-(0.5*drag)**2)
         
 
-           
-    def check_collisions(self, positions: np.ndarray, radius: float = None):
+    def get_brwn_increment_from_involved_particles(self, colling_pairs: list[tuple[tuple[int], float, np.ndarray]]) -> np.ndarray:
+        # returns all the brwn increments that are involved in the collision to calculate a resulting vector from all brwn increments
+        return list({num for pair, distance, normal in colling_pairs for num in pair})
+        
+
+    def check_collisions(self, positions: np.ndarray, radius: float = None, **kwargs):
         """
         Detects colliding pairs using a sweep and prune approach.
         
@@ -174,23 +192,23 @@ class ParticleSystem:
                 active.append(idx)
             else:  # remove particle from active list if end event happened
                 active.remove(idx)
-
+        
         # check candidates for collisions, because overlap of bounding boxes is not enough
         colliding_pairs = []
         for i, j in candidate_pairs:
             dx = positions[i, 0] - positions[j, 0]
             dy = positions[i, 1] - positions[j, 1]
-            distance_sq = dx**2 + dy**2
-            if distance_sq <= (2 * radius)**2:
-                colliding_pairs.append((i, j))
+            distance = np.sqrt(dx**2 + dy**2)
+            if distance <= 2 * radius:
+                normal = np.array([dx, dy]) / distance
+                colliding_pairs.append(((i, j), distance, normal))
                 
             # print(f"Colliding pair: {i}, {j}")
 
         return colliding_pairs
             
     
-
-    def update_collision_positions(self, positions: np.ndarray, colliding_pairs: list[tuple[int, int]], mode: str = "collsion", interaction_radius: float = None, **kwargs) -> np.ndarray:
+    def update_velocities_collisions(self, positions: np.ndarray, colliding_pairs: list[tuple[int, int]], mode: str = "collsion", interaction_radius: float = None, **kwargs) -> np.ndarray:
         """
         Updates velocities for each pair in colliding_pairs.
         
@@ -202,18 +220,7 @@ class ParticleSystem:
             None
         """
         
-        for i, j in colliding_pairs:
-            # calculate vector between particle centers
-            dx = positions[i, 0] - positions[j, 0]
-            dy = positions[i, 1] - positions[j, 1]
-            distance = np.sqrt(dx**2 + dy**2)
-            if distance == 0:
-                # avoid division by zero: assign random normalized vector
-                normal = np.random.uniform(-1, 1, size=2)
-                normal /= np.linalg.norm(normal)
-            else:
-                normal = np.array([dx, dy]) / distance
-
+        for ((i, j), distance, normal) in colliding_pairs:
             if mode == 'collision':
                 depth = 2*self.radius - distance
                 self._particles[i] = self.move_position(positions[i], depth*normal*0.5)
@@ -226,18 +233,46 @@ class ParticleSystem:
                 factor_j /= (1/self._mass[i]) + (1/self._mass[j])
                 self._velocity[i] -= factor_j / self._mass[i] * normal
                 self._velocity[j] += factor_j / self._mass[j] * normal
+            
+            elif mode == 'interaction':
+                interaction_direction = self._interaction_matrix[(self._color_index[i, 0], self._color_index[j, 0])]
+                equilibrium_distance = 2 * self.radius
+                interaction_force = 15 *normal #self.calc_interaction_force(distance, normal, interaction_strength=100, interaction_direction=interaction_direction, equilibrium_distance=equilibrium_distance)
+                self._velocity[i] -= interaction_force * self.delta_t  # TODO: integrate mass
+                self._velocity[j] += interaction_force * self.delta_t
                 
-                #self._particles[i] = self.move_position(positions[i], self._velocity[i]*self._delta_t)
-                #self._particles[j] = self.move_position(positions[j], self._velocity[j]*self._delta_t)
                 
-                
+    def calc_interaction_force(self, distance: float, normal: np.ndarray, interaction_strength: float, interaction_direction: float, equilibrium_distance: float, max_force: float = 20) -> np.ndarray:
+        """
+        Calculates the interaction force between particles based on interaction matrix
+        
+        Parameters:
+            distance (float): Distance between two particles.
+            normal (np.ndarray): Normalized direction vector between particles.
+            interaction_strength (float): Strength of interaction from interaction_matrix.
+            interaction_type (float): Positive for attraction, negative for repulsion.
+            equilibrium_distance (float): Preferred distance for stable interactions.
+            max_force (float): Maximum force limit.
+
+        Returns:
+            np.ndarray: Force vector applied to the particles.
+        """
+        
+        # stronger at short distances, weaker at long distances
+        if distance > 0:
+            force_magnitude = 1/distance**2#interaction_strength * (1 - np.exp(-abs(distance - equilibrium_distance))) * interaction_direction
+        else:
+            force_magnitude = max_force
+
+        # prevent excessive attraction/repulsion
+        force_magnitude = np.clip(force_magnitude, -max_force, max_force)
+        return 15 * normal        
                             
 
 
 
     
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0, 1), 2), ((0, 1, 0, 1), 2)], radius=20, interaction_matrix={(1, 1): 1, (1, 2): -1, (2, 1): -1, (2, 2): 1})
-    print(part_sys.particles)
-    #part_sys.move_particles()
+    part_sys = ParticleSystem(width=1000, height=1000, color_distribution=[((1, 0, 0, 1), 2), ((0, 1, 0, 1), 2)], radius=20, interaction_matrix={(1, 1): 1, (1, 2): -1, (2, 1): -1, (2, 2): 1})
+
     

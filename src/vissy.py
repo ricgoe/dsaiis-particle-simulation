@@ -2,7 +2,6 @@ from vispy import app, scene
 import numpy as np
 from vispy.app import Timer
 from particle_system import ParticleSystem
-import cProfile
 
 class DummyVisualizer:
     def __init__(self, canvas_width: int = 1000, canvas_height: int = 1000, num_parts:int = 500, fps: int = 30, gui_sim_ratio:float = 1):
@@ -12,10 +11,10 @@ class DummyVisualizer:
         self.gui_sim_ratio = gui_sim_ratio
         self.sim_width = self.canvas_width/self.gui_sim_ratio
         self.sim_height = self.canvas_height/self.gui_sim_ratio
-        self.sim_radius = 4
+        self.sim_radius = 10
         self.fps = fps
         self.interval = 1/self.fps
-        interaction_matrix = {(1, 1): 1, (1, 2): -1, (1, 3): -1, (2, 1): -1, (2, 2): 1, (2, 3): -1, (3, 1): -1, (3, 2): -1, (3, 3): 1}
+        interaction_matrix = {(1, 1): 1, (1, 2): 0, (1, 3): 0, (2, 1): 0, (2, 2): 1, (2, 3): 0, (3, 1): 0, (3, 2): 0, (3, 3): 1}
         
         self.part_sys = ParticleSystem(
             width=self.sim_width,
@@ -51,8 +50,7 @@ class DummyVisualizer:
             size=self.pixel_radius  # size in pixels
         )
         self.view.add(self.scatter)
-            
-            
+              
             
     def compute_pixel_radius(self):
         """
@@ -66,12 +64,16 @@ class DummyVisualizer:
         return pixel_radius
 
 
+    def set_up(self):
+        for _ in range(100):
+            self.part_sys.move_particles(skip_interaction=True)
+      
+            
     def update(self, event):
         """
         Update function to move particles and update scatter data.
         """
-        cProfile.runctx("self.part_sys.move_particles()", globals(), locals(), filename="profile_results.prof")
-        #self.part_sys.move_particles()
+        self.part_sys.move_particles()
         x, y = self.part_sys.particles[:, 0], self.part_sys.particles[:, 1]
         self.scatter.set_data(
             np.column_stack((x, y)),
@@ -81,9 +83,9 @@ class DummyVisualizer:
         )
 
 
-
 if __name__ == "__main__":
-    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=1200, fps=60, gui_sim_ratio = 1.2)
+    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=50, fps=30, gui_sim_ratio = 1)
+    vissy.set_up()
     vissy.create_canvas()
     timer = Timer(vissy.interval, connect=vissy.update, start=True)
     app.run()

@@ -4,17 +4,17 @@ import numpy as np
 from matplotlib.patches import Circle
 
 FPS = 20
-part_sys = ParticleSystem(width=20, height=20, color_distribution=[((1, 0, 0), 3)], radius=1)
-part_sys.particles = np.array([[3,2], [3,6], [3,12]])
+part_sys = ParticleSystem(width=10, height=10, color_distribution=[((1, 0, 0), 2)], radius=1, interaction_matrix={(1, 1): 1})
+part_sys.particles = np.array([[1, 1], [7, 1]])
 plt.ion()
 fig, ax = plt.subplots()
-ax.set_xlim(0, 20)
-ax.set_ylim(0, 20)
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 10)
 while True:
     # Remove previous circles by clearing the axis
     ax.clear()
-    ax.set_xlim(0, 20)
-    ax.set_ylim(0, 20)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 10)
     
     # Draw each particle as a circle with a radius of 3 data units
     for pos in part_sys.positions:
