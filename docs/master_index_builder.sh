@@ -1,5 +1,5 @@
 echo "Creating index.rst for Sphinx documentation builder"
-echo << EOF > index.rst
+cat << EOF > index.rst
 
 Welcome to DSAIIS Particle Simulation's documentation
 =====================================================
