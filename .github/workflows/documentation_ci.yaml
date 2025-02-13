@@ -71,12 +71,6 @@ jobs:
       run: |
         cd docs
         sphinx-build -b html . _build/html
-
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-artifacts-${{ matrix.operating-system }}-${{ matrix.python-version }}
-        path: docs/_build/html
     
     - name: Debug Build Output
       shell: bash
@@ -101,11 +95,6 @@ jobs:
 
     - name: Check Repository
       uses: actions/checkout@v3
-
-    - name: Download Build Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: build-artifacts
 
     - name: Check Deploy Directory
       run: |
