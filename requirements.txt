@@ -2,4 +2,4 @@ dearpygui==2.0.0
 matplotlib==3.9.3
 numba==0.60.0
 scipy>=1.13
-dask==2024.12.1
+dask>=2024.8.0
