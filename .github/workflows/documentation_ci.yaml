@@ -61,10 +61,17 @@ jobs:
       run: |
         cd docs
         sphinx-build -M html . _build/html
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Repository
+      uses: actions/checkout@v3
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
-      with: 
+      with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: docs/_build/html
         keep_files: true
