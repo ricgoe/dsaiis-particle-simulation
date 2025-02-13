@@ -59,7 +59,7 @@ jobs:
         cd docs
         ./master_index_builder.sh
         ls -la
-        cat docs/index.rst
+        cat index.rst
 
     - name: Build Documentation with sphinx-build
       run: |
