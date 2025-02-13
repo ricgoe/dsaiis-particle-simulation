@@ -29,6 +29,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install sphinx
         pip install sphinx-rtd-theme
+        pip install vispy
+        pip install PySide6
         pip install -r requirements.txt
     
     - name: Prepare build-process of conf.py for creation of docs
@@ -44,6 +46,11 @@ jobs:
     - name: Generate RST files with sphinx-apidoc
       run: |
         sphinx-apidoc -o docs/ src/
+    
+    - name: Generate Master index.rst
+      run: |
+        cd docs
+        ./master_index_builder.sh
     
     - name: Build Documentation with sphinx-build
       run: |
