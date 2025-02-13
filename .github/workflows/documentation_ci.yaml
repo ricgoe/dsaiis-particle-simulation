@@ -71,6 +71,11 @@ jobs:
       run: |
         cd docs
         sphinx-build -b html . _build/html
+    
+    - name: Debug Build Output
+      shell: bash
+      run: |
+        ls -la docs/_build/html
   
   deploy:
     needs: build
