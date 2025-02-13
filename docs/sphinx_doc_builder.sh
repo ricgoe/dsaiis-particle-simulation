@@ -22,7 +22,7 @@ version_update="$major.$minor"
 echo "$version_update" > version.txt
 
 
-cat << EOF > conf.py #Follwoing content until 'EOF' is written into conf.py file, imlementing of shell-variables is possible with $variable
+cat << EOF > conf.py #Following content until 'EOF' is written into conf.py file, implementing shell-variables is possible with $variable
 
 # -- Project information -----------------------------------------------------
 # Conf.py file required for Sphinx documentation builder
