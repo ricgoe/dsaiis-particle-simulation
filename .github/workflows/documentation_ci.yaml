@@ -58,7 +58,12 @@ jobs:
       run: |
         cd docs
         ./master_index_builder.sh
-    
+
+    - name: Debug index.rst
+      run: |
+        ls -la docs/
+        cat docs/index.rst
+
     - name: Build Documentation with sphinx-build
       run: |
         cd docs
