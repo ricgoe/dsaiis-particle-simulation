@@ -58,10 +58,6 @@ jobs:
       run: |
         cd docs
         ./master_index_builder.sh
-
-    - name: Debug index.rst
-      shell: bash
-      run: |
         ls -la docs/
         cat docs/index.rst
 
