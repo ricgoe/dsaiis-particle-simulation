@@ -76,7 +76,12 @@ jobs:
       shell: bash
       run: |
         ls -la docs/_build/html
-  
+    
+    - name: Debug Build Directory
+      shell: bash
+      run: |
+        ls -R docs/_build/html
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
