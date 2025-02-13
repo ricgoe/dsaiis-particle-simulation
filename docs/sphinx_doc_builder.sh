@@ -41,7 +41,6 @@ copyright = "2025"
 version =  "$version_update"
 release = "$version_update"
 
-needs_sphinx = ''   #no minimum supported version required
 extensions = [
     "sphinx.ext.autodoc",      #automatically document all modules, classes, functions, etc.
     "sphinx.ext.viewcode",     #add links to the source code -> view source code of any object
@@ -51,7 +50,6 @@ extensions = [
     ]     
 
 autosummary_generate = True     #automatically generate summaries for module
-exclude_patterns = []           #everything is included
 templates_path = ["_templates"] #folder for custom templates
 html_theme = "sphinx_rtd_theme" #default theme
 html_static_path = ['_static']  #Specifies the folder for static files (e.g.images) to be copied into the HTML output. Not yet used, useful for later implementation of images
