@@ -28,6 +28,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install sphinx
+        pip install sphinx-rtd-theme
         pip install -r requirements.txt
     
     - name: Prepare build-process of conf.py for creation of docs
