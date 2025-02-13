@@ -1,21 +1,16 @@
 # Particle Life Simulation
 
-Eine interaktive Simulation basierend auf Partikel-Lebensmodellen.
-Es Visualisiert, wie sich Partikel durch Anziehungs- bzw. Abstoßungskräfte organisieren und Muster Bilden.
+An interactive simulation based on particle life models.
+It visualizes how particles organize themselves and form patterns through forces of attraction and repulsion.
 
 ![Particle Life Demo](docs/Demo) /////////
 
 ## Features
-- **Visuelle Animation**: Echtzeit-Dartellung von Partikeln
-- **Anpassbare Parameter**: Konfigurierbare Anziehungs- und Abstoßungskräfte
-- **Effiziente Implementierung**: Optimiert für große Partikelmengen
+- **Visual animation**: Real-time visualization of particles
+- **Customizable parameters**: Configurable attraction and repulsion forces
+- **Efficient implementation**: Optimized for large particle volumes
 
 ## Installation & Setup
-
-### Voraussetzungen
-- Python 3.X+ ///////
-- Abhängigkeiten: vispy 0.14.3; numpy 2.1.3; PySide6 6.8.2.1; matplotlib 3.9.2
-////////
 
 ### Installation
 ```sh
@@ -24,22 +19,22 @@ cd dsaiis-particle-simulation
 pip install -r requirements.txt
 ```
 
-### Start der Simulation
+### Start the simulation
 ```sh
 python GUI.py
 ```
 
-Hierdurch startet sich automatisch die Benutzeroberfläche. In dieser können sowohl Partikeltypen hinzugefügt als auch die Parameter wie beispielsweise Anziehungs- und Abstoßungskräfte manipuliert werden. Um die Partikel auseinander zu halten können die einzelnen Partikeltypen jeweils ihre eigene Farbe erhalten. 
-Für jeden Partikeltyp kann einzeln die Menge bestimmt werden.
-Weiterhin sind die Anziehungs- und Abstoßungskräfte für jede Relation einzeln einstellbar. 
+This automatically starts the user interface. Here you can add particle types and manipulate parameters such as attraction and repulsion forces. To keep the particles apart, the individual particle types can each be given their own color. 
+The quantity can be determined individually for each particle type.
+Furthermore, the forces of attraction and repulsion can be set individually for each relation. 
 
-Sobald die gewünschten Parameter eingestellt sind, kann man die Simulation über den Button 'Save' starten.
-Um zu den Standard-Parametern zurückzukehren, kann man den Button 'Reset' verwenden.
+As soon as the desired parameters have been set, the simulation can be started by clicking the ‘Save’ button.
+To return to the standard parameters, you can use the ‘Reset’ button.
 
-## Hintergrund & Algorithmus
-Das Projekt beruht auf partikelbasierten Simulationen. Die Partikel interagieren mit einfachen Regeln:
+## Background & Algorithm
+The project is based on particle-based simulations. The particles interact based on simple rules:
 
-1. **Anziehung**: Bestimmte Partikel ziehen sich an
-2. **Abstoßung**: Andere Partikel stoßen sich ab
+1. **Attraction**: Certain particles attract each other
+2. **Repulsion**: Other particles repel each other
 
-Hieraus entsteht eine Dynamik, mit der sich die Partikel basierend auf den Kräften anpassen.
+This creates a dynamic with which the particles adapt based on the forces.
