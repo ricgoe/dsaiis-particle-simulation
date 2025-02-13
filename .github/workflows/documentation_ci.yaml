@@ -1,5 +1,6 @@
 name: Build and Deploy Sphinx Documentation
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -31,7 +32,7 @@ jobs:
     - name: Prepare build-process of conf.py for creation of docs
       run: |
         cd docs
-        chmod +x docs/sphinx_doc_builder.sh
+        chmod +x sphinx_doc_builder.sh
     
     - name: Create conf.py 
       run: |
