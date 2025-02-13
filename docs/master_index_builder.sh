@@ -1,4 +1,4 @@
-echo "Welcome to My Project's Documentation" > docs/index.rst
+echo "Welcome to the DSAIIS Particle Project Documentation" > docs/index.rst
 echo "======================================" >> docs/index.rst
 echo "" >> docs/index.rst
 echo ".. toctree::" >> docs/index.rst
