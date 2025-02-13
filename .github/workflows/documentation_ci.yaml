@@ -80,7 +80,14 @@ jobs:
     - name: Debug Build Directory
       shell: bash
       run: |
+        ls -R docs/_build/html#
+
+    - name: Debug -> Verify HTML Files before Deploy
+      shell: bash
+      run: |
         ls -R docs/_build/html
+        cat docs/_build/html/index.html
+
 
   deploy:
     needs: build
@@ -92,6 +99,12 @@ jobs:
     - name: Check Deploy Directory
       run: |
         ls -la docs/_build/html
+
+    - name: Verify Deployed Files
+      run: |
+        git fetch origin gh-pages
+        git checkout gh-pages
+        ls -R
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
