@@ -46,7 +46,7 @@ jobs:
     
     - name: Generate RST files with sphinx-apidoc
       run: |
-        sphinx-apidoc -o docs/ src/
+        sphinx-apidoc -o docs/modules src/
 
     - name: Prepare build-process of index.rst
       shell: bash
