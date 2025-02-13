@@ -84,6 +84,10 @@ jobs:
     - name: Check Repository
       uses: actions/checkout@v3
 
+    - name: Check Deploy Directory
+      run: |
+        ls -la docs/_build/html
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
