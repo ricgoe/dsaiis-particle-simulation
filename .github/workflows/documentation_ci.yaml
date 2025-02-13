@@ -39,6 +39,7 @@ jobs:
         chmod +x sphinx_doc_builder.sh
     
     - name: Create conf.py 
+      shell: bash
       run: |
         cd docs
         ./sphinx_doc_builder.sh
