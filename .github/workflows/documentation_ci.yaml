@@ -39,6 +39,11 @@ jobs:
       run: |
         cd docs
         ./sphinx_doc_builder.sh
+    
+    - name: Build Documentation with sphinx-build
+      run: |
+        cd docs
+        sphinx-build -M html . _build/html
 
     - name: Build documentation
       run: |
