@@ -7,7 +7,6 @@ Welcome to DSAIIS Particle Simulation's documentation
    :maxdepth: 2
    :caption: Contents:
    
-   index
 EOF
 
 echo "Successfully created index.rst"
