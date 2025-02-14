@@ -1,0 +1,7 @@
+Vispy\_Stack module
+===================
+
+.. automodule:: Vispy_Stack
+   :members:
+   :undoc-members:
+   :show-inheritance:
