@@ -1,4 +1,4 @@
-SRC_DIR="../src"
+SRC_DIR="../docs"
 content=""
 
 echo "Collecting module-rst files"
