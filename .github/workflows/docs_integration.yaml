@@ -55,6 +55,11 @@ jobs:
           chmod +x master_index_builder.sh
           ./master_index_builder.sh
       
+      - name: Generate API Documentation
+        working-directory: docs
+        run: |
+          sphinx-apidoc -f -o api ../src
+      
       - name: Build Docs
         working-directory: docs
         run: |
