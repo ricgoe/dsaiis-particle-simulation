@@ -84,7 +84,7 @@ class DummyVisualizer:
 
 
 if __name__ == "__main__":
-    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=50, fps=30, gui_sim_ratio = 1)
+    vissy = DummyVisualizer(canvas_width=1000, canvas_height=1000, num_parts=300, fps=30, gui_sim_ratio = 1)
     vissy.set_up()
     vissy.create_canvas()
     timer = Timer(vissy.interval, connect=vissy.update, start=True)
