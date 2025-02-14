@@ -110,9 +110,11 @@ class MainWindow(QMainWindow):
                     if i == n or j == n:
                         rel_btn = QPushButton(styleSheet=f"background-color: {self.get_cmap_color(0)}; margin: 0; padding: 0; border-radius: 0;")
                         rel_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-                        rel_btn.clicked.connect(lambda _, btn=rel_btn, i=i, j=j: self.show_relationship_slider(btn, i, j))
+                        rel_btn.clicked.connect(lambda _, i=i, j=j: self.show_relationship_slider(i, j))
                         self.rel_layout.addWidget(rel_btn, i, j)
-                        self.relationships[(i, j)] = 0
+                        entry = self.relationships.get((min(i, j), max(i, j)), { "button": [], "value": 0 })
+                        entry["button"].append(rel_btn)
+                        self.relationships[(min(i, j), max(i, j))] = entry
             if len(self.color_distrubution) == 1:
                 self.save_btn.show()
                 self.reset_btn.show()
@@ -120,24 +122,25 @@ class MainWindow(QMainWindow):
                 self.adder_btn.hide()
                         
     
-    def show_relationship_slider(self, btn: QPushButton, i: int, j: int):
+    def show_relationship_slider(self, i: int, j: int):
         pop = PopupWidget(self)
         pop.setStyleSheet("background-color: #31313a;")
         lyt = QVBoxLayout(pop)
-        label = QLabel(str(self.relationships[(i, j)]), styleSheet="color: white;", alignment=Qt.AlignCenter)
+        label = QLabel(str(self.relationships[(min(i, j), max(i, j))]["value"]), styleSheet="color: white;", alignment=Qt.AlignCenter)
         slider = QSlider(Qt.Horizontal)
         slider.setRange(-int(RELATIONSHIPS/2), int(RELATIONSHIPS/2))
-        slider.setValue(self.relationships[(i, j)])
-        slider.valueChanged.connect(lambda val: self.relationship_slider_changed(val, btn, label, i, j))
+        slider.setValue(self.relationships[(min(i, j), max(i, j))]["value"])
+        slider.valueChanged.connect(lambda val: self.relationship_slider_changed(val, label, i, j))
         lyt.addWidget(slider)
         lyt.addWidget(label)
         pop.show()
         
-    def relationship_slider_changed(self, val, btn: QPushButton, label: QLabel, i: int, j: int):
-        tmp_css = re.sub(r"background-color:\s*([^;]+)", f"background-color: {self.get_cmap_color(val)};", btn.styleSheet())
-        btn.setStyleSheet(tmp_css)
+    def relationship_slider_changed(self, val, label: QLabel, i: int, j: int):
+        for btn in self.relationships[(min(i, j), max(i, j))]["button"]:
+            tmp_css = re.sub(r"background-color:\s*([^;]+)", f"background-color: {self.get_cmap_color(val)};", btn.styleSheet())
+            btn.setStyleSheet(tmp_css)
         label.setText(str(val))
-        self.relationships[(i, j)] = val
+        self.relationships[(min(i, j), max(i, j))]["value"] = val
                 
     def show_color_picker(self, btn: QPushButton, boxes=list[QWidget]):
         pop = PopupWidget(self)
@@ -172,7 +175,8 @@ class MainWindow(QMainWindow):
     
     def saved(self):
         _c_map = list(self.color_distrubution.values())
-        self.canvas.insert_data(_c_map, self.relationships) # load data
+        _r_map = {key : value["value"] for key, value in self.relationships.items()}
+        self.canvas.insert_data(_c_map, _r_map) # load data
         
     def reset(self):
         self.color_distrubution = {}
@@ -184,7 +188,6 @@ class MainWindow(QMainWindow):
         self.save_btn.hide()
         self.reset_btn.hide()
 
-        
 
 if __name__ == "__main__":
     app = QApplication()
