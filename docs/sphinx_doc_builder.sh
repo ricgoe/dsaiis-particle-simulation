@@ -1,27 +1,5 @@
 echo "Creating Python-file conf.py for Sphinx documentation builder"
 
-#Check current version from version.txt, if not existing, create version.txt with version 0.1.0
-if [ ! -f version.txt ]; then
-  echo "0.1" > version.txt    #starting version
-fi
-
-#Read version from version.txt, show current version
-version=$(cat version.txt)
-echo "Current version: $version"
-
-#Split version into major and minor
-IFS='.' read -r major minor <<< "$version"
-
-#Increment minor version by 1 until project is handed in
-minor=$((minor+1))
-
-#Put together updated major and minor version
-version_update="$major.$minor"
-
-#Write updated version into version.txt
-echo "$version_update" > version.txt
-
-
 cat << EOF > conf.py #Following content until 'EOF' is written into conf.py file, implementing shell-variables is possible with $variable
 
 # -- Project information -----------------------------------------------------
