@@ -39,6 +39,7 @@ jobs:
         pip install -r requirements.txt
     
     - name: Prepare build-process of conf.py for creation of docs
+      shell: bash
       run: |
         cd docs
         chmod +x sphinx_doc_builder.sh
@@ -50,6 +51,7 @@ jobs:
         ./sphinx_doc_builder.sh
     
     - name: Generate RST files with sphinx-apidoc
+      shell: bash
       run: |
         sphinx-apidoc -o docs/modules src/
 
@@ -64,24 +66,18 @@ jobs:
       run: |
         cd docs
         ./master_index_builder.sh
-        ls -la
-        cat index.rst
 
     - name: Build Documentation with sphinx-build
-      run: |
-        cd docs
-        sphinx-build -b html . _build/html
-    
-    - name: Push to gh-pages
       shell: bash
       run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git fetch origin gh-pages
-        git checkout gh-pages || git checkout --orphan gh-pages
-        git reset --hard
-        rm -rf *
-        cp -r docs/_build/html/* .
-        git add .
-        git commit -m "Update documentation via CI/CD"
-        git push origin gh-pages --force
+        cd docs
+        sphinx-build html . _build/html
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      with:
+        publish_branch: gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: _build/
+        force_orphan: true
