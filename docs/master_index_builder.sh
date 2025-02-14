@@ -5,7 +5,7 @@ echo "Collecting module-rst files"
 for file in "$SRC_DIR"/*.rst; do
     if [ -f "$file" ]; then
         echo "Adding $file to index.rst"
-        content+=$'   '"${filename}"$'\n'
+        content+=$'   '"${file}"$'\n'
     fi
 done
 
