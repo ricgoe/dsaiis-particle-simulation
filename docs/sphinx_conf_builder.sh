@@ -1,8 +1,6 @@
 echo "Creating Python-file conf.py for Sphinx documentation builder"
 
 cat << EOF > conf.py #Following content until 'EOF' is written into conf.py file, implementing shell-variables is possible with $variable
-#!/bin/bash
-
 # -- Project information -----------------------------------------------------
 # Conf.py file required for Sphinx documentation builder
 # Used to specify project information on authors, version, release, etc.
