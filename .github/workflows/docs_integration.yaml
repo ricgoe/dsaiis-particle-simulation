@@ -37,23 +37,23 @@ jobs:
           pip install vispy
           pip install PySide6
 
-      - name: Set Docs-Version
+      - name: Run version_carer.sh
         working-directory: docs
         run: |
-          chmod +x version_carer.sh
-          version_carer.sh
+          chmod +x version_carer.sh 
+          ./version_carer.sh
       
       - name: Create conf.py for sphinx
         working-directory: docs
         run: |
           chmod +x sphinx_conf_builder.sh
-          sphinx_conf_builder.sh
+          ./sphinx_conf_builder.sh
 
       - name: Create index.rst
         working-directory: docs
         run: |
           chmod +x master_index_builder.sh
-          master_index_builder.sh
+          ./master_index_builder.sh
       
       - name: Build Docs
         working-directory: docs
