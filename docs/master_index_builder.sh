@@ -7,7 +7,7 @@ for file in "$SRC_DIR"/*.rst; do
         if [ $/basename $file = "index.rst" ]; then             #skip index.rst if created automatically
             continue
         fi
-        filename=$(basename $file)
+        filename=$(basename "$file".rst)
         echo "Adding $filename to index.rst"
         content+=$'   '"${filename}"$'\n'
     fi
