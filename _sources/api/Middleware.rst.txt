@@ -1,0 +1,7 @@
+Middleware module
+=================
+
+.. automodule:: Middleware
+   :members:
+   :undoc-members:
+   :show-inheritance:
