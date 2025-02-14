@@ -66,7 +66,7 @@ jobs:
           sphinx-build -b html . build
 
       - name: Show HTML
-        working-directory: docs/build
+        working-directory: docs/build/api
         run: 
           ls -a
       
