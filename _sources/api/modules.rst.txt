@@ -7,4 +7,5 @@ src
    GUI
    Middleware
    Vispy_Stack
+   checker
    fake_data
