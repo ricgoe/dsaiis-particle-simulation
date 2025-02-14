@@ -17,7 +17,9 @@ jobs:
           persist-credentials: false
       
       - name: Setup Python
-        uses: 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
       
       - name: Install system dependencies for OpenGL
         run: |
@@ -47,7 +49,7 @@ jobs:
 
       - name: Create index.rst
         working-directory: docs
-        runs: |
+        run: |
           chmod +x master_index_builder.sh
           master_index_builder.sh
       
