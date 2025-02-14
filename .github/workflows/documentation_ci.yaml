@@ -9,8 +9,8 @@ jobs:
   build:
     strategy:
       matrix:
-        operating-system: ['ubuntu-latest', 'windows-latest', 'macos-latest']
-        python-version: ['3.9', '3.10', '3.11', '3.12']
+        operating-system: ['ubuntu-latest']
+        python-version: ['3.12']
 
     runs-on: ${{ matrix.operating-system }}
 
@@ -71,7 +71,7 @@ jobs:
       shell: bash
       run: |
         cd docs
-        sphinx-build html . modules/_build/html
+        sphinx-build html . _build/html
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
@@ -79,5 +79,5 @@ jobs:
       with:
         publish_branch: gh-pages
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: _build/
+        publish_dir: docs/_build/
         force_orphan: true
