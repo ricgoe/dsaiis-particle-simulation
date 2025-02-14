@@ -59,6 +59,11 @@ jobs:
         working-directory: docs
         run: |
           sphinx-build -b html . build
+
+      - name: Show HTML
+        working-directory: build
+        run: 
+          ls -a
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
