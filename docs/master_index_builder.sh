@@ -10,7 +10,7 @@ for file in "$SRC_DIR"/*.rst; do
 done
 
 echo "Creating index.rst for Sphinx documentation builder"
-cat << EOF > ./docs/index.rst
+cat << EOF > ./index.rst
 
 Welcome to DSAIIS Particle Simulation's documentation
 =====================================================
