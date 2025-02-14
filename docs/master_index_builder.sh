@@ -18,7 +18,6 @@ Welcome to DSAIIS Particle Simulation's documentation
    :maxdepth: 2
    :caption: Contents:
 
-    modules
 ${content}
    
 EOF
