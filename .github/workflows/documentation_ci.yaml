@@ -70,7 +70,6 @@ jobs:
     - name: Build Documentation with sphinx-build
       shell: bash
       run: |
-        cd docs
         sphinx-build . _build/html
     
     - name: Deploy to GitHub Pages
