@@ -80,6 +80,22 @@ jobs:
       run: |
         cd docs/_build/html
         ls -a
+
+    - name: Stash changes
+      shell: bash
+      run: |
+        git stash
+
+    - name: Checkout gh-pages branch
+      shell: bash
+      run: |
+        git fetch origin gh-pages
+        git checkout gh-pages
+
+    - name: Apply stashed changes
+      shell: bash
+      run: |
+        git stash pop
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
