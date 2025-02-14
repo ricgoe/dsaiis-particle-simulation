@@ -148,7 +148,7 @@ class ParticleSystem:
         
         self.update_velocities_collisions(new_pos, colliding_pairs, mode='collision') # update the velocities using the colliding pairs
         if interaction_radius and not skip_interaction:
-            interaction_pairs = self.check_collisions(new_pos, radius=interaction_radius, mode = 'interaction')
+            interaction_pairs = self.check_collisions(extended_positions, radius=interaction_radius, ghost_indices = ghost_indices, mode = 'interaction')
             self.update_velocities_collisions(new_pos, interaction_pairs, mode='interaction', interaction_radius=interaction_radius)
         # calc speeds of particles
         #self._velocity *= (1-self._drag)
