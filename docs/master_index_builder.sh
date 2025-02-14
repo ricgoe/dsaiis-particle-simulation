@@ -1,11 +1,15 @@
-SRC_DIR="../src"
+SRC_DIR="./api"
 content=""
 
 echo "Collecting module-rst files"
 for file in "$SRC_DIR"/*.rst; do
     if [ -f "$file" ]; then
-        echo "Adding $file to index.rst"
-        content+=$'   '"${file}"$'\n'
+        if [ $/basename $file = "index.rst" ]; then             #skip index.rst if created automatically
+            continue
+        fi
+        filename=$(basename $file)
+        echo "Adding $filename to index.rst"
+        content+=$'   '"${filename}"$'\n'
     fi
 done
 
@@ -17,6 +21,7 @@ Welcome to DSAIIS Particle Simulation's documentation
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
 
 ${content}
    
