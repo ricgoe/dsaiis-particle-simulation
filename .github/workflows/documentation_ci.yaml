@@ -87,12 +87,5 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: docs/_build/
         force_orphan: true
-    
-    - name: Evaluate Deployment Success
-      shell: bash
-      run: |
-        git fetch origin gh-pages
-        git checkout gh-pages
-        ls -la
 
     
