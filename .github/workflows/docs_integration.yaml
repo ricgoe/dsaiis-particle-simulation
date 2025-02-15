@@ -52,11 +52,6 @@ jobs:
         run: |
           chmod +x master_index_builder.sh
           ./master_index_builder.sh
-
-      - name: Debug index.rst toctree
-        working-directory: docs
-        run: |
-          cat index.rst
       
       - name: Build Docs
         working-directory: docs
