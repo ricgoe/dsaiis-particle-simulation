@@ -18,7 +18,9 @@
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Vispy_Stack module" href="Vispy_Stack.html" />
+    <link rel="prev" title="GUI module" href="GUI.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,16 +42,103 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Middleware module</a><ul>
-<li><a class="reference internal" href="#Middleware.get_colors"><code class="docutils literal notranslate"><span class="pre">get_colors()</span></code></a></li>
-<li><a class="reference internal" href="#Middleware.get_particle_size"><code class="docutils literal notranslate"><span class="pre">get_particle_size()</span></code></a></li>
-<li><a class="reference internal" href="#Middleware.get_positions"><code class="docutils literal notranslate"><span class="pre">get_positions()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="GUI.html#GUI.MainWindow"><code class="docutils literal notranslate"><span class="pre">MainWindow</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.add_particle_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.add_particle_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.clear_layout"><code class="docutils literal notranslate"><span class="pre">MainWindow.clear_layout()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.color_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.color_changed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.get_cmap_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.get_cmap_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.n_particle_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.n_particle_slider_changed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.relationship_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.relationship_slider_changed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.reset"><code class="docutils literal notranslate"><span class="pre">MainWindow.reset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.saved"><code class="docutils literal notranslate"><span class="pre">MainWindow.saved()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.show_color_picker"><code class="docutils literal notranslate"><span class="pre">MainWindow.show_color_picker()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.show_relationship_slider"><code class="docutils literal notranslate"><span class="pre">MainWindow.show_relationship_slider()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">MainWindow.staticMetaObject</span></code></a></li>
 </ul>
 </li>
 </ul>
-</div>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Middleware module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Middleware.get_colors"><code class="docutils literal notranslate"><span class="pre">get_colors()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Middleware.get_particle_size"><code class="docutils literal notranslate"><span class="pre">get_particle_size()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Middleware.get_positions"><code class="docutils literal notranslate"><span class="pre">get_positions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Vispy_Stack.html">Vispy_Stack module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Vispy_Stack.html#Vispy_Stack.Canvas"><code class="docutils literal notranslate"><span class="pre">Canvas</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Vispy_Stack.html#Vispy_Stack.Canvas.insert_data"><code class="docutils literal notranslate"><span class="pre">Canvas.insert_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vispy_Stack.html#Vispy_Stack.Canvas.reset"><code class="docutils literal notranslate"><span class="pre">Canvas.reset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vispy_Stack.html#Vispy_Stack.Canvas.update_positions"><code class="docutils literal notranslate"><span class="pre">Canvas.update_positions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="checker.html">checker module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="checker.html#checker.Checker"><code class="docutils literal notranslate"><span class="pre">Checker</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="checker.html#checker.Checker.check"><code class="docutils literal notranslate"><span class="pre">Checker.check()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fake_data.html">fake_data module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fake_data.html#fake_data.get_colors"><code class="docutils literal notranslate"><span class="pre">get_colors()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="fake_data.html#fake_data.get_particle_size"><code class="docutils literal notranslate"><span class="pre">get_particle_size()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="fake_data.html#fake_data.get_positions"><code class="docutils literal notranslate"><span class="pre">get_positions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="GUI.html">GUI module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow"><code class="docutils literal notranslate"><span class="pre">MainWindow</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.add_particle_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.add_particle_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.clear_layout"><code class="docutils literal notranslate"><span class="pre">MainWindow.clear_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.color_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.color_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.get_cmap_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.get_cmap_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.n_particle_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.n_particle_slider_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.relationship_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.relationship_slider_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.reset"><code class="docutils literal notranslate"><span class="pre">MainWindow.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.saved"><code class="docutils literal notranslate"><span class="pre">MainWindow.saved()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.show_color_picker"><code class="docutils literal notranslate"><span class="pre">MainWindow.show_color_picker()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.show_relationship_slider"><code class="docutils literal notranslate"><span class="pre">MainWindow.show_relationship_slider()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">MainWindow.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Middleware module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Middleware.get_colors"><code class="docutils literal notranslate"><span class="pre">get_colors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Middleware.get_particle_size"><code class="docutils literal notranslate"><span class="pre">get_particle_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Middleware.get_positions"><code class="docutils literal notranslate"><span class="pre">get_positions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Vispy_Stack.html">Vispy_Stack module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Vispy_Stack.html#Vispy_Stack.Canvas"><code class="docutils literal notranslate"><span class="pre">Canvas</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Vispy_Stack.html#Vispy_Stack.Canvas.insert_data"><code class="docutils literal notranslate"><span class="pre">Canvas.insert_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Vispy_Stack.html#Vispy_Stack.Canvas.reset"><code class="docutils literal notranslate"><span class="pre">Canvas.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Vispy_Stack.html#Vispy_Stack.Canvas.update_positions"><code class="docutils literal notranslate"><span class="pre">Canvas.update_positions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="checker.html">checker module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="checker.html#checker.Checker"><code class="docutils literal notranslate"><span class="pre">Checker</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="checker.html#checker.Checker.check"><code class="docutils literal notranslate"><span class="pre">Checker.check()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fake_data.html">fake_data module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fake_data.html#fake_data.get_colors"><code class="docutils literal notranslate"><span class="pre">get_colors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fake_data.html#fake_data.get_particle_size"><code class="docutils literal notranslate"><span class="pre">get_particle_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fake_data.html#fake_data.get_positions"><code class="docutils literal notranslate"><span class="pre">get_positions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -96,7 +185,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GUI.html" class="btn btn-neutral float-left" title="GUI module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Vispy_Stack.html" class="btn btn-neutral float-right" title="Vispy_Stack module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

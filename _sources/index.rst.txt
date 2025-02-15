@@ -6,11 +6,11 @@ Welcome to DSAIIS Particle Simulation's documentation
    :caption: Contents:
 
    api/index
-   GUI
-   Middleware
-   Vispy_Stack
-   checker
-   fake_data
-   modules
+   api/GUI
+   api/Middleware
+   api/Vispy_Stack
+   api/checker
+   api/fake_data
+   api/modules
 
    
