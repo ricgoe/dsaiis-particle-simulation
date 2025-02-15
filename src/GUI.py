@@ -142,8 +142,7 @@ class MainWindow(QMainWindow):
         
     def relationship_slider_changed(self, val, label: QLabel, i: int, j: int):
         for btn in self.relationships[(min(i, j), max(i, j))]["button"]:
-            palette=btn.palette().setColor(QPalette.Button, QColor.fromString(self.get_cmap_color(val)))
-            btn.setPalette(palette)
+            btn.setStyleSheet(f"background-color: {self.get_cmap_color(val)}; margin: 0; padding: 0; border-radius: 0;")
         label.setText(str(val))
         self.relationships[(min(i, j), max(i, j))]["value"] = val
                 
