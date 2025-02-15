@@ -34,7 +34,6 @@ class Canvas(scene.SceneCanvas):
             x=(x_min - x_margin, x_max + x_margin),
             y=(y_min - y_margin, y_max + y_margin)
         )
-
         # Punktgrößen relativ zur Canvas-Größe skalieren
         canvas_size = self.size # Canvas-größe in Pixeln  (Breite, Höhe)
         scale_factor = min(canvas_size) * self.particle_scaling_factor # Skalierungsfaktor für Partikelgrößen
@@ -42,6 +41,8 @@ class Canvas(scene.SceneCanvas):
 
         # Scatter-Plot hinzufügen
         self.scatter.set_data(pos=self.positions, face_color=self.colors, edge_color=self.colors, size=self.relative_particle_sizes)
+        self.view.camera.zoom(0.55)
+        self.view.camera.center=(self.native.width()//2, self.native.height()//2)
         self.view.add(self.scatter)
 
         # Timer für Updates
