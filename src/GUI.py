@@ -17,6 +17,7 @@ NPARTICLES = 5
 RELATIONSHIPS = 10
 MAX_PARTICLES = 750
 MAX_PARTICLE_MASS = 10
+MIN_PARTICLE_MASS = 1
 MAX_PARTICLE_BOUNCINESS = 1
 MAX_BOUNCINESS_STEPS = 100
 SCALING_FACTOR = 0.77
@@ -95,7 +96,7 @@ class MainWindow(QMainWindow):
             color_box1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             color_box2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             # self.color_distrubution[btn] = [(1.0, 0, 0, 1.0), int(MAX_PARTICLES//2)]  #OG
-            self.color_distrubution[btn] = {"color": (1.0, 0, 0, 1.0), "n": int(MAX_PARTICLES//2), "mass": int(MAX_PARTICLE_MASS/2), "bounciness": MAX_PARTICLE_BOUNCINESS/2}
+            self.color_distrubution[btn] = {"color": (1.0, 0, 0, 1.0), "n": int(MAX_PARTICLES//2), "mass": int(MIN_PARTICLE_MASS), "bounciness": float(MAX_PARTICLE_BOUNCINESS)}
             btn.clicked.connect(lambda: self.show_color_settings(btn, [color_box1, color_box2]))
             _c_layout.addWidget(btn, 1)
             n = len(self.color_distrubution)
@@ -159,7 +160,7 @@ class MainWindow(QMainWindow):
         mass_label = QLabel("Mass:         ", styleSheet="color: white;", alignment=Qt.AlignCenter)
         mass_val_label = QLabel(str(self.color_distrubution[btn]["mass"]), styleSheet="color: white;", alignment=Qt.AlignCenter)
         mass_slider = QSlider(Qt.Horizontal)
-        mass_slider.setRange(1, MAX_PARTICLE_MASS)
+        mass_slider.setRange(MIN_PARTICLE_MASS, MAX_PARTICLE_MASS)
         mass_slider.setValue(self.color_distrubution[btn]["mass"])
         mass_slider.valueChanged.connect(lambda val: self.config_slider_changed(val, "mass", btn, mass_val_label))
         mass_layout.addWidget(mass_label)
