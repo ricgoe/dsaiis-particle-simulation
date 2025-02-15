@@ -100,7 +100,7 @@ class ParticleSystem:
             Nones
         """
   
-        interaction_radius = 100*self.radius
+        interaction_radius = 20
         speeds = np.linalg.norm(self._velocity, axis=1)
         nonzero = speeds > 0
         if np.any(nonzero):
@@ -204,16 +204,8 @@ class ParticleSystem:
         pairs_arr = np.array(list(pairs), dtype=int)  # shape (M, 2)
         i_idx = pairs_arr[:, 0]
         j_idx = pairs_arr[:, 1]
-        
-        pairs = np.column_stack((i_idx, j_idx))
-        unique_pairs = np.unique(pairs, axis=0)
-        i_idx, j_idx = unique_pairs[:, 0], unique_pairs[:, 1]
-        
 
-        max_real_index = len(self._particles)  
-        # print(max_real_index)
-        # i_idx = np.where(i_idx >= max_real_index, ghost_indices[i_idx - max_real_index], i_idx)
-        # j_idx = np.where(j_idx >= max_real_index, ghost_indices[j_idx - max_real_index], j_idx)
+        max_real_index = self._particles.shape[0]
         mask = i_idx >= max_real_index
         i_idx_new = i_idx.copy()
         i_idx_new[mask] = ghost_indices[i_idx[mask] - max_real_index]
@@ -224,10 +216,11 @@ class ParticleSystem:
         j_idx_new[mask] = ghost_indices[j_idx[mask] - max_real_index]
         j_idx = j_idx_new
 
-        #print(i_idx, j_idx)
-
         unique_mask = i_idx < j_idx
         i_idx, j_idx = i_idx[unique_mask], j_idx[unique_mask]
+        pairs = np.column_stack((i_idx, j_idx))
+        unique_pairs = np.unique(pairs, axis=0)
+        i_idx, j_idx = unique_pairs[:, 0], unique_pairs[:, 1]
         
         dx = positions[i_idx, 0] - positions[j_idx, 0]
         dy = positions[i_idx, 1] - positions[j_idx, 1]
@@ -337,10 +330,10 @@ class ParticleSystem:
             self._velocity[valid_j, 1] = speed_j * np.sin(new_angle_j)
 
 if __name__ == "__main__":
-    
     part_sys = ParticleSystem(width=1000, height=1000, color_distribution=[((1, 0, 0, 1), 2, 1, 1)], radius=1, interaction_matrix={(1, 1): 1})
-    part_sys.particles = np.array([[995, 500], [996, 500]])
-    gh, gi = part_sys.get_ghosts(part_sys.particles, interaction_radius= 6)
+    # part_sys.particles = np.array([[1, 500], [999, 500], [2, 500]])
+    part_sys.particles = np.array([[999, 999], [1, 1]])
+    gh, gi = part_sys.get_ghosts(part_sys.particles, interaction_radius= 10)
     extended_positions = np.vstack((part_sys.particles, gh))
     print(extended_positions)
-    print(part_sys.check_collisions(extended_positions, radius=6, ghost_indices = gi))
+    print(part_sys.check_collisions(extended_positions, radius=10, ghost_indices = gi))
