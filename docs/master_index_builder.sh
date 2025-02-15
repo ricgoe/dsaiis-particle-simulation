@@ -5,7 +5,7 @@ cat << EOF > ./index.rst
 Welcome to DSAIIS Particle Simulation's documentation
 =====================================================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    modules
