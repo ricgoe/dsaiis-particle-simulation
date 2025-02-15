@@ -4,12 +4,12 @@ content=""
 echo "Collecting module-rst files"
 for file in "$SRC_DIR"/*.rst; do
     if [ -f "$file" ]; then
-        if [ "$(basename "$file")" = "index.rst" ]; then
-            continue
-        fi
+        #if [ "$(basename "$file")" = "index.rst" ]; then
+        #    continue
+        #fi
         filename=$(basename "$file" .rst)
         echo "Adding $filename to index.rst"
-        content+=$'   '"api/${filename}"$'\n'
+        content+=$'   '"${filename}"$'\n'
     fi
 done
 
@@ -22,7 +22,6 @@ Welcome to DSAIIS Particle Simulation's documentation
    :maxdepth: 2
    :caption: Contents:
 
-   api/index
 ${content}
    
 EOF
