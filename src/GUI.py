@@ -17,6 +17,9 @@ BORDER = 40
 NPARTICLES = 5
 RELATIONSHIPS = 10
 MAX_PARTICLES = 750
+MAX_PARTICLE_MASS = 10
+MAX_PARTICLE_BOUNCINESS = 1
+MAX_BOUNCINESS_STEPS = 100
 COLOR_MAP = "viridis"
 STEP_SIZE = 3          
                 
@@ -91,8 +94,9 @@ class MainWindow(QMainWindow):
             color_box2 = QWidget(styleSheet="background-color: #ff0000;")
             color_box1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             color_box2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            self.color_distrubution[btn] = [(1.0, 0, 0, 1.0), int(MAX_PARTICLES//2)]
-            btn.clicked.connect(lambda: self.show_color_picker(btn, [color_box1, color_box2]))
+            # self.color_distrubution[btn] = [(1.0, 0, 0, 1.0), int(MAX_PARTICLES//2)]  #OG
+            self.color_distrubution[btn] = {"color": (1.0, 0, 0, 1.0), "n": int(MAX_PARTICLES//2), "mass": int(MAX_PARTICLE_MASS/2), "bounciness": MAX_PARTICLE_BOUNCINESS/2}
+            btn.clicked.connect(lambda: self.show_color_settings(btn, [color_box1, color_box2]))
             _c_layout.addWidget(btn, 1)
             n = len(self.color_distrubution)
             self.rel_layout.addWidget(color_box1, n, 0)
@@ -142,7 +146,7 @@ class MainWindow(QMainWindow):
         label.setText(str(val))
         self.relationships[(min(i, j), max(i, j))]["value"] = val
                 
-    def show_color_picker(self, btn: QPushButton, boxes=list[QWidget]):
+    def show_color_settings(self, btn: QPushButton, boxes=list[QWidget]):
         pop = PopupWidget(self)
         pop.setStyleSheet("background-color: #31313a;")
         lyt = QVBoxLayout(pop)
@@ -151,13 +155,42 @@ class MainWindow(QMainWindow):
         cp.setCurrentColor(_hex)
         cp.currentColorChanged.connect(lambda color: self.color_changed(color, btn, boxes))
         lyt.addWidget(cp)
+        mass_box = QWidget()
+        mass_layout = QHBoxLayout(mass_box)
+        mass_label = QLabel("Mass:         ", styleSheet="color: white;", alignment=Qt.AlignCenter)
+        mass_val_label = QLabel(str(self.color_distrubution[btn]["mass"]), styleSheet="color: white;", alignment=Qt.AlignCenter)
+        mass_slider = QSlider(Qt.Horizontal)
+        mass_slider.setRange(0, MAX_PARTICLE_MASS)
+        mass_slider.setValue(self.color_distrubution[btn]["mass"])
+        mass_slider.valueChanged.connect(lambda val: self.config_slider_changed(val, "mass", btn, mass_val_label))
+        mass_layout.addWidget(mass_label)
+        mass_layout.addWidget(mass_slider)
+        mass_layout.addWidget(mass_val_label)
+        bounciness_box = QWidget()
+        bounciness_layout = QHBoxLayout(bounciness_box)
+        bounciness_label = QLabel("Resitution:", styleSheet="color: white;", alignment=Qt.AlignCenter)
+        bounciness_val_label = QLabel(str(self.color_distrubution[btn]["bounciness"]).ljust(4, "0"), styleSheet="color: white;", alignment=Qt.AlignCenter)
+        bounciness_slider = QSlider(Qt.Horizontal)
+        bounciness_slider.setRange(0, MAX_PARTICLE_BOUNCINESS*MAX_BOUNCINESS_STEPS)
+        bounciness_slider.setValue(self.color_distrubution[btn]["bounciness"]*MAX_BOUNCINESS_STEPS)
+        bounciness_slider.valueChanged.connect(lambda val: self.config_slider_changed(val/MAX_BOUNCINESS_STEPS, "bounciness", btn, bounciness_val_label))
+        bounciness_layout.addWidget(bounciness_label)
+        bounciness_layout.addWidget(bounciness_slider)
+        bounciness_layout.addWidget(bounciness_val_label)
+        lyt.addWidget(mass_box)
+        lyt.addWidget(bounciness_box)
         pop.show()
         
     def color_changed(self, color: QColor, btn: QPushButton, boxes=list[QWidget]):
         btn.setStyleSheet(f"background-color: {color.name()};")
         for i in boxes: i.setStyleSheet(f"background-color: {color.name()};")
-        self.color_distrubution[btn][0] = tuple(x/255 for x in color.toTuple())
+        self.color_distrubution[btn][0] = color.toTuple()
         
+    def config_slider_changed(self, val:int|float, key: str, btn: QPushButton, label: QLabel):
+        val_str = str(val) if isinstance(val, int) else str(val).ljust(4, "0")
+        label.setText(str(val_str))
+        self.color_distrubution[btn][key] = val
+
     def n_particle_slider_changed(self, val, label: QLabel, btn: QPushButton):
         label.setText(str(val))
         self.color_distrubution[btn][1] = val
@@ -174,7 +207,7 @@ class MainWindow(QMainWindow):
                 self.clear_layout(child.layout())  # Recursively clear the nested layout
     
     def saved(self):
-        _c_map = list(self.color_distrubution.values())
+        _c_map = [[val["color"], val["n"]] for val in self.color_distrubution.values()]
         _r_map = {key : value["value"] for key, value in self.relationships.items()}
         self.canvas.insert_data(_c_map, _r_map) # load data
         
