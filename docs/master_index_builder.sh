@@ -2,6 +2,9 @@
 echo "Creating index.rst for Sphinx documentation builder"
 cat << EOF > ./index.rst
 
+..automodule:: backend
+..automodule:: frontend
+
 Welcome to DSAIIS Particle Simulation's documentation
 =====================================================
 .. toctree::
