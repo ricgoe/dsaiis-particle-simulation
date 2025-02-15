@@ -1,8 +1,7 @@
 from PySide6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QGridLayout, QWidget, 
 QPushButton, QHBoxLayout, QSlider, QLabel, QSizePolicy, QSpacerItem)
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor, QScreen
-import re
+from PySide6.QtGui import QColor, QScreen, QPalette
 from matplotlib.pyplot import get_cmap
 from Vispy_Stack import Canvas
 
@@ -142,8 +141,8 @@ class MainWindow(QMainWindow):
         
     def relationship_slider_changed(self, val, label: QLabel, i: int, j: int):
         for btn in self.relationships[(min(i, j), max(i, j))]["button"]:
-            tmp_css = re.sub(r"background-color:\s*([^;]+)", f"background-color: {self.get_cmap_color(val)};", btn.styleSheet())
-            btn.setStyleSheet(tmp_css)
+            palette=btn.palette().setColor(QPalette.Button, QColor.fromString(self.get_cmap_color(val)))
+            btn.setPalette(palette)
         label.setText(str(val))
         self.relationships[(min(i, j), max(i, j))]["value"] = val
                 
@@ -152,8 +151,7 @@ class MainWindow(QMainWindow):
         pop.setStyleSheet("background-color: #31313a;")
         lyt = QVBoxLayout(pop)
         cp = CustomColorPicker()
-        _hex = re.match(r"background-color:\s*([^;]+)", btn.styleSheet()).group(1)
-        cp.setCurrentColor(_hex)
+        cp.setCurrentColor(btn.palette().color(QPalette.Button))
         cp.currentColorChanged.connect(lambda color: self.color_changed(color, btn, boxes))
         lyt.addWidget(cp)
         mass_box = QWidget()
