@@ -22,7 +22,8 @@ Welcome to DSAIIS Particle Simulation's documentation
    :maxdepth: 2
    :caption: Contents:
 
-   api/index
+   #api/index
+   test.md
 ${content}
    
 EOF
