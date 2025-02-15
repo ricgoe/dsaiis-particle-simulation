@@ -38,6 +38,7 @@ class Canvas(scene.SceneCanvas):
         color_distribution : dict
             Dictionary with color distribution for particles
         interaction_matrix : np.ndarray
+            Matrix to define interactions between particle-types
 
         """
         #initialize particle system
