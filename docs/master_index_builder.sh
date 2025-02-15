@@ -4,10 +4,10 @@ content=""
 echo "Collecting module-rst files"
 for file in "$SRC_DIR"/*.rst; do
     if [ -f "$file" ]; then
-        if [ $/basename $file = "index.rst" ]; then             #skip index.rst if created automatically
+        if [ "$(basename "$file")" = "index.rst" ]; then
             continue
         fi
-        filename=$(basename "$file".rst)
+        filename=$(basename "$file" .rst)
         echo "Adding $filename to index.rst"
         content+=$'   '"${filename}"$'\n'
     fi
