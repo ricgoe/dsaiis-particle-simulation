@@ -16,8 +16,6 @@ class Canvas(scene.SceneCanvas):
             Background color of the canvas, accepts hex color codes
         screen_refresh_rate : int, optional
             Refresh rate of the screen in Hz, by default set to 60Hz
-        canvas_margin_factor : float, optional
-            Margin factor for the canvas, by default 0.05 -> 5% margin between particles and canvas border
         particle_scaling_factor : float, optional
             Scaling factor for particle sizes, by default 0.001
         """
@@ -25,7 +23,7 @@ class Canvas(scene.SceneCanvas):
         self.unfreeze()  #Allow addition of new attributes
         self.particle_scaling_factor = particle_scaling_factor 
         self.view = self.central_widget.add_view()
-        self.view.camera = scene.PanZoomCamera(aspect=1.2)    #Allows interactive pan and zoom to inspect the particle system 
+        self.view.camera = scene.PanZoomCamera(aspect=1.2)    #Camera allows interactive pan and zoom to inspect the particle system 
         self.scatter = scene.visuals.Markers(scaling = 'scene') #To correctly display particle sizes with respect to current zoom level
         self.part_sys = None    #Placeholder for particle system
         self.update_interval = 1 / screen_refresh_rate      #To transfer screen_refresh_rate to Hz
