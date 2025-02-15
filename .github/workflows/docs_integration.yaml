@@ -52,7 +52,7 @@ jobs:
       - name: Generate API Documentation
         working-directory: docs
         run: |
-          sphinx-apidoc -f -o api ../src
+          sphinx-apidoc -f -o . ../src
 
       - name: Create index.rst
         working-directory: docs
