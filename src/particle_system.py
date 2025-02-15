@@ -19,6 +19,7 @@ class ParticleSystem:
         self._velocity = np.column_stack((speeds * np.cos(angles), speeds * np.sin(angles)))
         self._interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
     
+        
     
     @property
     def particles(self):
@@ -99,7 +100,7 @@ class ParticleSystem:
             Nones
         """
   
-        interaction_radius = 50*self.radius
+        interaction_radius = 100*self.radius
         speeds = np.linalg.norm(self._velocity, axis=1)
         nonzero = speeds > 0
         if np.any(nonzero):
@@ -150,16 +151,16 @@ class ParticleSystem:
         near_bottom = new_pos[:, 1] < interaction_radius
 
         left_ghost = new_pos[near_left].copy()
-        left_ghost[:, 0] -= interaction_radius
+        left_ghost[:, 0] = (left_ghost[:, 0] - interaction_radius)%self.width
         left_ghost_indices = np.where(near_left)[0]
         right_ghost = new_pos[near_right].copy()
-        right_ghost[:, 0] += interaction_radius
+        right_ghost[:, 0] = (right_ghost[:, 0] + interaction_radius)%self.width
         right_ghost_indices = np.where(near_right)[0]
         top_ghost = new_pos[near_top].copy()
-        top_ghost[:, 1] += interaction_radius
+        top_ghost[:, 1] = (top_ghost[:, 1] + interaction_radius)%self.height
         top_ghost_indices = np.where(near_top)[0]
         bottom_ghost = new_pos[near_bottom].copy()
-        bottom_ghost[:, 1] -= interaction_radius
+        bottom_ghost[:, 1] = (bottom_ghost[:, 1] - interaction_radius)%self.height
         bottom_ghost_indices = np.where(near_bottom)[0]
 
         ghosts= np.vstack((left_ghost, right_ghost, top_ghost, bottom_ghost))
@@ -192,7 +193,7 @@ class ParticleSystem:
             normals (np.ndarray): Unit normal vectors from particle i to j.
         """
         tree = cKDTree(positions)
-        pairs = tree.query_pairs(r=radius)
+        pairs = tree.query_pairs(r=2*radius)
         
         if not pairs: # no collisions found
             return (np.empty(0, dtype=int),
@@ -203,19 +204,36 @@ class ParticleSystem:
         pairs_arr = np.array(list(pairs), dtype=int)  # shape (M, 2)
         i_idx = pairs_arr[:, 0]
         j_idx = pairs_arr[:, 1]
-        print(i_idx, j_idx)
-        # **Korrigieren von Ghost-Indizes auf Original-Partikel**
-        max_real_index = len(self._particles)  # Anzahl der echten Partikel
-        print(max_real_index)
-        i_idx = np.where(i_idx >= max_real_index, ghost_indices[i_idx - max_real_index], i_idx)
-        j_idx = np.where(j_idx >= max_real_index, ghost_indices[j_idx - max_real_index], j_idx)
+        
+        pairs = np.column_stack((i_idx, j_idx))
+        unique_pairs = np.unique(pairs, axis=0)
+        i_idx, j_idx = unique_pairs[:, 0], unique_pairs[:, 1]
+        
 
-        # **Doppelte Paare entfernen (wegen Ghost-Kollisionen)**
-        unique_mask = i_idx < j_idx  # sorgt dafür, dass jedes Paar nur einmal vorkommt
+        max_real_index = len(self._particles)  
+        # print(max_real_index)
+        # i_idx = np.where(i_idx >= max_real_index, ghost_indices[i_idx - max_real_index], i_idx)
+        # j_idx = np.where(j_idx >= max_real_index, ghost_indices[j_idx - max_real_index], j_idx)
+        mask = i_idx >= max_real_index
+        i_idx_new = i_idx.copy()
+        i_idx_new[mask] = ghost_indices[i_idx[mask] - max_real_index]
+        i_idx = i_idx_new
+
+        mask = j_idx >= max_real_index
+        j_idx_new = j_idx.copy()
+        j_idx_new[mask] = ghost_indices[j_idx[mask] - max_real_index]
+        j_idx = j_idx_new
+
+        #print(i_idx, j_idx)
+
+        unique_mask = i_idx < j_idx
         i_idx, j_idx = i_idx[unique_mask], j_idx[unique_mask]
         
         dx = positions[i_idx, 0] - positions[j_idx, 0]
         dy = positions[i_idx, 1] - positions[j_idx, 1]
+        dx = (dx + self.width/2) % self.width - self.width/2
+        dy = (dy + self.height/2) % self.height - self.height/2
+
         distances = np.sqrt(dx**2 + dy**2)
         
         # compute normals (handling the zero distance case).
@@ -302,7 +320,7 @@ class ParticleSystem:
             current_angles_j = np.arctan2(self._velocity[valid_j, 1], self._velocity[valid_j, 0])
 
             alpha = np.where(interaction_magnitudes > 0,
-                            0.01 * np.abs(interaction_magnitudes),
+                            0.05 * np.abs(interaction_magnitudes),
                             0.1 * np.abs(interaction_magnitudes))
 
             # compute new angles by blending the current angles toward the desired angle
@@ -317,3 +335,12 @@ class ParticleSystem:
             self._velocity[valid_i, 1] = speed_i * np.sin(new_angle_i)
             self._velocity[valid_j, 0] = speed_j * np.cos(new_angle_j)
             self._velocity[valid_j, 1] = speed_j * np.sin(new_angle_j)
+
+if __name__ == "__main__":
+    
+    part_sys = ParticleSystem(width=1000, height=1000, color_distribution=[((1, 0, 0, 1), 2, 1, 1)], radius=1, interaction_matrix={(1, 1): 1})
+    part_sys.particles = np.array([[995, 500], [996, 500]])
+    gh, gi = part_sys.get_ghosts(part_sys.particles, interaction_radius= 6)
+    extended_positions = np.vstack((part_sys.particles, gh))
+    print(extended_positions)
+    print(part_sys.check_collisions(extended_positions, radius=6, ghost_indices = gi))
