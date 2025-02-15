@@ -20,7 +20,6 @@ class ParticleSystem:
         self._interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
     
         
-    
     @property
     def particles(self):
         return self._particles
@@ -100,7 +99,7 @@ class ParticleSystem:
             Nones
         """
   
-        interaction_radius = 20
+        interaction_radius = 30*self.radius
         speeds = np.linalg.norm(self._velocity, axis=1)
         nonzero = speeds > 0
         if np.any(nonzero):
@@ -119,11 +118,8 @@ class ParticleSystem:
             self._velocity[:, 1] = initial_speed * np.sin(angles)
         delta_pos = self._velocity*self._delta_t
         new_pos = np.mod(self._particles + delta_pos, (self.width, self.height))
-        ghosts, ghost_indices = self.get_ghosts(new_pos, interaction_radius=interaction_radius)
-        
-        extended_positions = np.vstack((new_pos, ghosts))
         # detect collisions with tentative new positions
-        collision_data = self.check_collisions(extended_positions, radius=self.radius, ghost_indices = ghost_indices) # sorted from left to right and bottom to top
+        collision_data = self.check_collisions(new_pos, radius=self.radius) # sorted from left to right and bottom to top
         if collision_data[0].size == 0:
             self._particles = new_pos
             return
@@ -140,62 +136,21 @@ class ParticleSystem:
         self.update_velocities_collisions(new_pos, collision_data, mode='collision')
         # For interaction mode, assuming check_collisions returns candidate pairs when mode != 'collision'
         if interaction_radius and not skip_interaction:
-            interaction_candidates = self.check_collisions(extended_positions, radius=interaction_radius, ghost_indices=ghost_indices)
+            interaction_candidates = self.check_collisions(new_pos, radius=interaction_radius)
             self.update_velocities_collisions(new_pos, interaction_candidates, mode='interaction')
-
-    def get_ghosts(self, new_pos, interaction_radius):
-        
-        near_left = new_pos[:, 0] < interaction_radius
-        near_right = new_pos[:, 0] > self.width - interaction_radius
-        near_top = new_pos[:, 1] > self.height - interaction_radius
-        near_bottom = new_pos[:, 1] < interaction_radius
-
-        left_ghost = new_pos[near_left].copy()
-        left_ghost[:, 0] = (left_ghost[:, 0] - interaction_radius)%self.width
-        left_ghost_indices = np.where(near_left)[0]
-        right_ghost = new_pos[near_right].copy()
-        right_ghost[:, 0] = (right_ghost[:, 0] + interaction_radius)%self.width
-        right_ghost_indices = np.where(near_right)[0]
-        top_ghost = new_pos[near_top].copy()
-        top_ghost[:, 1] = (top_ghost[:, 1] + interaction_radius)%self.height
-        top_ghost_indices = np.where(near_top)[0]
-        bottom_ghost = new_pos[near_bottom].copy()
-        bottom_ghost[:, 1] = (bottom_ghost[:, 1] - interaction_radius)%self.height
-        bottom_ghost_indices = np.where(near_bottom)[0]
-
-        ghosts= np.vstack((left_ghost, right_ghost, top_ghost, bottom_ghost))
-        ghost_indices = np.hstack((left_ghost_indices, right_ghost_indices, top_ghost_indices, bottom_ghost_indices))
-        return ghosts, ghost_indices
-
-    def calculate_drag(self):
-        drag = 0.5*self._velocity**2
-        self._velocity *= (1-(0.5*drag)**2)
         
 
     def get_brwn_increment_from_involved_particles(self, collision_data: tuple) -> np.ndarray:
-        # Unpack the tuple: i_idx and j_idx are arrays of indices for collision data
         i_idx, j_idx, _, _ = collision_data
         return np.unique(np.concatenate((i_idx, j_idx)))
     
     
-    def check_collisions(self, positions: np.ndarray, radius: float, ghost_indices) -> tuple:
-        """
-        Uses cKDTree to find colliding pairs of particles.
-        
-        Parameters:
-            positions (np.ndarray): Array of shape (N, 2) with particle positions.
-            radius (float): The search radius for each particle.
-            
-        Returns:
-            i_idx (np.ndarray): Indices of the first particle in each colliding pair.
-            j_idx (np.ndarray): Indices of the second particle.
-            distances (np.ndarray): Distances between the colliding particles.
-            normals (np.ndarray): Unit normal vectors from particle i to j.
-        """
-        tree = cKDTree(positions)
+    def check_collisions(self, positions: np.ndarray, radius: float) -> tuple:
+        # boxsize=[self.width, self.height] is necessary for periodic boundaries
+        tree = cKDTree(positions, boxsize=[self.width, self.height])
         pairs = tree.query_pairs(r=2*radius)
         
-        if not pairs: # no collisions found
+        if not pairs:
             return (np.empty(0, dtype=int),
                     np.empty(0, dtype=int),
                     np.empty(0),
@@ -204,40 +159,19 @@ class ParticleSystem:
         pairs_arr = np.array(list(pairs), dtype=int)  # shape (M, 2)
         i_idx = pairs_arr[:, 0]
         j_idx = pairs_arr[:, 1]
-
-        max_real_index = self._particles.shape[0]
-        mask = i_idx >= max_real_index
-        i_idx_new = i_idx.copy()
-        i_idx_new[mask] = ghost_indices[i_idx[mask] - max_real_index]
-        i_idx = i_idx_new
-
-        mask = j_idx >= max_real_index
-        j_idx_new = j_idx.copy()
-        j_idx_new[mask] = ghost_indices[j_idx[mask] - max_real_index]
-        j_idx = j_idx_new
-
-        unique_mask = i_idx < j_idx
-        i_idx, j_idx = i_idx[unique_mask], j_idx[unique_mask]
-        pairs = np.column_stack((i_idx, j_idx))
-        unique_pairs = np.unique(pairs, axis=0)
-        i_idx, j_idx = unique_pairs[:, 0], unique_pairs[:, 1]
         
-        dx = positions[i_idx, 0] - positions[j_idx, 0]
-        dy = positions[i_idx, 1] - positions[j_idx, 1]
-        dx = (dx + self.width/2) % self.width - self.width/2
-        dy = (dy + self.height/2) % self.height - self.height/2
-
+        # compute differences, wrap around boundaries
+        dx = (positions[i_idx, 0] - positions[j_idx, 0] + self.width/2) % self.width - self.width/2
+        dy = (positions[i_idx, 1] - positions[j_idx, 1] + self.height/2) % self.height - self.height/2
         distances = np.sqrt(dx**2 + dy**2)
         
-        # compute normals (handling the zero distance case).
-        normals = np.column_stack((dx, dy))#[valid]
+        normals = np.column_stack((dx, dy))
         distances_safe = np.where(distances == 0, 1, distances)
-        normals = normals / distances_safe[:, None]
-        
+        normals /= distances_safe[:, None]
         
         return i_idx, j_idx, distances, normals
-      
-      
+    
+     
     def update_velocities_collisions(self, positions: np.ndarray, colliding_data, mode: str = "collision") -> None:
         """
         Updates velocities (and positions) based on collisions
@@ -256,16 +190,12 @@ class ParticleSystem:
             depth = 2 * self.radius - distances
             self._particles[i_idx] = positions[i_idx] + 0.5 * depth[:, None] * normals
             self._particles[j_idx] = positions[j_idx] - 0.5 * depth[:, None] * normals
-            
             # calculate the relative velocity for each colliding pair
             v_rel = self._velocity[j_idx] - self._velocity[i_idx]
-            
             # minimum restitution
             e = np.minimum(self._restitution[i_idx], self._restitution[j_idx])
-            
             # compute the component of the relative velocity along the collision normal
             dot = np.sum(v_rel * normals, axis=1)
-            
             # compute impulse magnitude for each collision pair
             factor = -(1 + e) * dot
             denom = (1 / self._mass[i_idx]) + (1 / self._mass[j_idx])
@@ -330,10 +260,6 @@ class ParticleSystem:
             self._velocity[valid_j, 1] = speed_j * np.sin(new_angle_j)
 
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=1000, height=1000, color_distribution=[((1, 0, 0, 1), 2, 1, 1)], radius=1, interaction_matrix={(1, 1): 1})
-    # part_sys.particles = np.array([[1, 500], [999, 500], [2, 500]])
-    part_sys.particles = np.array([[999, 999], [1, 1]])
-    gh, gi = part_sys.get_ghosts(part_sys.particles, interaction_radius= 10)
-    extended_positions = np.vstack((part_sys.particles, gh))
-    print(extended_positions)
-    print(part_sys.check_collisions(extended_positions, radius=10, ghost_indices = gi))
+    part_sys = ParticleSystem(width=1000, height=1000, color_distribution=[((1, 0, 0, 1), 5, 1, 1)], radius=1, interaction_matrix={(1, 1): 1})
+    part_sys.particles = np.array([[999, 999], [1, 1], [2, 2]])
+    print(part_sys.check_collisions(part_sys.particles, radius=1))
