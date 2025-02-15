@@ -9,7 +9,7 @@ for file in "$SRC_DIR"/*.rst; do
         fi
         filename=$(basename "$file" .rst)
         echo "Adding $filename to index.rst"
-        content+=$'   '"${filename}"$'\n'
+        content+=$'   '"api/${filename}"$'\n'
     fi
 done
 
