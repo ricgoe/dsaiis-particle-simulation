@@ -1,5 +1,11 @@
 class BackEnd():
+    """This is the backend class for the ParticleLifeSimulator"""
     def __init__(self, Backend: bool=True):
+        """This is the backend class for the ParticleLifeSimulator
+        
+        Args:
+            Backend (bool, optional): The backend. Defaults to True.
+        """
         self.partycles = [1,2,3]
         self.time = 0
         self.Backend = Backend
