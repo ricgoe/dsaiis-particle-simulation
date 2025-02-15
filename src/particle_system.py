@@ -2,7 +2,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int]], interaction_matrix: dict[tuple[int, int], float], radius: int = .5, mass: int = 0.5, restitution: float = 1, delta_t: float = 0.3, brownian_std: float = .02, drag: float = 0.5, min_vel: float = -1, max_vel: float = 1):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int, int, int]], interaction_matrix: dict[tuple[int, int], float], radius: int = .5, delta_t: float = 0.3, brownian_std: float = .01, drag: float = 0.5, min_vel: float = -1, max_vel: float = 1):
         self._particles = None
         self._colors = None
         self._color_index = None
@@ -13,14 +13,11 @@ class ParticleSystem:
         self.brownian_std: float = brownian_std
         self._drag = drag
         self._color_distribution = color_distribution
-        self._particles, self._colors, self._color_index = self.init_particles()
+        self._particles, self._colors, self._color_index, self._restitution, self._mass = self.init_particles()
         speeds = np.random.uniform(min_vel, max_vel, self._particles.shape[0])
         angles = np.random.uniform(0, 2 * np.pi, self._particles.shape[0])
         self._velocity = np.column_stack((speeds * np.cos(angles), speeds * np.sin(angles)))
-        self._mass = np.full(self._particles.shape[0], mass)
-        self._restitution = np.full(self._particles.shape[0], restitution)
         self._interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
-        #self._velocity = np.array([[1.2, 1.2], [-.7, 1]], dtype=float)
     
     
     @property
@@ -71,17 +68,15 @@ class ParticleSystem:
             (
                 np.random.uniform(0, self.width, size=(num, 2)), 
                 np.tile(np.array(rgba), (num, 1)), 
-                np.full((num, 1), idx)
+                np.full((num, 1), idx),
+                np.full((num,), restitution),
+                np.full((num,), mass)
             ) 
-            for idx, (rgba, num) in enumerate(self._color_distribution, start=1)
+            for idx, (rgba, num, restitution, mass) in enumerate(self._color_distribution, start=1)
         ]
-        positions, colors, color_indices = map(lambda arrays: np.concatenate(arrays, axis=0), zip(*particles))
+        positions, colors, color_indices, restitution, mass = map(lambda arrays: np.concatenate(arrays, axis=0), zip(*particles))
     
-        return positions, colors, color_indices
-    
-    
-    def move_position(self, position: np.ndarray, amout: np.ndarray) -> np.ndarray:
-        return position + amout
+        return positions, colors, color_indices, restitution, mass
     
     
     def angle_between(self, x, y):
@@ -103,45 +98,46 @@ class ParticleSystem:
         Returns:
             Nones
         """
-        interaction_radius = 50*self.radius
-        speeds = np.linalg.norm(self._velocity, axis=1)
-        nonzero = speeds > 0
-        if np.any(nonzero):
-            # compute current angles for particles
-            current_angles = np.arctan2(self._velocity[nonzero, 1], self._velocity[nonzero, 0])
-            # determine small random rotation
-            delta_angles = np.random.normal(0, self.brownian_std, size=current_angles.shape)
-            new_angles = current_angles + delta_angles
-            self._velocity[nonzero, 0] = speeds[nonzero] * np.cos(new_angles)
-            self._velocity[nonzero, 1] = speeds[nonzero] * np.sin(new_angles)
-        else:
-            # if any particles are at rest, initialize with default speed
-            initial_speed = 1.0
-            angles = np.random.uniform(0, 2*np.pi, size=self._velocity.shape[0])
-            self._velocity[:, 0] = initial_speed * np.cos(angles)
-            self._velocity[:, 1] = initial_speed * np.sin(angles)
-        delta_pos = self._velocity*self._delta_t
-        new_pos = np.mod(self._particles + delta_pos, (self.width, self.height))
-        # detect collisions with tentative new positions
-        collision_data = self.check_collisions(new_pos, self.radius)  # returns (i_idx, j_idx, distances, normals)
-        if collision_data[0].size == 0:
-            self._particles = new_pos
-            return
+        for _ in range(10):
+            interaction_radius = 50*self.radius
+            speeds = np.linalg.norm(self._velocity, axis=1)
+            nonzero = speeds > 0
+            if np.any(nonzero):
+                # compute current angles for particles
+                current_angles = np.arctan2(self._velocity[nonzero, 1], self._velocity[nonzero, 0])
+                # determine small random rotation
+                delta_angles = np.random.normal(0, self.brownian_std, size=current_angles.shape)
+                new_angles = current_angles + delta_angles
+                self._velocity[nonzero, 0] = speeds[nonzero] * np.cos(new_angles)
+                self._velocity[nonzero, 1] = speeds[nonzero] * np.sin(new_angles)
+            else:
+                # if any particles are at rest, initialize with default speed
+                initial_speed = 1.0
+                angles = np.random.uniform(0, 2*np.pi, size=self._velocity.shape[0])
+                self._velocity[:, 0] = initial_speed * np.cos(angles)
+                self._velocity[:, 1] = initial_speed * np.sin(angles)
+            delta_pos = self._velocity*self._delta_t
+            new_pos = np.mod(self._particles + delta_pos, (self.width, self.height))
+            # detect collisions with tentative new positions
+            collision_data = self.check_collisions(new_pos, self.radius)  # returns (i_idx, j_idx, distances, normals)
+            if collision_data[0].size == 0:
+                self._particles = new_pos
+                return
 
-        # TODO: not relevant for now, maye later
-        # increments = self.get_brwn_increment_from_involved_particles(collision_data) # get the delta v's from the particles that are involved in the collision
-        # resulting_vector = np.sum(delta_pos[increments], axis=0) # calculate the resulting vector from the brwn increments
-        # if np.sum(resulting_vector) == 0: # if the resulting vector is zero, there is no movement
-        #     return
-        # angle = int(self.angle_between(resulting_vector[0], resulting_vector[1])) # calculate the angle between the resulting vector and the positive x-axis
-        # if angle <= 90 or angle > 270:
-        #     colliding_pairs.flip() # if the angle is less than 90 or greater than 270, reverse the order of the colliding pairs
-        
-        self.update_velocities_collisions(new_pos, collision_data, mode='collision')
-        # For interaction mode, assuming check_collisions returns candidate pairs when mode != 'collision'
-        if interaction_radius and not skip_interaction:
-            interaction_candidates = self.check_collisions(new_pos, radius=interaction_radius)
-            self.update_velocities_collisions(new_pos, interaction_candidates, mode='interaction')
+            # TODO: not relevant for now, maye later
+            # increments = self.get_brwn_increment_from_involved_particles(collision_data) # get the delta v's from the particles that are involved in the collision
+            # resulting_vector = np.sum(delta_pos[increments], axis=0) # calculate the resulting vector from the brwn increments
+            # if np.sum(resulting_vector) == 0: # if the resulting vector is zero, there is no movement
+            #     return
+            # angle = int(self.angle_between(resulting_vector[0], resulting_vector[1])) # calculate the angle between the resulting vector and the positive x-axis
+            # if angle <= 90 or angle > 270:
+            #     colliding_pairs.flip() # if the angle is less than 90 or greater than 270, reverse the order of the colliding pairs
+            
+            self.update_velocities_collisions(new_pos, collision_data, mode='collision')
+            # For interaction mode, assuming check_collisions returns candidate pairs when mode != 'collision'
+            if interaction_radius and not skip_interaction:
+                interaction_candidates = self.check_collisions(new_pos, radius=interaction_radius)
+                self.update_velocities_collisions(new_pos, interaction_candidates, mode='interaction')
 
     def calculate_drag(self):
         drag = 0.5*self._velocity**2
@@ -215,8 +211,8 @@ class ParticleSystem:
             # calculate the relative velocity for each colliding pair
             v_rel = self._velocity[j_idx] - self._velocity[i_idx]
             
-            # use restitution from particle i
-            e = self._restitution[i_idx]
+            # minimum restitution
+            e = np.minimum(self._restitution[i_idx], self._restitution[j_idx])
             
             # compute the component of the relative velocity along the collision normal
             dot = np.sum(v_rel * normals, axis=1)
@@ -269,7 +265,7 @@ class ParticleSystem:
 
             alpha = np.where(interaction_magnitudes > 0,
                             0.01 * np.abs(interaction_magnitudes),
-                            0.01 * np.abs(interaction_magnitudes))
+                            0.1 * np.abs(interaction_magnitudes))
 
             # compute new angles by blending the current angles toward the desired angle
             new_angle_i = current_angles_i + alpha * ((((desired_angles - current_angles_i + np.pi) % (2 * np.pi)) - np.pi))
