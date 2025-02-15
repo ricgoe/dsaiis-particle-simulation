@@ -1,4 +1,7 @@
 
+..automodule:: backend
+..automodule:: frontend
+
 Welcome to DSAIIS Particle Simulation's documentation
 =====================================================
 .. toctree::
