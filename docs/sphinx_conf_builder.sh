@@ -30,4 +30,8 @@ autosummary_generate = True     #automatically generate summaries for module
 templates_path = ["_templates"] #folder for custom templates
 html_theme = "sphinx_rtd_theme" #default theme
 html_static_path = ['_static']  #Specifies the folder for static files (e.g.images) to be copied into the HTML output. Not yet used, useful for later implementation of images
+html_theme_options = {          #options for the theme
+    'collapse_navigation': False,
+    'navigation_depth': 4,
+}
 EOF
