@@ -1,7 +1,0 @@
-fake\_data module
-=================
-
-.. automodule:: fake_data
-   :members:
-   :undoc-members:
-   :show-inheritance:

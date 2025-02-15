@@ -1,11 +1,6 @@
-src
-===
+ParticleLifeSimulator
+=====================
 
 .. toctree::
    :maxdepth: 4
 
-   GUI
-   Middleware
-   Vispy_Stack
-   checker
-   fake_data
