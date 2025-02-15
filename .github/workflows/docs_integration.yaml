@@ -48,6 +48,11 @@ jobs:
         run: |
           chmod +x sphinx_conf_builder.sh
           ./sphinx_conf_builder.sh
+      
+      - name: Generate API Documentation
+        working-directory: docs
+        run: |
+          sphinx-apidoc -f -o api ../src
 
       - name: Create index.rst
         working-directory: docs
@@ -59,11 +64,6 @@ jobs:
         working-directory: docs
         run: |
           cat index.rst
-      
-      - name: Generate API Documentation
-        working-directory: docs
-        run: |
-          sphinx-apidoc -f -o api ../src
       
       - name: Build Docs
         working-directory: docs
