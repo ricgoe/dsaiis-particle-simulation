@@ -99,7 +99,7 @@ class ParticleSystem:
             Nones
         """
   
-        interaction_radius = 30*self.radius
+        interaction_radius = 10*self.radius
         speeds = np.linalg.norm(self._velocity, axis=1)
         nonzero = speeds > 0
         if np.any(nonzero):

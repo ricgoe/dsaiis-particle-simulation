@@ -42,7 +42,7 @@ class Canvas(scene.SceneCanvas):
 
         """
         #initialize particle system
-        self.part_sys = ParticleSystem(self.native.width(), self.native.height(), color_distribution, interaction_matrix, radius=5)
+        self.part_sys = ParticleSystem(self.native.width(), self.native.height(), color_distribution, interaction_matrix, radius=1)
         
         #extract particle system attributes
         self.positions = self.part_sys.positions
