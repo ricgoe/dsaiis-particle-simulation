@@ -135,9 +135,9 @@ class ParticleSystem:
         
         self.update_velocities_collisions(new_pos, collision_data, mode='collision')
         # For interaction mode, assuming check_collisions returns candidate pairs when mode != 'collision'
-        # if interaction_radius and not skip_interaction:
-        #     interaction_candidates = self.check_collisions(new_pos, radius=interaction_radius)
-        #     self.update_velocities_collisions(new_pos, interaction_candidates, mode='interaction')
+        if interaction_radius and not skip_interaction:
+            interaction_candidates = self.check_collisions(new_pos, radius=interaction_radius)
+            self.update_velocities_collisions(new_pos, interaction_candidates, mode='interaction')
 
     def calculate_drag(self):
         drag = 0.5*self._velocity**2
