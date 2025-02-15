@@ -20,6 +20,7 @@ MAX_PARTICLES = 750
 MAX_PARTICLE_MASS = 10
 MAX_PARTICLE_BOUNCINESS = 1
 MAX_BOUNCINESS_STEPS = 100
+SCALING_FACTOR = 0.77
 COLOR_MAP = "viridis"
 STEP_SIZE = 3          
                 
@@ -76,7 +77,7 @@ class MainWindow(QMainWindow):
         ctrl_layout.addWidget(self.reset_btn)
         
         refresh_rate = round(app.primaryScreen().refreshRate())
-        self.canvas = Canvas(bgcolor='#24242b', screen_refresh_rate=refresh_rate) # EMIL
+        self.canvas = Canvas(bgcolor='#24242b', screen_refresh_rate=refresh_rate, particle_scaling_factor=SCALING_FACTOR) # EMIL
         self.canvas_layout.addWidget(self.canvas.native)
         
         self.show()
