@@ -56,7 +56,7 @@ jobs:
           ./master_index_builder.sh
 
       - name: Debug index.rst toctree
-        wokring-directory: docs
+        working-directory: docs
         run: |
           cat index.rst
       
