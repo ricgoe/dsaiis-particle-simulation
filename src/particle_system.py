@@ -118,8 +118,11 @@ class ParticleSystem:
             self._velocity[:, 1] = initial_speed * np.sin(angles)
         delta_pos = self._velocity*self._delta_t
         new_pos = np.mod(self._particles + delta_pos, (self.width, self.height))
+        ghosts, ghost_indices = self.get_ghosts(new_pos, interaction_radius=interaction_radius)
+        
+        extended_positions = np.vstack((new_pos, ghosts))
         # detect collisions with tentative new positions
-        collision_data = self.check_collisions(new_pos, self.radius)  # returns (i_idx, j_idx, distances, normals)
+        collision_data = self.check_collisions(extended_positions, radius=self.radius, ghost_indices = ghost_indices) # sorted from left to right and bottom to top
         if collision_data[0].size == 0:
             self._particles = new_pos
             return
@@ -136,8 +139,32 @@ class ParticleSystem:
         self.update_velocities_collisions(new_pos, collision_data, mode='collision')
         # For interaction mode, assuming check_collisions returns candidate pairs when mode != 'collision'
         if interaction_radius and not skip_interaction:
-            interaction_candidates = self.check_collisions(new_pos, radius=interaction_radius)
+            interaction_candidates = self.check_collisions(extended_positions, radius=interaction_radius, ghost_indices=ghost_indices)
             self.update_velocities_collisions(new_pos, interaction_candidates, mode='interaction')
+
+    def get_ghosts(self, new_pos, interaction_radius):
+        
+        near_left = new_pos[:, 0] < interaction_radius
+        near_right = new_pos[:, 0] > self.width - interaction_radius
+        near_top = new_pos[:, 1] > self.height - interaction_radius
+        near_bottom = new_pos[:, 1] < interaction_radius
+
+        left_ghost = new_pos[near_left].copy()
+        left_ghost[:, 0] -= interaction_radius
+        left_ghost_indices = np.where(near_left)[0]
+        right_ghost = new_pos[near_right].copy()
+        right_ghost[:, 0] += interaction_radius
+        right_ghost_indices = np.where(near_right)[0]
+        top_ghost = new_pos[near_top].copy()
+        top_ghost[:, 1] += interaction_radius
+        top_ghost_indices = np.where(near_top)[0]
+        bottom_ghost = new_pos[near_bottom].copy()
+        bottom_ghost[:, 1] -= interaction_radius
+        bottom_ghost_indices = np.where(near_bottom)[0]
+
+        ghosts= np.vstack((left_ghost, right_ghost, top_ghost, bottom_ghost))
+        ghost_indices = np.hstack((left_ghost_indices, right_ghost_indices, top_ghost_indices, bottom_ghost_indices))
+        return ghosts, ghost_indices
 
     def calculate_drag(self):
         drag = 0.5*self._velocity**2
@@ -150,7 +177,7 @@ class ParticleSystem:
         return np.unique(np.concatenate((i_idx, j_idx)))
     
     
-    def check_collisions(self, positions: np.ndarray, radius: float) -> tuple:
+    def check_collisions(self, positions: np.ndarray, radius: float, ghost_indices) -> tuple:
         """
         Uses cKDTree to find colliding pairs of particles.
         
@@ -176,6 +203,16 @@ class ParticleSystem:
         pairs_arr = np.array(list(pairs), dtype=int)  # shape (M, 2)
         i_idx = pairs_arr[:, 0]
         j_idx = pairs_arr[:, 1]
+        print(i_idx, j_idx)
+        # **Korrigieren von Ghost-Indizes auf Original-Partikel**
+        max_real_index = len(self._particles)  # Anzahl der echten Partikel
+        print(max_real_index)
+        i_idx = np.where(i_idx >= max_real_index, ghost_indices[i_idx - max_real_index], i_idx)
+        j_idx = np.where(j_idx >= max_real_index, ghost_indices[j_idx - max_real_index], j_idx)
+
+        # **Doppelte Paare entfernen (wegen Ghost-Kollisionen)**
+        unique_mask = i_idx < j_idx  # sorgt dafür, dass jedes Paar nur einmal vorkommt
+        i_idx, j_idx = i_idx[unique_mask], j_idx[unique_mask]
         
         dx = positions[i_idx, 0] - positions[j_idx, 0]
         dy = positions[i_idx, 1] - positions[j_idx, 1]
@@ -185,6 +222,7 @@ class ParticleSystem:
         normals = np.column_stack((dx, dy))#[valid]
         distances_safe = np.where(distances == 0, 1, distances)
         normals = normals / distances_safe[:, None]
+        
         
         return i_idx, j_idx, distances, normals
       
