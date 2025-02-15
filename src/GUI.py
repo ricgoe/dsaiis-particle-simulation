@@ -3,7 +3,7 @@ QPushButton, QHBoxLayout, QSlider, QLabel, QSizePolicy, QSpacerItem)
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QScreen, QPalette
 from matplotlib.pyplot import get_cmap
-from Vispy_Stack import Canvas
+from VisPyStack import Canvas
 
 
 from custom_widgets.Widgets import PopupWidget, CustomColorPicker, SquareWidget

@@ -1,6 +1,6 @@
 from vispy import scene, app
 import numpy as np
-from particle_system import ParticleSystem
+from ParticleSystem import ParticleSystem
 
 
 class Canvas(scene.SceneCanvas):
