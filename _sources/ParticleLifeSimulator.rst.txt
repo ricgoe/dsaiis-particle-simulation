@@ -1,0 +1,19 @@
+ParticleLifeSimulator package
+=============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ParticleLifeSimulator.backend
+   ParticleLifeSimulator.frontend
+
+Module contents
+---------------
+
+.. automodule:: ParticleLifeSimulator
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -4,5 +4,4 @@ ParticleLifeSimulator
 .. toctree::
    :maxdepth: 4
 
-   backend
-   frontend
+   ParticleLifeSimulator
