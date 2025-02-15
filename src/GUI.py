@@ -160,7 +160,7 @@ class MainWindow(QMainWindow):
         mass_label = QLabel("Mass:         ", styleSheet="color: white;", alignment=Qt.AlignCenter)
         mass_val_label = QLabel(str(self.color_distrubution[btn]["mass"]), styleSheet="color: white;", alignment=Qt.AlignCenter)
         mass_slider = QSlider(Qt.Horizontal)
-        mass_slider.setRange(0, MAX_PARTICLE_MASS)
+        mass_slider.setRange(1, MAX_PARTICLE_MASS)
         mass_slider.setValue(self.color_distrubution[btn]["mass"])
         mass_slider.valueChanged.connect(lambda val: self.config_slider_changed(val, "mass", btn, mass_val_label))
         mass_layout.addWidget(mass_label)
@@ -184,7 +184,7 @@ class MainWindow(QMainWindow):
     def color_changed(self, color: QColor, btn: QPushButton, boxes=list[QWidget]):
         btn.setStyleSheet(f"background-color: {color.name()};")
         for i in boxes: i.setStyleSheet(f"background-color: {color.name()};")
-        self.color_distrubution[btn][0] = color.toTuple()
+        self.color_distrubution[btn]["color"] = tuple(x/255 for x in color.toTuple())
         
     def config_slider_changed(self, val:int|float, key: str, btn: QPushButton, label: QLabel):
         val_str = str(val) if isinstance(val, int) else str(val).ljust(4, "0")
@@ -193,7 +193,7 @@ class MainWindow(QMainWindow):
 
     def n_particle_slider_changed(self, val, label: QLabel, btn: QPushButton):
         label.setText(str(val))
-        self.color_distrubution[btn][1] = val
+        self.color_distrubution[btn]["n"] = val
 
     def get_cmap_color(self, idx):
         return QColor.fromRgbF(*self.cmap(int(RELATIONSHIPS/2)+idx)).name()
@@ -207,7 +207,7 @@ class MainWindow(QMainWindow):
                 self.clear_layout(child.layout())  # Recursively clear the nested layout
     
     def saved(self):
-        _c_map = [[val["color"], val["n"]] for val in self.color_distrubution.values()]
+        _c_map = [[val["color"], val["n"], val["bounciness"], val["mass"]] for val in self.color_distrubution.values()]
         _r_map = {key : value["value"] for key, value in self.relationships.items()}
         self.canvas.insert_data(_c_map, _r_map) # load data
         
