@@ -105,7 +105,7 @@ class MainWindow(QMainWindow):
             color_box2 = QWidget(styleSheet="background-color: #ff0000;")
             color_box1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             color_box2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            self.color_distrubution[btn] = {"color": (1.0, 0, 0, 1.0), "n": int(MAX_PARTICLES//2), "mass": int(MAX_PARTICLE_MASS/2), "bounciness": MAX_PARTICLE_BOUNCINESS/2}
+            self.color_distrubution[btn] = {"color": (1.0, 0, 0, 1.0), "n": int(MAX_PARTICLES//2), "mass": MIN_PARTICLE_MASS, "bounciness": float(MAX_PARTICLE_BOUNCINESS)}
             btn.clicked.connect(lambda: self.show_color_settings(btn, [color_box1, color_box2]))
             _c_layout.addWidget(btn, 1)
             n = len(self.color_distrubution)
