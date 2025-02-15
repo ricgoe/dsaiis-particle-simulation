@@ -1,37 +1,36 @@
-
-
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QColorDialog, QWidget
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QCursor
 
 class PopupWidget(QWidget):
+    """ A custom popup widget that appears near the cursor when shown."""
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowFlags(Qt.Popup)  # Use the ToolTip flag to create a lightweight popup
-        
-        self.move(QCursor().pos().x() + 10, QCursor().pos().y() + 10)
+        self.setWindowFlags(Qt.Popup)  #Flag popup means not integrated in a parent window
+        self.move(QCursor().pos().x() + 10, QCursor().pos().y() + 10)   #Move the popup near the cursor
 
-    def focusOutEvent(self, event):
+    def focusOutEvent(self, event):     #Gets called when Widget out of focus
         """Close the popup when it loses focus."""
         self.close()
         super().focusOutEvent(event)
         
 class CustomColorPicker(QColorDialog):
+    """A custom color dialog that only shows the RGB square"""
     def __init__(self):
         super().__init__()
-        # Customize the color dialog to only show the RGB square.
+        # Hide everything but RGB square
         self.setOption(QColorDialog.ColorDialogOption.ShowAlphaChannel, False)
         self.setOption(QColorDialog.ColorDialogOption.NoButtons, True)
         self.setOption(QColorDialog.ColorDialogOption.DontUseNativeDialog, True)
-        
         for i in self.children()[1:8]: i.hide()
         for i in self.children()[10:11]: i.hide()
         
 class SquareWidget(QWidget):
+    """A custom widget that maintains a square aspect ratio."""
     def __init__(self):
         super().__init__()
         
-    def resizeEvent(self, event):
+    def resizeEvent(self, event):   #Gets called when widget resize is requested
         self.setMaximumHeight(self.width())
         self.setMinimumHeight(self.width())
         super().resizeEvent(event)
