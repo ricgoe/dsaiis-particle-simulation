@@ -2,7 +2,6 @@ name: CI/CD Sphinx-Documentation
 on: 
   push:
     branches:
-      - main
       - Reworked_Docs_Integration
 
 jobs:
@@ -36,12 +35,6 @@ jobs:
           pip install -r requirements.txt
           pip install vispy
           pip install PySide6
-
-      - name: Run version_carer.sh
-        working-directory: docs
-        run: |
-          chmod +x version_carer.sh 
-          ./version_carer.sh
       
       - name: Create conf.py for sphinx
         working-directory: docs
@@ -52,7 +45,7 @@ jobs:
       - name: Generate API Documentation
         working-directory: docs
         run: |
-          sphinx-apidoc -f -o . ../src
+          sphinx-apidoc -f -o . ../ParticleLifeSimulator
 
       - name: Create index.rst
         working-directory: docs
@@ -69,11 +62,6 @@ jobs:
         working-directory: docs
         run: |
           sphinx-build -b html . build
-
-      - name: Show HTML
-        working-directory: docs
-        run: 
-          ls -a
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
