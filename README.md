@@ -65,8 +65,7 @@ pip install -r requirements.txt
     #### 2.1 Collision Handling:
     -  When two particles collide, their velocities are updated using an impulse-based method based on this fromula:
 
-        <img src="image-4.png" alt="alt-text" width="200"/>
-    
+        ![colliding_force](https://github.com/joha0495/fairsharer/blob/main/image-4.png)
         - $j$ is the impulse magnitude.
         - $e$ is the coefficient of restitution.
         - $\mathbf{v}_1^{AB}$ is the relative velocity before collision.
@@ -84,9 +83,10 @@ pip install -r requirements.txt
     #### 2.2 Attraction and Repulsion:
     - The force (attraction or repulsion) is defined by the following function:
     
-        <img src="image-1.png" alt="alt-text" width="300"/>
+        ![Formel](https://github.com/joha0495/fairsharer/blob/main/image-1.png)
+    
 
-        <img src="image.png" alt="alt-text" width="300"/>
+        ![Forces](https://github.com/joha0495/fairsharer/blob/main/image.png)
 
         - $r$ is the distance between particles
         - $a$ is the attraction factor of the interaction matrix
@@ -94,10 +94,10 @@ pip install -r requirements.txt
 
     - The acceleration is defined by this function:
     
-        <img src="image-2.png" alt="alt-text" width="300"/>
+        ![Acceleration](https://github.com/joha0495/fairsharer/blob/main/image-2.png)
 
         - $j$ are all particles in the interaction radius
-        - <img src="image-3.png" alt="alt-text" width="20"/> is the unit vector, pointing in the direction of the other particle
+        - The factor in the sum is the unit vector, pointing in the direction of the other particle
         - $r_{\text{max}}$ is the interaction radius
 
     - The movement of each particle depends on the calculated forces and attraction.
