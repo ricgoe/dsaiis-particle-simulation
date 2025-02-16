@@ -2,7 +2,36 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 class ParticleSystem:
-    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int, int, int]], interaction_matrix: dict[tuple[int, int], float], radius: int = .5, delta_t: float = 0.3, brownian_std: float = .01, drag: float = 0.5, min_vel: float = -1, max_vel: float = 1):
+    def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int, int, int]], interaction_matrix: dict[tuple[int, int], float], radius: int = .5, delta_t: float = 0.3, brownian_std: float = .01, drag: float = 0.5, min_vel: float = -5, max_vel: float = 5):
+        """
+        Initializes a new ParticleSystem instance with specified simulation parameters.
+        
+        Parameters
+        ----------
+        width : int
+            The width of the simulation area.
+        height : int
+            The height of the simulation area.
+        color_distribution : list[tuple[tuple[int, int, int, int], int, int, int]]
+            List of tuples defining the particle classes. Each tuple contains:
+            - A tuple (r, g, b, a) representing the color.
+            - An integer representing the number of particles.
+            - An integer representing the restitution coefficient.
+            - An integer representing the mass.
+        interaction_matrix : dict[tuple[int, int], float]
+            Dictionary mapping a pair of particle class indices to their interaction magnitude.
+            Positive values indicate attraction, negative values indicate repulsion.
+        radius : int, optional
+            The radius of each particle (default is 0.5).
+        delta_t : float, optional
+            The time step for particle movement (default is 0.3).
+        brownian_std : float, optional
+            Standard deviation for random Brownian motion in particle angles (default is 0.01).
+        min_vel : float, optional
+            Minimum initial velocity magnitude (default is -5).
+        max_vel : float, optional
+            Maximum initial velocity magnitude (default is 5).
+        """
         self._particles = None
         self._colors = None
         self._color_index = None
@@ -19,86 +48,151 @@ class ParticleSystem:
         self._velocity = np.column_stack((speeds * np.cos(angles), speeds * np.sin(angles)))
         self._interaction_matrix = interaction_matrix # positive values indicate attraction, negative values indicate repulsion
     
-        
-    @property
-    def particles(self):
-        return self._particles
     
     @property
     def positions(self):
+        """
+        Retrieves the current particle positions.
+        
+        Returns
+        -------
+        np.ndarray
+            A 2D array of shape (N, 2) containing the (x, y) positions of the particles.
+        """
         return self._particles
     
     @property
     def colors(self):
+        """
+        Retrieves the colors of the particles.
+        
+        Returns
+        -------
+        np.ndarray
+            A 2D array of shape (N, 4) containing the RGBA colors of the particles.
+        """
         return self._colors
     
     @property
     def size(self):
+        """
+        Retrieves the size (radius) of each particle.
+        
+        Returns
+        -------
+        np.ndarray
+            A 1D array filled with the particle radius for each particle.
+        """
         return np.full(self._particles.shape[0], self.radius)
     
     @property
     def interaction_matrix(self):
+        """
+        Retrieves the interaction matrix between particle classes.
+        
+        Returns
+        -------
+        dict[tuple[int, int], float]
+            Dictionary mapping particle class pairs to their interaction magnitudes.
+        """
         return self._interaction_matrix
     
     @property
     def delta_t(self):
+        """
+        Retrieves the current time step used for particle movement.
+        
+        Returns
+        -------
+        float
+            The time step delta.
+        """
         return self._delta_t
     
-    @particles.setter
-    def particles(self, value):
-        self._particles = value
+    @positions.setter
+    def positions(self, value):
+        """
+        Sets new particle positions.
+        
+        Parameters
+        ----------
+        value : np.ndarray
+            A 2D array of new particle positions.
+        """
+        self._positions = value
     
     @interaction_matrix.setter
     def interaction_matrix(self, value):
+        """
+        Sets a new interaction matrix.
+        
+        Parameters
+        ----------
+        value : dict[tuple[int, int], float]
+            New dictionary mapping particle class pairs to interaction magnitudes.
+        """
         self._interaction_matrix = value
         
     @delta_t.setter
     def delta_t(self, value):
+        """
+        Sets a new time step for particle movement.
+        
+        Parameters
+        ----------
+        value : float
+            The new time step delta.
+        """
         self._delta_t = value
         
     
 
     def init_particles(self):
         """
-        Each particle row: [x, y]
-        Each color row: [r, g, b, a]
+        Initializes particles with random positions and assigns colors, restitution, and mass.
         
+        Returns
+        -------
+        positions : np.ndarray
+            A 2D array of shape (N, 2) containing the (x, y) positions of the particles.
+        colors : np.ndarray
+            A 2D array of shape (N, 4) containing the RGBA colors of the particles.
+        color_indices : np.ndarray
+            A 2D array of shape (N, 1) containing the class index for each particle.
+        restitution : np.ndarray
+            A 1D array of restitution coefficients for the particles.
+        mass : np.ndarray
+            A 1D array of masses for the particles.
         """
-        particles = [
-            (
-                np.random.uniform(0, self.width, size=(num, 2)), 
-                np.tile(np.array(rgba), (num, 1)), 
-                np.full((num, 1), idx),
-                np.full((num,), restitution),
-                np.full((num,), mass)
-            ) 
-            for idx, (rgba, num, restitution, mass) in enumerate(self._color_distribution, start=1)
-        ]
+        particles = []
+        for idx, (rgba, num, restitution, mass) in enumerate(self._color_distribution, start=1):
+            x_coords = np.random.uniform(0, self.width, size=num)
+            y_coords = np.random.uniform(0, self.height, size=num)
+            positions = np.column_stack((x_coords, y_coords))
+            colors = np.tile(np.array(rgba), (num, 1))
+            color_indices = np.full((num, 1), idx)
+            restitutions = np.full((num,), restitution)
+            masses = np.full((num,), mass)
+            particles.append((positions, colors, color_indices, restitutions, masses))
+            
         positions, colors, color_indices, restitution, mass = map(lambda arrays: np.concatenate(arrays, axis=0), zip(*particles))
     
         return positions, colors, color_indices, restitution, mass
-    
-    
-    def angle_between(self, x, y):
-        # compute the angle between the positive x-axis and [x, y]
-        angle_rad = np.arctan2(y, x)
-        angle_deg = np.degrees(angle_rad) % 360
-        return angle_deg
-    
+
 
     def move_particles(self, skip_interaction: bool = False):
         """
-        Moves particles for one timestep and updates their velocities based on collision responses.
-        The velocity is set in the constructor. The energy stored in the system stays the same, because only the angles change.
+        Moves particles for one time step and updates their velocities based on collisions and interactions.
         
-        The method uses the current velocity to update particle positions, detects collisions, and then
-        updates the velocity for each colliding pair by calling update_velocities_collisions.
-        The particles’ positions are then updated with the velocities changed in their angles.
+        Parameters
+        ----------
+        skip_interaction : bool, optional
+            If True, skips updating interactions between particles (default is False).
         
-        Returns:
-            Nones
+        Returns
+        -------
+        None
         """
-  
         interaction_radius = 10*self.radius
         speeds = np.linalg.norm(self._velocity, axis=1)
         nonzero = speeds > 0
@@ -123,15 +217,6 @@ class ParticleSystem:
         if collision_data[0].size == 0:
             self._particles = new_pos
             return
-
-        # TODO: not relevant for now, maye later
-        # increments = self.get_brwn_increment_from_involved_particles(collision_data) # get the delta v's from the particles that are involved in the collision
-        # resulting_vector = np.sum(delta_pos[increments], axis=0) # calculate the resulting vector from the brwn increments
-        # if np.sum(resulting_vector) == 0: # if the resulting vector is zero, there is no movement
-        #     return
-        # angle = int(self.angle_between(resulting_vector[0], resulting_vector[1])) # calculate the angle between the resulting vector and the positive x-axis
-        # if angle <= 90 or angle > 270:
-        #     colliding_pairs.flip() # if the angle is less than 90 or greater than 270, reverse the order of the colliding pairs
         
         self.update_velocities_collisions(new_pos, collision_data, mode='collision')
         # For interaction mode, assuming check_collisions returns candidate pairs when mode != 'collision'
@@ -141,11 +226,43 @@ class ParticleSystem:
         
 
     def get_brwn_increment_from_involved_particles(self, collision_data: tuple) -> np.ndarray:
+        """
+        Retrieves unique indices of particles involved in collisions.
+        
+        Parameters
+        ----------
+        collision_data : tuple
+            A tuple containing collision information, typically indices of colliding particle pairs.
+        
+        Returns
+        -------
+        np.ndarray
+            Array of unique particle indices that were involved in collisions.
+        """
         i_idx, j_idx, _, _ = collision_data
         return np.unique(np.concatenate((i_idx, j_idx)))
     
     
     def check_collisions(self, positions: np.ndarray, radius: float) -> tuple:
+        """
+        Detects collisions between particles using a spatial tree.
+        
+        Parameters
+        ----------
+        positions : np.ndarray
+            A 2D array of particle positions.
+        radius : float
+            The effective radius used for collision detection.
+        
+        Returns
+        -------
+        tuple
+            A tuple containing:
+            - i_idx : np.ndarray of indices for the first particle in each colliding pair.
+            - j_idx : np.ndarray of indices for the second particle.
+            - distances : np.ndarray of distances between colliding particles.
+            - normals : np.ndarray of unit vectors pointing from the second particle to the first.
+        """
         # boxsize=[self.width, self.height] is necessary for periodic boundaries
         tree = cKDTree(positions, boxsize=[self.width, self.height])
         pairs = tree.query_pairs(r=2*radius)
@@ -174,15 +291,23 @@ class ParticleSystem:
      
     def update_velocities_collisions(self, positions: np.ndarray, colliding_data, mode: str = "collision") -> None:
         """
-        Updates velocities (and positions) based on collisions
+        Updates particle velocities (and positions) based on collisions or interactions.
         
-        Parameters:
-            positions (np.ndarray): Current particle positions.
-            colliding_data (tuple): (i_idx, j_idx, distances, normals)
-            mode (str): Either "collision" or "interaction".
+        Parameters
+        ----------
+        positions : np.ndarray
+            The current particle positions.
+        colliding_data : tuple
+            A tuple containing indices, distances, and normals of colliding or interacting particles.
+        mode : str, optional
+            The update mode:
+            - "collision": Handle physical collisions by adjusting positions and velocities.
+            - "interaction": Update velocities based on interactions between particles.
+            (default is "collision").
         
-        Returns:
-            None
+        Returns
+        -------
+        None
         """
         if mode == "collision":
             i_idx, j_idx, distances, normals = colliding_data
