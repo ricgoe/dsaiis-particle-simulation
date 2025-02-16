@@ -89,11 +89,3 @@ class Canvas(scene.SceneCanvas):
         """
         self.timer.stop()   
         self.scatter.parent = None  #remove scatter plot from view
-        
-if __name__ == "__main__":
-    import threading
-    canvas = Canvas(bgcolor="#24242b")
-    canvas.show(True)
-    canvas.insert_data([[(1.0, 0.0, 0.0, 1.0), 750, 1.0, 1], [(0.0, 0.0, 1.0, 1.0), 750, 1.0, 1]], {(1, 1): -1, (1, 2): 1, (2, 2): 0})
-    threading.Timer(5, app.quit).start()
-    app.run()
