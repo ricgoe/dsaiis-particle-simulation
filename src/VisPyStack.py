@@ -28,7 +28,7 @@ class Canvas(scene.SceneCanvas):
         self.update_interval = 1 / screen_refresh_rate      #To transfer screen_refresh_rate to Hz
         self.timer = app.Timer(interval=self.update_interval, connect=self.update_positions)    #Timer to update particle positions
 
-    def insert_data(self, color_distribution: dict, interaction_matrix: np.ndarray):
+    def insert_data(self, color_distribution: dict, interaction_matrix: dict):
         """
         Insert data into the particle system and scatter plot
 
@@ -37,7 +37,7 @@ class Canvas(scene.SceneCanvas):
         color_distribution : dict
             Dictionary with color distribution for particles
         interaction_matrix : np.ndarray
-            Matrix to define interactions between particle-types
+            Matrix like dict to define interactions between particle-types
 
         """
         #initialize particle system

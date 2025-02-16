@@ -167,15 +167,16 @@ class ParticleSystem:
         """
         
         particles = []
-        for idx, (rgba, num, restitution, mass) in enumerate(self._color_distribution, start=1):
+
+        for idx, val in enumerate(self._color_distribution.values(), start=1):
             _validate_particle_entry(rgba, num, restitution, mass)
-            x_coords = np.random.uniform(0, self.width, size=num)
-            y_coords = np.random.uniform(0, self.height, size=num)
+            x_coords = np.random.uniform(0, self.width, size=val["n"])
+            y_coords = np.random.uniform(0, self.height, size=val["n"])
             positions = np.column_stack((x_coords, y_coords))
-            colors = np.tile(np.array(rgba), (num, 1))
-            color_indices = np.full((num, 1), idx)
-            restitutions = np.full((num,), restitution)
-            masses = np.full((num,), mass)
+            colors = np.tile(np.array(val["color"]), (val["n"], 1))
+            color_indices = np.full((val["n"], 1), idx)
+            restitutions = np.full((val["n"],), val["bounciness"])
+            masses = np.full((val["n"],), val["mass"])
             particles.append((positions, colors, color_indices, restitutions, masses))
             
         positions, colors, color_indices, restitution, mass = map(lambda arrays: np.concatenate(arrays, axis=0), zip(*particles))
@@ -341,7 +342,7 @@ class ParticleSystem:
             colors_j = self._color_index[valid_j, 0]
             min_colors = np.minimum(colors_i, colors_j)
             max_colors = np.maximum(colors_i, colors_j)
-            lookup = np.vectorize(lambda a, b: self._interaction_matrix[(a, b)])
+            lookup = np.vectorize(lambda a, b: self._interaction_matrix[(a, b)]["value"])
             interaction_magnitudes = lookup(min_colors, max_colors)
 
             # repulsive interactions, adjust desired angle by π
