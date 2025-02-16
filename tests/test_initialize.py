@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from src.ParticleSystem import ParticleSystem
+from ParticleSystem import ParticleSystem
 
 # helper function
 def dummy_interaction_matrix():

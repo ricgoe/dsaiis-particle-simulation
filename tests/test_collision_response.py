@@ -1,4 +1,4 @@
-from src.ParticleSystem import ParticleSystem
+from ParticleSystem import ParticleSystem
 import numpy as np
 
 def test_update_velocities_collisions_single():

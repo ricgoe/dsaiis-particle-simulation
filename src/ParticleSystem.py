@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.spatial import cKDTree
-from src.IntegrityChecks import _validate_particle_entry
+from IntegrityChecks import _validate_particle_entry
 
 class ParticleSystem:
     def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int, int, int]], interaction_matrix: dict[tuple[int, int], float], radius: int = .5, delta_t: float = 0.3, brownian_std: float = .01, drag: float = 0.5, min_vel: float = -5, max_vel: float = 5):

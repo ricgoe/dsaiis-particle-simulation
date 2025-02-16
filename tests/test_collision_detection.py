@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from src.ParticleSystem import ParticleSystem
+from ParticleSystem import ParticleSystem
 
 # helper function that creates a ParticleSystem instance
 def create_system(distribution, width=10, height=10, radius=1):
