@@ -65,8 +65,9 @@ pip install -r requirements.txt
     #### 2.1 Collision Handling:
     -  When two particles collide, their velocities are updated using an impulse-based method based on this fromula:
 
-    $$ j = \frac{- (1 + e) ( \mathbf{v}_1^{AB} \cdot \mathbf{n} )}{ \mathbf{n} \cdot \mathbf{n} \left( \frac{1}{M^A} + \frac{1}{M^B} \right) } $$
-    - Explenations:
+        $ j = \frac{- (1 + e) ( \mathbf{v}_1^{AB} \cdot \mathbf{n} )}{ \mathbf{n} \cdot \mathbf{n} \left( \frac{1}{M^A} + \frac{1}{M^B} \right) } $
+      
+    
         - $j$ is the impulse magnitude.
         - $e$ is the coefficient of restitution.
         - $\mathbf{v}_1^{AB}$ is the relative velocity before collision.
@@ -80,6 +81,36 @@ pip install -r requirements.txt
     - The impulse is applied along the normal vector at the collision point.
 
     - The updated velocities account for the mass of each particle, meaning heavier particles experience less velocity change than lighter particles.
+
+    #### 2.2 Attraction and Repulsion:
+    - The force (attraction or repulsion) is defined by the following function:
+    
+        <img src="image-1.png" alt="alt-text" width="300"/>
+
+        $ F(r, a) =
+        \begin{cases}
+        a \cdot \left(\frac{r}{\beta} - 1\right), & r < \beta \\
+        a \cdot \left(1 - \frac{|2r - 1 - \beta|}{1 - \beta}\right), & \beta < r < 1 \\
+        0, & \text{otherwise}
+        \end{cases} $
+
+        - $r$ is the distance between particles
+        - $a$ is the attraction factor of the interaction matrix
+        - $\beta$ parameter that is 0.3 in our case
+
+    - The acceleration is defined by this function:
+    
+        $\ddot{x}_i = r_{\text{max}} \sum_j \frac{\vec{r}_{i,j}}{r_{i,j}} F\left(\frac{r_{ij}}{r_{\text{max}}}, a\right)$
+
+        - $j$ are all particles in the interaction radius
+        - $\frac{\vec{r}_{i,j}}{r_{i,j}}$ is the unit vector, pointing in the direction of the other particle
+        - $r_{\text{max}}$ is the interaction radius
+
+    - The movement of each particle depends on the calculated forces and attraction.
+    - The forces of all particles to every other particle in the interaction radius are calculated using the force function  $F$
+    - The acceleration is the sum of all resulting forces
+    - The position of the particles is updated based on their current speed and the new acceleration.
+
 
 
 
