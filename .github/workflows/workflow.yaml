@@ -5,7 +5,7 @@ on:
       - Documentation
  
 jobs:
-  Generating Documentation:
+  Generating-Documentation:
     runs-on: ubuntu-latest
     permissions:
       contents: write
