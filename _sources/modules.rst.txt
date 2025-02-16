@@ -5,6 +5,7 @@ src
    :maxdepth: 4
 
    GUI
+   IntegrityChecks
    ParticleSystem
    VisPyStack
    custom_widgets

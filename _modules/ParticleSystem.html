@@ -60,12 +60,12 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../IntegrityChecks.html">IntegrityChecks module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ParticleSystem.html">ParticleSystem module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem"><code class="docutils literal notranslate"><span class="pre">ParticleSystem</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.check_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.check_collisions()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.colors"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.colors</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.delta_t"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.delta_t</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.get_brwn_increment_from_involved_particles()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.init_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.init_particles()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.interaction_matrix"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.interaction_matrix</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.move_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.move_particles()</span></code></a></li>
@@ -127,6 +127,7 @@
   <h1>Source code for ParticleSystem</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">cKDTree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IntegrityChecks</span><span class="w"> </span><span class="kn">import</span> <span class="n">_validate_particle_entry</span>
 
 <div class="viewcode-block" id="ParticleSystem">
 <a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem">[docs]</a>
@@ -295,8 +296,10 @@
 <span class="sd">        mass : np.ndarray</span>
 <span class="sd">            A 1D array of masses for the particles.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">particles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">rgba</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">restitution</span><span class="p">,</span> <span class="n">mass</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color_distribution</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">_validate_particle_entry</span><span class="p">(</span><span class="n">rgba</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">restitution</span><span class="p">,</span> <span class="n">mass</span><span class="p">)</span>
             <span class="n">x_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
             <span class="n">y_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
             <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">))</span>
@@ -345,7 +348,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_velocity</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_velocity</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>
         <span class="n">delta_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocity</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_delta_t</span>
-        <span class="n">new_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_particles</span> <span class="o">+</span> <span class="n">delta_pos</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+        <span class="n">new_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_around</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_particles</span> <span class="o">+</span> <span class="n">delta_pos</span><span class="p">)</span>
         <span class="c1"># detect collisions with tentative new positions</span>
         <span class="n">collision_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_collisions</span><span class="p">(</span><span class="n">new_pos</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span> <span class="c1"># sorted from left to right and bottom to top</span>
         <span class="k">if</span> <span class="n">collision_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -357,27 +360,6 @@
         <span class="k">if</span> <span class="n">interaction_radius</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">skip_interaction</span><span class="p">:</span>
             <span class="n">interaction_candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_collisions</span><span class="p">(</span><span class="n">new_pos</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">interaction_radius</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_velocities_collisions</span><span class="p">(</span><span class="n">new_pos</span><span class="p">,</span> <span class="n">interaction_candidates</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;interaction&#39;</span><span class="p">)</span></div>
-
-        
-
-<div class="viewcode-block" id="ParticleSystem.get_brwn_increment_from_involved_particles">
-<a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_brwn_increment_from_involved_particles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_data</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Retrieves unique indices of particles involved in collisions.</span>
-<span class="sd">        </span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        collision_data : tuple</span>
-<span class="sd">            A tuple containing collision information, typically indices of colliding particle pairs.</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        np.ndarray</span>
-<span class="sd">            Array of unique particle indices that were involved in collisions.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">i_idx</span><span class="p">,</span> <span class="n">j_idx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">collision_data</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">i_idx</span><span class="p">,</span> <span class="n">j_idx</span><span class="p">)))</span></div>
 
     
     
@@ -526,13 +508,37 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_velocity</span><span class="p">[</span><span class="n">valid_i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">speed_i</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">new_angle_i</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_velocity</span><span class="p">[</span><span class="n">valid_j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">speed_j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">new_angle_j</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_velocity</span><span class="p">[</span><span class="n">valid_j</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">speed_j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">new_angle_j</span><span class="p">)</span></div>
-</div>
 
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_wrap_around</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wraps particle positions around the canvas.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        positions : np.ndarray</span>
+<span class="sd">            A 2D array of particle positions.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            A 2D array of particle positions with wrapping applied.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wrapped_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">wrapped_positions</span></div>
+
+    
+    
+    
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">part_sys</span> <span class="o">=</span> <span class="n">ParticleSystem</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">color_distribution</span><span class="o">=</span><span class="p">[((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">interaction_matrix</span><span class="o">=</span><span class="p">{(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">1</span><span class="p">})</span>
-    <span class="n">part_sys</span><span class="o">.</span><span class="n">particles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">999</span><span class="p">,</span> <span class="mi">999</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">part_sys</span><span class="o">.</span><span class="n">check_collisions</span><span class="p">(</span><span class="n">part_sys</span><span class="o">.</span><span class="n">particles</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+    <span class="n">part_sys</span> <span class="o">=</span> <span class="n">ParticleSystem</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="p">[[(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mi">750</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mi">750</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="p">{(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="mi">0</span><span class="p">},</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta_t</span> <span class="o">=</span> <span class="mf">0.0166</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">repeat</span><span class="p">(</span><span class="n">n_times_left</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n_times_left</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">threading</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="mf">0.0166</span><span class="p">,</span> <span class="n">repeat</span><span class="p">,</span> <span class="p">(</span><span class="n">n_times_left</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">part_sys</span><span class="o">.</span><span class="n">move_particles</span><span class="p">()</span>
+    <span class="n">repeat</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 
            </div>

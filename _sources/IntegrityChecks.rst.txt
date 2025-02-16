@@ -1,0 +1,7 @@
+IntegrityChecks module
+======================
+
+.. automodule:: IntegrityChecks
+   :members:
+   :undoc-members:
+   :show-inheritance:
