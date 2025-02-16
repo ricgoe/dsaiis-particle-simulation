@@ -63,6 +63,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libegl1
+          sudo apt-get install libxcb-xinerama0
+          sudo apt-get install libxcb-cursor0
 
       - name: Profile GUI and internal references
         run: |
