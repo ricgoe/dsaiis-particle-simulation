@@ -10,6 +10,17 @@ Subpackages
    ParticleLifeSimulator.backend
    ParticleLifeSimulator.frontend
 
+Submodules
+----------
+
+ParticleLifeSimulator.plop module
+---------------------------------
+
+.. automodule:: ParticleLifeSimulator.plop
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
