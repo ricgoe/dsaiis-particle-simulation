@@ -76,7 +76,7 @@ jobs:
         run: snakeviz --outfile=profile_code.html profiled.dat
 
       - name: Upload code profiling report as HTML
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-profiling-report
           path: profiling/profile_code.html
