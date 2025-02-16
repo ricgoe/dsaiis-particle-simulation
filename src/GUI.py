@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QScreen, QPalette
 from matplotlib.pyplot import get_cmap
 from VisPyStack import Canvas
+import random
 
 
 from custom_widgets.Widgets import PopupWidget, CustomColorPicker, SquareWidget
@@ -100,12 +101,15 @@ class MainWindow(QMainWindow):
             _c_layout = QHBoxLayout(_c_widget)
             self.particle_layout.addWidget(_c_widget)
             
-            btn = QPushButton(styleSheet="background-color: #ff0000;")
-            color_box1 = QWidget(styleSheet="background-color: #ff0000;")
-            color_box2 = QWidget(styleSheet="background-color: #ff0000;")
+            
+            color = QColor.fromRgbF(random.random(), random.random(), random.random(), 1)
+            
+            btn = QPushButton(styleSheet=f"background-color: {color.name()};")
+            color_box1 = QWidget(styleSheet=f"background-color: {color.name()};")
+            color_box2 = QWidget(styleSheet=f"background-color: {color.name()};")
             color_box1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             color_box2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            self.color_distrubution[btn] = {"color": (1.0, 0, 0, 1.0), "n": int(MAX_PARTICLES//2), "mass": MIN_PARTICLE_MASS, "bounciness": float(MAX_PARTICLE_BOUNCINESS)}
+            self.color_distrubution[btn] = {"color": color.getRgbF(), "n": int(MAX_PARTICLES//2), "mass": MIN_PARTICLE_MASS, "bounciness": float(MAX_PARTICLE_BOUNCINESS)}
             btn.clicked.connect(lambda: self.show_color_settings(btn, [color_box1, color_box2]))
             _c_layout.addWidget(btn, 1)
             n = len(self.color_distrubution)
@@ -126,9 +130,9 @@ class MainWindow(QMainWindow):
                         rel_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
                         rel_btn.clicked.connect(lambda _, i=i, j=j: self.show_relationship_slider(i, j))
                         self.rel_layout.addWidget(rel_btn, i, j)
-                        entry = self.relationships.get((min(i, j), max(i, j)), { "button": [], "value": 0 })
+                        entry = self.relationships.get((i, j), { "button": [], "value": 0 })
                         entry["button"].append(rel_btn)
-                        self.relationships[(min(i, j), max(i, j))] = entry
+                        self.relationships[(i, j)] = entry
             if len(self.color_distrubution) == 1:
                 self.save_btn.show()
                 self.reset_btn.show()
@@ -151,10 +155,10 @@ class MainWindow(QMainWindow):
         pop = PopupWidget(self)
         pop.setStyleSheet("background-color: #31313a;")
         lyt = QVBoxLayout(pop)
-        label = QLabel(str(self.relationships[(min(i, j), max(i, j))]["value"]), styleSheet="color: white;", alignment=Qt.AlignCenter)
+        label = QLabel(str(self.relationships[(i, j)]["value"]), styleSheet="color: white;", alignment=Qt.AlignCenter)
         slider = QSlider(Qt.Horizontal)
         slider.setRange(-int(RELATIONSHIPS/2), int(RELATIONSHIPS/2))
-        slider.setValue(self.relationships[(min(i, j), max(i, j))]["value"])
+        slider.setValue(self.relationships[(i, j)]["value"])
         slider.valueChanged.connect(lambda val: self.relationship_slider_changed(val, label, i, j))
         lyt.addWidget(slider)
         lyt.addWidget(label)
@@ -174,10 +178,10 @@ class MainWindow(QMainWindow):
         j : int
             Second color index
         """
-        for btn in self.relationships[(min(i, j), max(i, j))]["button"]:
+        for btn in self.relationships[(i, j)]["button"]:
             btn.setStyleSheet(f"background-color: {self.get_cmap_color(val)}; margin: 0; padding: 0; border-radius: 0;")
         label.setText(str(val))
-        self.relationships[(min(i, j), max(i, j))]["value"] = val
+        self.relationships[(i, j)]["value"] = val
                 
     def show_color_settings(self, btn: QPushButton, boxes=list[QWidget]):
         """Opens a popup window with color, mass and restitution setting for a particle class
@@ -235,7 +239,7 @@ class MainWindow(QMainWindow):
         """
         btn.setStyleSheet(f"background-color: {color.name()};")
         for i in boxes: i.setStyleSheet(f"background-color: {color.name()};")
-        self.color_distrubution[btn]["color"] = tuple(x/255 for x in color.toTuple())
+        self.color_distrubution[btn]["color"] = color.getRgbF()
         
     def config_slider_changed(self, val:int|float, key: str, btn: QPushButton, label: QLabel):
         """Callback for mass and restitution sliders
@@ -304,10 +308,9 @@ class MainWindow(QMainWindow):
         """Callback of save button
         
         Passes all the user settings to the VisPy Stack
-"""
-        _c_map = [[val["color"], val["n"], val["bounciness"], val["mass"]] for val in self.color_distrubution.values()]
-        _r_map = {key : value["value"] for key, value in self.relationships.items()}
-        self.canvas.insert_data(_c_map, _r_map) # load data
+""" 
+        print(self.color_distrubution)
+        self.canvas.insert_data(self.color_distrubution, self.relationships) # load data
         
     def reset(self):
         """Callback of reset button
