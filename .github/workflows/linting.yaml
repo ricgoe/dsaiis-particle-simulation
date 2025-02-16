@@ -31,4 +31,3 @@ jobs:
       
       - name: Linting
         run: ruff check 
-
