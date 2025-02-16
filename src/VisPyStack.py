@@ -2,7 +2,6 @@ from vispy import scene, app
 import numpy as np
 from ParticleSystem import ParticleSystem
 
-
 class Canvas(scene.SceneCanvas):
     """ Class for creating a canvas to display a particle system using VisPy """
 

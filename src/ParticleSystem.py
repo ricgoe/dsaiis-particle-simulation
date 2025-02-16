@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial import cKDTree
+from IntegrityChecks import _validate_particle_entry
 
 class ParticleSystem:
     def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int, int, int]], interaction_matrix: dict[tuple[int, int], float], radius: int = .5, delta_t: float = 0.3, brownian_std: float = .01, drag: float = 0.5, min_vel: float = -5, max_vel: float = 5):
@@ -164,8 +165,11 @@ class ParticleSystem:
         mass : np.ndarray
             A 1D array of masses for the particles.
         """
+        
         particles = []
+
         for idx, val in enumerate(self._color_distribution.values(), start=1):
+            _validate_particle_entry(rgba, num, restitution, mass)
             x_coords = np.random.uniform(0, self.width, size=val["n"])
             y_coords = np.random.uniform(0, self.height, size=val["n"])
             positions = np.column_stack((x_coords, y_coords))
@@ -211,7 +215,7 @@ class ParticleSystem:
             self._velocity[:, 0] = initial_speed * np.cos(angles)
             self._velocity[:, 1] = initial_speed * np.sin(angles)
         delta_pos = self._velocity*self._delta_t
-        new_pos = np.mod(self._particles + delta_pos, (self.width, self.height))
+        new_pos = self._wrap_around(self._particles + delta_pos)
         # detect collisions with tentative new positions
         collision_data = self.check_collisions(new_pos, radius=self.radius) # sorted from left to right and bottom to top
         if collision_data[0].size == 0:
@@ -223,24 +227,6 @@ class ParticleSystem:
         if interaction_radius and not skip_interaction:
             interaction_candidates = self.check_collisions(new_pos, radius=interaction_radius)
             self.update_velocities_collisions(new_pos, interaction_candidates, mode='interaction')
-        
-
-    def get_brwn_increment_from_involved_particles(self, collision_data: tuple) -> np.ndarray:
-        """
-        Retrieves unique indices of particles involved in collisions.
-        
-        Parameters
-        ----------
-        collision_data : tuple
-            A tuple containing collision information, typically indices of colliding particle pairs.
-        
-        Returns
-        -------
-        np.ndarray
-            Array of unique particle indices that were involved in collisions.
-        """
-        i_idx, j_idx, _, _ = collision_data
-        return np.unique(np.concatenate((i_idx, j_idx)))
     
     
     def check_collisions(self, positions: np.ndarray, radius: float) -> tuple:
@@ -383,8 +369,32 @@ class ParticleSystem:
             self._velocity[valid_i, 1] = speed_i * np.sin(new_angle_i)
             self._velocity[valid_j, 0] = speed_j * np.cos(new_angle_j)
             self._velocity[valid_j, 1] = speed_j * np.sin(new_angle_j)
+    
+    def _wrap_around(self, positions)-> np.ndarray:
+        """
+        Wraps particle positions around the canvas.
+        
+        Parameters
+        ----------
+        positions : np.ndarray
+            A 2D array of particle positions.
+        
+        Returns
+        -------
+        np.ndarray
+            A 2D array of particle positions with wrapping applied.
+        """
+        wrapped_positions = np.mod(positions, (self.width, self.height))
+        return wrapped_positions
+    
+    
+    
 
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=1000, height=1000, color_distribution=[((1, 0, 0, 1), 5, 1, 1)], radius=1, interaction_matrix={(1, 1): 1})
-    part_sys.particles = np.array([[999, 999], [1, 1], [2, 2]])
-    print(part_sys.check_collisions(part_sys.particles, radius=1))
+    import threading
+    part_sys = ParticleSystem(1000, 800, [[(1.0, 0.0, 0.0, 1.0), 750, 1.0, 1], [(0.0, 0.0, 1.0, 1.0), 750, 1.0, 1]], {(1, 1): -1, (1, 2): 1, (2, 2): 0}, radius=1, delta_t = 0.0166)
+    def repeat(n_times_left):
+        if n_times_left > 0:
+            threading.Timer(0.0166, repeat, (n_times_left - 1)).start()
+        part_sys.move_particles()
+    repeat(1000)
