@@ -1,0 +1,37 @@
+src package
+===========
+
+Submodules
+----------
+
+src.GUI module
+--------------
+
+.. automodule:: src.GUI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.ParticleSystem module
+-------------------------
+
+.. automodule:: src.ParticleSystem
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.VisPyStack module
+---------------------
+
+.. automodule:: src.VisPyStack
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src
+   :members:
+   :undoc-members:
+   :show-inheritance:

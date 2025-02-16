@@ -1,7 +1,7 @@
-ParticleLifeSimulator
-=====================
+src
+===
 
 .. toctree::
    :maxdepth: 4
 
-   ParticleLifeSimulator
+   src
