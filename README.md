@@ -1,40 +1,97 @@
-# Particle Life Simulation
+# Particle Simulation
 
-An interactive simulation based on particle life models.
-It visualizes how particles organize themselves and form patterns through forces of attraction and repulsion.
-
-![Particle Life Demo](docs/Demo) /////////
+## Overview
+This project is a particle simulation that models interactions between different classes of particles. The simulation allows users to configure the number of particles, their colors, mass, and their interaction strengths. The visualization is handled using VisPy, while the user interface is built with PySide6.
 
 ## Features
-- **Visual animation**: Real-time visualization of particles
-- **Customizable parameters**: Configurable attraction and repulsion forces
-- **Efficient implementation**: Optimized for large particle volumes
+- Interactive GUI to configure particle properties
+- Customizable particle interactions (attractive/repulsive forces)
+- Real-time visualization using VisPy
+- Adjustable simulation parameters (time step, particle size, etc.)
+- Collision handling and response based on particle mass and restitution
 
-## Installation & Setup
+## Installation
+### Prerequisites
+Make sure you have Python installed (>=3.8) and install the required dependencies:
 
-### Installation
 ```sh
-git clone https://github.com/ricgoe/dsaiis-particle-simulation.git
-cd dsaiis-particle-simulation
 pip install -r requirements.txt
 ```
 
-### Start the simulation
+## Usage
+1. Run the main GUI script:
+   ```sh
+   python GUI.py
+   ```
+2. Configure the particle classes using the GUI:
+   - Adjust the number of particles per color
+   - Pick colors for different particle type
+   - Pick mass and restitution
+   - Modify interaction strengths between particle types
+   - Save and start the simulation
+
+## Project Structure
 ```sh
-python GUI.py
+.
+├── .github/workflows/      # CI/CD pipeline configuration
+│   └── workflow.yaml
+├── docs/                   # Documentation using Sphinx
+│   ├── conf.py             # Sphinx configuration file
+│   └── index.rst           # Documentation index
+├── src/                    # Source code directory
+│   ├── custom_widgets/     # Additional GUI widgets (e.g., color picker)
+│   ├── GUI.py              # Main GUI application
+│   ├── ParticleSystem.py   # Particle physics and simulation logic
+│   ├── VisPyStack.py       # Visualization and rendering using VisPy
+├── tests/                  # Unit tests
+│   ├── __init__.py
+│   └── test_collision.py   # Test for collision detection
+├── .gitignore              # Git ignore file
+├── LICENSE                 # License file
+├── README.md               # Project documentation
+├── requirements.txt        # Dependency list for installation
 ```
 
-This automatically starts the user interface. Here you can add particle types and manipulate parameters such as attraction and repulsion forces. To keep the particles apart, the individual particle types can each be given their own color. 
-The quantity can be determined individually for each particle type.
-Furthermore, the forces of attraction and repulsion can be set individually for each relation. 
+## How It Works
+### 1. GUI (`GUI.py`)
+- The GUI is built in PySide and allows users to set up their simulation parameters.
+- Controls include sliders, color pickers, and a relationship matrix to define interactions between particle types.
 
-As soon as the desired parameters have been set, the simulation can be started by clicking the ‘Save’ button.
-To return to the standard parameters, you can use the ‘Reset’ button.
+### 2. Simulation Engine (`ParticleSystem.py`)
+- Implements the particle motion, interactions, and collisions.
+- Uses a k-d tree for efficient neighbor searches.
+- Supports Brownian motion and drag forces for realism.
 
-## Background & Algorithm
-The project is based on particle-based simulations. The particles interact based on simple rules:
+    #### 2.1 Collision Handling:
+    -  When two particles collide, their velocities are updated using an impulse-based method based on this fromula:
 
-1. **Attraction**: Certain particles attract each other
-2. **Repulsion**: Other particles repel each other
+    $$ j = \frac{- (1 + e) ( \mathbf{v}_1^{AB} \cdot \mathbf{n} )}{ \mathbf{n} \cdot \mathbf{n} \left( \frac{1}{M^A} + \frac{1}{M^B} \right) } $$
+    - Explenations:
+        - $j$ is the impulse magnitude.
+        - $e$ is the coefficient of restitution.
+        - $\mathbf{v}_1^{AB}$ is the relative velocity before collision.
+        - $\mathbf{n}$ is the normal vector at the collision point.
+        - $M^A$ and $M^B$ are the masses of the two colliding particles.
 
-This creates a dynamic with which the particles adapt based on the forces.
+    - The impulse is a force applied over a very short period that changes the velocities of both particles.
+
+    - The magnitude of the impulse depends on the masses of the colliding particles and the coefficient of restitution.
+
+    - The impulse is applied along the normal vector at the collision point.
+
+    - The updated velocities account for the mass of each particle, meaning heavier particles experience less velocity change than lighter particles.
+
+
+
+
+
+
+
+
+### 3. Visualization (`VisPyStack.py`)
+- Uses VisPy to render the particle system efficiently.
+- Updates particle positions dynamically based on physics calculations.
+
+
+## License
+This project is licensed under the MIT License.
