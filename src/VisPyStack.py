@@ -2,7 +2,6 @@ from vispy import scene, app
 import numpy as np
 from ParticleSystem import ParticleSystem
 
-
 class Canvas(scene.SceneCanvas):
     """ Class for creating a canvas to display a particle system using VisPy """
 
@@ -92,7 +91,9 @@ class Canvas(scene.SceneCanvas):
         self.scatter.parent = None  #remove scatter plot from view
         
 if __name__ == "__main__":
+    import threading
     canvas = Canvas(bgcolor="#24242b")
     canvas.show(True)
     canvas.insert_data([[(1.0, 0.0, 0.0, 1.0), 750, 1.0, 1], [(0.0, 0.0, 1.0, 1.0), 750, 1.0, 1]], {(1, 1): -1, (1, 2): 1, (2, 2): 0})
+    threading.Timer(5, app.quit).start()
     app.run()
