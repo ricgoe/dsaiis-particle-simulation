@@ -1,0 +1,7 @@
+ParticleSystem module
+=====================
+
+.. automodule:: ParticleSystem
+   :members:
+   :undoc-members:
+   :show-inheritance:

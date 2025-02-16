@@ -1,0 +1,7 @@
+VisPyStack module
+=================
+
+.. automodule:: VisPyStack
+   :members:
+   :undoc-members:
+   :show-inheritance:

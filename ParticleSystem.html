@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParticleSystem module &mdash; DSAIIS Particle Simulation 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="VisPyStack module" href="VisPyStack.html" />
+    <link rel="prev" title="GUI module" href="GUI.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DSAIIS Particle Simulation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="GUI.html">GUI module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow"><code class="docutils literal notranslate"><span class="pre">MainWindow</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.add_particle_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.add_particle_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.clear_layout"><code class="docutils literal notranslate"><span class="pre">MainWindow.clear_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.color_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.color_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.config_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.config_slider_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.get_cmap_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.get_cmap_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.n_particle_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.n_particle_slider_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.relationship_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.relationship_slider_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.reset"><code class="docutils literal notranslate"><span class="pre">MainWindow.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.saved"><code class="docutils literal notranslate"><span class="pre">MainWindow.saved()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.show_color_settings"><code class="docutils literal notranslate"><span class="pre">MainWindow.show_color_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.show_relationship_slider"><code class="docutils literal notranslate"><span class="pre">MainWindow.show_relationship_slider()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">MainWindow.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ParticleSystem module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ParticleSystem.ParticleSystem"><code class="docutils literal notranslate"><span class="pre">ParticleSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.angle_between"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.angle_between()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.check_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.check_collisions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.colors"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.colors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.delta_t"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.delta_t</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.get_brwn_increment_from_involved_particles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.init_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.init_particles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.interaction_matrix"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.interaction_matrix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.move_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.move_particles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.particles</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.positions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.positions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.size"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.update_velocities_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.update_velocities_collisions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="VisPyStack.html">VisPyStack module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="VisPyStack.html#VisPyStack.Canvas"><code class="docutils literal notranslate"><span class="pre">Canvas</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="VisPyStack.html#VisPyStack.Canvas.insert_data"><code class="docutils literal notranslate"><span class="pre">Canvas.insert_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="VisPyStack.html#VisPyStack.Canvas.reset"><code class="docutils literal notranslate"><span class="pre">Canvas.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="VisPyStack.html#VisPyStack.Canvas.update_positions"><code class="docutils literal notranslate"><span class="pre">Canvas.update_positions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DSAIIS Particle Simulation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">src</a></li>
+      <li class="breadcrumb-item active">ParticleSystem module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ParticleSystem.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ParticleSystem">
+<span id="particlesystem-module"></span><h1>ParticleSystem module<a class="headerlink" href="#module-ParticleSystem" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ParticleSystem.</span></span><span class="sig-name descname"><span class="pre">ParticleSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_distribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brownian_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.angle_between">
+<span class="sig-name descname"><span class="pre">angle_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.angle_between"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.angle_between" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.check_collisions">
+<span class="sig-name descname"><span class="pre">check_collisions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.check_collisions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.check_collisions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.colors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">colors</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.colors" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.delta_t">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delta_t</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.delta_t" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles">
+<span class="sig-name descname"><span class="pre">get_brwn_increment_from_involved_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collision_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.get_brwn_increment_from_involved_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.init_particles">
+<span class="sig-name descname"><span class="pre">init_particles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.init_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.init_particles" title="Link to this definition"></a></dt>
+<dd><p>Each particle row: [x, y]
+Each color row: [r, g, b, a]</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.interaction_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interaction_matrix</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.interaction_matrix" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.move_particles">
+<span class="sig-name descname"><span class="pre">move_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_interaction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.move_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.move_particles" title="Link to this definition"></a></dt>
+<dd><p>Moves particles for one timestep and updates their velocities based on collision responses.
+The velocity is set in the constructor. The energy stored in the system stays the same, because only the angles change.</p>
+<p>The method uses the current velocity to update particle positions, detects collisions, and then
+updates the velocity for each colliding pair by calling update_velocities_collisions.
+The particles’ positions are then updated with the velocities changed in their angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Nones</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.particles">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">particles</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.particles" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.positions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.positions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.update_velocities_collisions">
+<span class="sig-name descname"><span class="pre">update_velocities_collisions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colliding_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'collision'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.update_velocities_collisions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.update_velocities_collisions" title="Link to this definition"></a></dt>
+<dd><p>Updates velocities (and positions) based on collisions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>np.ndarray</em>) – Current particle positions.</p></li>
+<li><p><strong>colliding_data</strong> (<em>tuple</em>) – (i_idx, j_idx, distances, normals)</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Either “collision” or “interaction”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GUI.html" class="btn btn-neutral float-left" title="GUI module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="VisPyStack.html" class="btn btn-neutral float-right" title="VisPyStack module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

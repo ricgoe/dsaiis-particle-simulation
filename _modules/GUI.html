@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GUI &mdash; DSAIIS Particle Simulation 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DSAIIS Particle Simulation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">src</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../GUI.html">GUI module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../GUI.html#GUI.MainWindow"><code class="docutils literal notranslate"><span class="pre">MainWindow</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.add_particle_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.add_particle_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.clear_layout"><code class="docutils literal notranslate"><span class="pre">MainWindow.clear_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.color_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.color_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.config_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.config_slider_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.get_cmap_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.get_cmap_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.n_particle_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.n_particle_slider_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.relationship_slider_changed"><code class="docutils literal notranslate"><span class="pre">MainWindow.relationship_slider_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.reset"><code class="docutils literal notranslate"><span class="pre">MainWindow.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.saved"><code class="docutils literal notranslate"><span class="pre">MainWindow.saved()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.show_color_settings"><code class="docutils literal notranslate"><span class="pre">MainWindow.show_color_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.show_relationship_slider"><code class="docutils literal notranslate"><span class="pre">MainWindow.show_relationship_slider()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI.html#GUI.MainWindow.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">MainWindow.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ParticleSystem.html">ParticleSystem module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem"><code class="docutils literal notranslate"><span class="pre">ParticleSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.angle_between"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.angle_between()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.check_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.check_collisions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.colors"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.colors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.delta_t"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.delta_t</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.get_brwn_increment_from_involved_particles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.init_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.init_particles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.interaction_matrix"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.interaction_matrix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.move_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.move_particles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.particles</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.positions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.positions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.size"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.update_velocities_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.update_velocities_collisions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../VisPyStack.html">VisPyStack module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../VisPyStack.html#VisPyStack.Canvas"><code class="docutils literal notranslate"><span class="pre">Canvas</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../VisPyStack.html#VisPyStack.Canvas.insert_data"><code class="docutils literal notranslate"><span class="pre">Canvas.insert_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../VisPyStack.html#VisPyStack.Canvas.reset"><code class="docutils literal notranslate"><span class="pre">Canvas.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../VisPyStack.html#VisPyStack.Canvas.update_positions"><code class="docutils literal notranslate"><span class="pre">Canvas.update_positions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DSAIIS Particle Simulation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">GUI</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for GUI</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">QApplication</span><span class="p">,</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> 
+<span class="n">QPushButton</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QSlider</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QSpacerItem</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QScreen</span><span class="p">,</span> <span class="n">QPalette</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_cmap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">VisPyStack</span><span class="w"> </span><span class="kn">import</span> <span class="n">Canvas</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">custom_widgets.Widgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PopupWidget</span><span class="p">,</span> <span class="n">CustomColorPicker</span><span class="p">,</span> <span class="n">SquareWidget</span>
+
+<span class="n">PADDING</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">SPLIT</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">TICK_RATE</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">CIRCLE_SION</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">BORDER</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">NPARTICLES</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">RELATIONSHIPS</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">MAX_PARTICLES</span> <span class="o">=</span> <span class="mi">750</span>
+<span class="n">MAX_PARTICLE_MASS</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">MIN_PARTICLE_MASS</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">MAX_PARTICLE_BOUNCINESS</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">MAX_BOUNCINESS_STEPS</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">SCALING_FACTOR</span> <span class="o">=</span> <span class="mf">0.77</span>
+<span class="n">COLOR_MAP</span> <span class="o">=</span> <span class="s2">&quot;viridis&quot;</span>
+<span class="n">STEP_SIZE</span> <span class="o">=</span> <span class="mi">3</span>          
+                
+<div class="viewcode-block" id="MainWindow">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MainWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Main window for the particle simulation &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Initialize the main window with settings and canvas</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">get_cmap</span><span class="p">(</span><span class="n">COLOR_MAP</span><span class="p">,</span> <span class="n">RELATIONSHIPS</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Set color theme </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span> <span class="o">=</span> <span class="p">{}</span>    <span class="c1">#Dictionary to store color distribution for particles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span> <span class="o">=</span> <span class="p">{}</span>        <span class="c1">#Dictionary to store relationships between particles</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Particle Simulation&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>   <span class="c1">#Set window size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>  <span class="c1">#Make window non-resizable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;background-color: #24242b;&quot;</span><span class="p">)</span>    <span class="c1">#Set background color</span>
+        
+        <span class="n">container</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>   <span class="c1">#Initialize the container widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>    <span class="c1">#Set container as a central widget</span>
+        
+        <span class="n">main_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>    <span class="c1">#Initialize the main layout </span>
+
+        <span class="n">ctrl_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>     <span class="c1">#Initialize the widget to hold control elements</span>
+        <span class="n">ctrl_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">ctrl_widget</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>   <span class="c1">#Initialize the layout for control elements</span>
+        <span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">ctrl_widget</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1">#Add control widget to the main layout</span>
+        
+        <span class="n">canvas_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>   <span class="c1">#Initialize the widget to hold the canvas for particle simulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">canvas_widget</span><span class="p">)</span> 
+        <span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">canvas_widget</span><span class="p">,</span> <span class="n">SPLIT</span><span class="p">)</span>   
+        
+        <span class="n">particle_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>    <span class="c1">#Initialize the widget to hold particle color settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">particle_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">particle_widget</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+        <span class="n">ctrl_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">particle_widget</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">adder_btn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white; font-size: 20px; font-weight: bold; background-color: #31313a;&quot;</span><span class="p">)</span> <span class="c1">#Button to add particle class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adder_btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_particle_color</span><span class="p">)</span>   <span class="c1">#Connect button to add_particle_color method</span>
+        <span class="n">ctrl_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adder_btn</span><span class="p">)</span>   <span class="c1">#Add button to layout with all controls</span>
+        
+        <span class="n">rel_matrix</span> <span class="o">=</span> <span class="n">SquareWidget</span><span class="p">()</span> <span class="c1">#Widget to hold relationship matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rel_layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">(</span><span class="n">rel_matrix</span><span class="p">)</span>   
+        <span class="bp">self</span><span class="o">.</span><span class="n">rel_layout</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1">#Set spacing between elements in the layout</span>
+        <span class="n">ctrl_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">rel_matrix</span><span class="p">)</span>
+        
+        <span class="n">ctrl_layout</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">))</span> <span class="c1">#Add spacer to push elements to the top</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_btn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Save&quot;</span><span class="p">,</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white; font-size: 20px; background-color: #31313a;&quot;</span><span class="p">)</span> <span class="c1">#Button to save particle settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_btn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>   <span class="c1">#Hide the button until particle settings are added</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saved</span><span class="p">)</span> <span class="c1">#Connect button to saved-method</span>
+        <span class="n">ctrl_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_btn</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_btn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Reset&quot;</span><span class="p">,</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white; font-size: 20px; background-color: #31313a;&quot;</span><span class="p">)</span> <span class="c1">#Button to reset particle settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_btn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">)</span>
+        <span class="n">ctrl_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reset_btn</span><span class="p">)</span>
+        
+        <span class="n">refresh_rate</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">primaryScreen</span><span class="p">()</span><span class="o">.</span><span class="n">refreshRate</span><span class="p">())</span> <span class="c1">#Get user-screen refresh rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">bgcolor</span><span class="o">=</span><span class="s1">&#39;#24242b&#39;</span><span class="p">,</span> <span class="n">screen_refresh_rate</span><span class="o">=</span><span class="n">refresh_rate</span><span class="p">,</span> <span class="n">particle_scaling_factor</span><span class="o">=</span><span class="n">SCALING_FACTOR</span><span class="p">)</span> <span class="c1">#Canvas to hold particle simulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">native</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        
+        
+    
+<div class="viewcode-block" id="MainWindow.add_particle_color">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.add_particle_color">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_particle_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Adds color settings for a new particle class:</span>
+<span class="sd">            - Slider for number of particles</span>
+<span class="sd">            - Color picker for particle color</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">NPARTICLES</span><span class="p">:</span>
+            <span class="n">_c_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+            <span class="n">_c_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="n">_c_widget</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">particle_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">_c_widget</span><span class="p">)</span>
+            
+            <span class="n">btn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;background-color: #ff0000;&quot;</span><span class="p">)</span>
+            <span class="n">color_box1</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">(</span><span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;background-color: #ff0000;&quot;</span><span class="p">)</span>
+            <span class="n">color_box2</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">(</span><span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;background-color: #ff0000;&quot;</span><span class="p">)</span>
+            <span class="n">color_box1</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+            <span class="n">color_box2</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">[</span><span class="n">btn</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">MAX_PARTICLES</span><span class="o">//</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;mass&quot;</span><span class="p">:</span> <span class="n">MIN_PARTICLE_MASS</span><span class="p">,</span> <span class="s2">&quot;bounciness&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">MAX_PARTICLE_BOUNCINESS</span><span class="p">)}</span>
+            <span class="n">btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_color_settings</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="p">[</span><span class="n">color_box1</span><span class="p">,</span> <span class="n">color_box2</span><span class="p">]))</span>
+            <span class="n">_c_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rel_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">color_box1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rel_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">color_box2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            
+            <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">MAX_PARTICLES</span><span class="o">//</span><span class="mi">2</span><span class="p">),</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white;&quot;</span><span class="p">)</span>
+            <span class="n">slider</span> <span class="o">=</span> <span class="n">QSlider</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+            <span class="n">slider</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">MAX_PARTICLES</span><span class="p">)</span>
+            <span class="n">slider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">MAX_PARTICLES</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">slider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_particle_slider_changed</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">btn</span><span class="p">))</span>
+            <span class="n">_c_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="n">SPLIT</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">_c_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+                        <span class="n">rel_btn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">styleSheet</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;background-color: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_cmap_color</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">; margin: 0; padding: 0; border-radius: 0;&quot;</span><span class="p">)</span>
+                        <span class="n">rel_btn</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+                        <span class="n">rel_btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="n">j</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_relationship_slider</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rel_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">rel_btn</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+                        <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)),</span> <span class="p">{</span> <span class="s2">&quot;button&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span> <span class="p">})</span>
+                        <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;button&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rel_btn</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="p">[(</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))]</span> <span class="o">=</span> <span class="n">entry</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save_btn</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reset_btn</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">NPARTICLES</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">adder_btn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
+
+                        
+    
+<div class="viewcode-block" id="MainWindow.show_relationship_slider">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.show_relationship_slider">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_relationship_slider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens a popup window with a slider to adjust the relationship between two particle classes</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        i : int</span>
+<span class="sd">            First color index</span>
+<span class="sd">        j : int</span>
+<span class="sd">            Second color index </span>
+<span class="sd">            </span>
+<span class="sd">        (i, j) describes the relationship between the ith and jth particle class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pop</span> <span class="o">=</span> <span class="n">PopupWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">pop</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;background-color: #31313a;&quot;</span><span class="p">)</span>
+        <span class="n">lyt</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">pop</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="p">[(</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))][</span><span class="s2">&quot;value&quot;</span><span class="p">]),</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white;&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">slider</span> <span class="o">=</span> <span class="n">QSlider</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="n">slider</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">RELATIONSHIPS</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">RELATIONSHIPS</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">slider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="p">[(</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))][</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+        <span class="n">slider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationship_slider_changed</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+        <span class="n">lyt</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">slider</span><span class="p">)</span>
+        <span class="n">lyt</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">pop</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+        
+<div class="viewcode-block" id="MainWindow.relationship_slider_changed">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.relationship_slider_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">relationship_slider_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback function for relationship slider</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        val : int</span>
+<span class="sd">            Slider value</span>
+<span class="sd">        label : QLabel</span>
+<span class="sd">            Label to display the slider value</span>
+<span class="sd">        i : int</span>
+<span class="sd">            First color index</span>
+<span class="sd">        j : int</span>
+<span class="sd">            Second color index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">btn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="p">[(</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))][</span><span class="s2">&quot;button&quot;</span><span class="p">]:</span>
+            <span class="n">btn</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;background-color: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_cmap_color</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s2">; margin: 0; padding: 0; border-radius: 0;&quot;</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="p">[(</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
+
+                
+<div class="viewcode-block" id="MainWindow.show_color_settings">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.show_color_settings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_color_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">boxes</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens a popup window with color, mass and restitution setting for a particle class</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        btn : QPushButton</span>
+<span class="sd">            Button that opened the popup window</span>
+<span class="sd">        boxes : list[QWidget]</span>
+<span class="sd">            Only passed to color_changed method</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pop</span> <span class="o">=</span> <span class="n">PopupWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">pop</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;background-color: #31313a;&quot;</span><span class="p">)</span>
+        <span class="n">lyt</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">pop</span><span class="p">)</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="n">CustomColorPicker</span><span class="p">()</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">setCurrentColor</span><span class="p">(</span><span class="n">btn</span><span class="o">.</span><span class="n">palette</span><span class="p">()</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="n">QPalette</span><span class="o">.</span><span class="n">Button</span><span class="p">))</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">currentColorChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">color</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_changed</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">btn</span><span class="p">,</span> <span class="n">boxes</span><span class="p">))</span>
+        <span class="n">lyt</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span>
+        <span class="n">mass_box</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">mass_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="n">mass_box</span><span class="p">)</span>
+        <span class="n">mass_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Mass:         &quot;</span><span class="p">,</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white;&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">mass_val_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">[</span><span class="n">btn</span><span class="p">][</span><span class="s2">&quot;mass&quot;</span><span class="p">]),</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white;&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">mass_slider</span> <span class="o">=</span> <span class="n">QSlider</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="n">mass_slider</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="n">MIN_PARTICLE_MASS</span><span class="p">,</span> <span class="n">MAX_PARTICLE_MASS</span><span class="p">)</span>
+        <span class="n">mass_slider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">[</span><span class="n">btn</span><span class="p">][</span><span class="s2">&quot;mass&quot;</span><span class="p">])</span>
+        <span class="n">mass_slider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_slider_changed</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s2">&quot;mass&quot;</span><span class="p">,</span> <span class="n">btn</span><span class="p">,</span> <span class="n">mass_val_label</span><span class="p">))</span>
+        <span class="n">mass_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">mass_label</span><span class="p">)</span>
+        <span class="n">mass_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">mass_slider</span><span class="p">)</span>
+        <span class="n">mass_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">mass_val_label</span><span class="p">)</span>
+        <span class="n">bounciness_box</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">bounciness_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="n">bounciness_box</span><span class="p">)</span>
+        <span class="n">bounciness_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Resitution:&quot;</span><span class="p">,</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white;&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">bounciness_val_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">[</span><span class="n">btn</span><span class="p">][</span><span class="s2">&quot;bounciness&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">),</span> <span class="n">styleSheet</span><span class="o">=</span><span class="s2">&quot;color: white;&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">bounciness_slider</span> <span class="o">=</span> <span class="n">QSlider</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="n">bounciness_slider</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_PARTICLE_BOUNCINESS</span><span class="o">*</span><span class="n">MAX_BOUNCINESS_STEPS</span><span class="p">)</span>
+        <span class="n">bounciness_slider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">[</span><span class="n">btn</span><span class="p">][</span><span class="s2">&quot;bounciness&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">MAX_BOUNCINESS_STEPS</span><span class="p">)</span>
+        <span class="n">bounciness_slider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_slider_changed</span><span class="p">(</span><span class="n">val</span><span class="o">/</span><span class="n">MAX_BOUNCINESS_STEPS</span><span class="p">,</span> <span class="s2">&quot;bounciness&quot;</span><span class="p">,</span> <span class="n">btn</span><span class="p">,</span> <span class="n">bounciness_val_label</span><span class="p">))</span>
+        <span class="n">bounciness_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">bounciness_label</span><span class="p">)</span>
+        <span class="n">bounciness_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">bounciness_slider</span><span class="p">)</span>
+        <span class="n">bounciness_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">bounciness_val_label</span><span class="p">)</span>
+        <span class="n">lyt</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">mass_box</span><span class="p">)</span>
+        <span class="n">lyt</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">bounciness_box</span><span class="p">)</span>
+        <span class="n">pop</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+        
+<div class="viewcode-block" id="MainWindow.color_changed">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.color_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">color_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">boxes</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback function for color picker</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        btn : QPushButton</span>
+<span class="sd">            Button to change color of</span>
+<span class="sd">        boxes : list[QWidget]</span>
+<span class="sd">            List of color boxes in relationship matrix to change color of</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">btn</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;background-color: </span><span class="si">{</span><span class="n">color</span><span class="o">.</span><span class="n">name</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">boxes</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;background-color: </span><span class="si">{</span><span class="n">color</span><span class="o">.</span><span class="n">name</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">[</span><span class="n">btn</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="mi">255</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">color</span><span class="o">.</span><span class="n">toTuple</span><span class="p">())</span></div>
+
+        
+<div class="viewcode-block" id="MainWindow.config_slider_changed">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.config_slider_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">config_slider_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">QLabel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback for mass and restitution sliders</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        val : int|float</span>
+<span class="sd">            Slider value</span>
+<span class="sd">        key : str [&quot;mass&quot;, &quot;bounciness&quot;]</span>
+<span class="sd">            Key to update in color_distrubution</span>
+<span class="sd">        btn : QPushButton</span>
+<span class="sd">            Only used as reference in color distribution</span>
+<span class="sd">        label : QLabel</span>
+<span class="sd">            Label to display the slider value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">val_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val_str</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">[</span><span class="n">btn</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="MainWindow.n_particle_slider_changed">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.n_particle_slider_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">n_particle_slider_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">QPushButton</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback function for number of particles slider</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        val : int</span>
+<span class="sd">            Slider value</span>
+<span class="sd">        label : QLabel</span>
+<span class="sd">            Label to display the slider value</span>
+<span class="sd">        btn : QPushButton</span>
+<span class="sd">            Only used as reference in color distribution</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">[</span><span class="n">btn</span><span class="p">][</span><span class="s2">&quot;n&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="MainWindow.get_cmap_color">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.get_cmap_color">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cmap_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get color in hex-format from color map</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : int</span>
+<span class="sd">            Index of color in color map</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Hex color code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">QColor</span><span class="o">.</span><span class="n">fromRgbF</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">RELATIONSHIPS</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="n">idx</span><span class="p">))</span><span class="o">.</span><span class="n">name</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="MainWindow.clear_layout">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.clear_layout">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clears a given layout of all widgets</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        layout : QLayout</span>
+<span class="sd">            Layout to clear</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">layout</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>  <span class="c1"># While the layout has widgets</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">takeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Take the first item in the layout</span>
+            <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">widget</span><span class="p">():</span>  <span class="c1"># If it&#39;s a widget (not a nested layout or spacer)</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>  <span class="c1"># Mark the widget for deletion</span>
+            <span class="k">elif</span> <span class="n">child</span><span class="o">.</span><span class="n">layout</span><span class="p">():</span>  <span class="c1"># If it&#39;s a nested layout</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_layout</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">layout</span><span class="p">())</span>  <span class="c1"># Recursively clear the nested layout</span></div>
+
+    
+<div class="viewcode-block" id="MainWindow.saved">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.saved">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">saved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback of save button</span>
+<span class="sd">        </span>
+<span class="sd">        Passes all the user settings to the VisPy Stack</span>
+<span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">_c_map</span> <span class="o">=</span> <span class="p">[[</span><span class="n">val</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">],</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">],</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;bounciness&quot;</span><span class="p">],</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="n">_r_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="p">:</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">insert_data</span><span class="p">(</span><span class="n">_c_map</span><span class="p">,</span> <span class="n">_r_map</span><span class="p">)</span> <span class="c1"># load data</span></div>
+
+        
+<div class="viewcode-block" id="MainWindow.reset">
+<a class="viewcode-back" href="../GUI.html#GUI.MainWindow.reset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback of reset button</span>
+
+<span class="sd">        Resets all user settings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rel_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adder_btn</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_btn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_btn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
+</div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">()</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="n">MainWindow</span><span class="p">()</span>
+    <span class="n">window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

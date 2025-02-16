@@ -3,9 +3,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; DSAIIS Particle Simulation 0.0.1 documentation</title>
+  <title>VisPyStack module &mdash; DSAIIS Particle Simulation 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -16,8 +17,9 @@
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="ParticleSystem module" href="ParticleSystem.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,8 +42,8 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">src</a><ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="GUI.html">GUI module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="GUI.html#GUI.MainWindow"><code class="docutils literal notranslate"><span class="pre">MainWindow</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="GUI.html#GUI.MainWindow.add_particle_color"><code class="docutils literal notranslate"><span class="pre">MainWindow.add_particle_color()</span></code></a></li>
@@ -78,11 +80,11 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="VisPyStack.html">VisPyStack module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="VisPyStack.html#VisPyStack.Canvas"><code class="docutils literal notranslate"><span class="pre">Canvas</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="VisPyStack.html#VisPyStack.Canvas.insert_data"><code class="docutils literal notranslate"><span class="pre">Canvas.insert_data()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="VisPyStack.html#VisPyStack.Canvas.reset"><code class="docutils literal notranslate"><span class="pre">Canvas.reset()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="VisPyStack.html#VisPyStack.Canvas.update_positions"><code class="docutils literal notranslate"><span class="pre">Canvas.update_positions()</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">VisPyStack module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#VisPyStack.Canvas"><code class="docutils literal notranslate"><span class="pre">Canvas</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#VisPyStack.Canvas.insert_data"><code class="docutils literal notranslate"><span class="pre">Canvas.insert_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#VisPyStack.Canvas.reset"><code class="docutils literal notranslate"><span class="pre">Canvas.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#VisPyStack.Canvas.update_positions"><code class="docutils literal notranslate"><span class="pre">Canvas.update_positions()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -105,8 +107,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Index</li>
+          <li class="breadcrumb-item"><a href="modules.html">src</a></li>
+      <li class="breadcrumb-item active">VisPyStack module</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="_sources/VisPyStack.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -114,213 +118,54 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
+  <section id="module-VisPyStack">
+<span id="vispystack-module"></span><h1>VisPyStack module<a class="headerlink" href="#module-VisPyStack" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="VisPyStack.Canvas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">VisPyStack.</span></span><span class="sig-name descname"><span class="pre">Canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bgcolor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen_refresh_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_scaling_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VisPyStack.html#Canvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#VisPyStack.Canvas" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SceneCanvas</span></code></p>
+<p>Class for creating a canvas to display a particle system using VisPy</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="VisPyStack.Canvas.insert_data">
+<span class="sig-name descname"><span class="pre">insert_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_distribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VisPyStack.html#Canvas.insert_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#VisPyStack.Canvas.insert_data" title="Link to this definition"></a></dt>
+<dd><p>Insert data into the particle system and scatter plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color_distribution</strong> (<em>dict</em>) – Dictionary with color distribution for particles</p></li>
+<li><p><strong>interaction_matrix</strong> (<em>np.ndarray</em>) – Matrix to define interactions between particle-types</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
-<h1 id="index">Index</h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="VisPyStack.Canvas.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/VisPyStack.html#Canvas.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#VisPyStack.Canvas.reset" title="Link to this definition"></a></dt>
+<dd><p>Reset the particle system and view</p>
+</dd></dl>
 
-<div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
- | <a href="#C"><strong>C</strong></a>
- | <a href="#D"><strong>D</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#I"><strong>I</strong></a>
- | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
- | <a href="#P"><strong>P</strong></a>
- | <a href="#R"><strong>R</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#U"><strong>U</strong></a>
- | <a href="#V"><strong>V</strong></a>
- 
-</div>
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="GUI.html#GUI.MainWindow.add_particle_color">add_particle_color() (GUI.MainWindow method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.angle_between">angle_between() (ParticleSystem.ParticleSystem method)</a>
-</li>
-  </ul></td>
-</tr></table>
+<dl class="py method">
+<dt class="sig sig-object py" id="VisPyStack.Canvas.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ev</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VisPyStack.html#Canvas.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#VisPyStack.Canvas.update_positions" title="Link to this definition"></a></dt>
+<dd><p>Update particle positions and colors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ev</strong> (<em>Event</em>) – An unused event object</p>
+</dd>
+</dl>
+</dd></dl>
 
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="VisPyStack.html#VisPyStack.Canvas">Canvas (class in VisPyStack)</a>
-</li>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.check_collisions">check_collisions() (ParticleSystem.ParticleSystem method)</a>
-</li>
-      <li><a href="GUI.html#GUI.MainWindow.clear_layout">clear_layout() (GUI.MainWindow method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="GUI.html#GUI.MainWindow.color_changed">color_changed() (GUI.MainWindow method)</a>
-</li>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.colors">colors (ParticleSystem.ParticleSystem property)</a>
-</li>
-      <li><a href="GUI.html#GUI.MainWindow.config_slider_changed">config_slider_changed() (GUI.MainWindow method)</a>
-</li>
-  </ul></td>
-</tr></table>
+</dd></dl>
 
-<h2 id="D">D</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.delta_t">delta_t (ParticleSystem.ParticleSystem property)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles">get_brwn_increment_from_involved_particles() (ParticleSystem.ParticleSystem method)</a>
-</li>
-      <li><a href="GUI.html#GUI.MainWindow.get_cmap_color">get_cmap_color() (GUI.MainWindow method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    GUI
-
-      <ul>
-        <li><a href="GUI.html#module-GUI">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="I">I</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.init_particles">init_particles() (ParticleSystem.ParticleSystem method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="VisPyStack.html#VisPyStack.Canvas.insert_data">insert_data() (VisPyStack.Canvas method)</a>
-</li>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.interaction_matrix">interaction_matrix (ParticleSystem.ParticleSystem property)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="GUI.html#GUI.MainWindow">MainWindow (class in GUI)</a>
-</li>
-      <li>
-    module
-
-      <ul>
-        <li><a href="GUI.html#module-GUI">GUI</a>
-</li>
-        <li><a href="ParticleSystem.html#module-ParticleSystem">ParticleSystem</a>
-</li>
-        <li><a href="VisPyStack.html#module-VisPyStack">VisPyStack</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.move_particles">move_particles() (ParticleSystem.ParticleSystem method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="GUI.html#GUI.MainWindow.n_particle_slider_changed">n_particle_slider_changed() (GUI.MainWindow method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="P">P</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.particles">particles (ParticleSystem.ParticleSystem property)</a>
-</li>
-      <li>
-    ParticleSystem
-
-      <ul>
-        <li><a href="ParticleSystem.html#module-ParticleSystem">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem">ParticleSystem (class in ParticleSystem)</a>
-</li>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.positions">positions (ParticleSystem.ParticleSystem property)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="R">R</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="GUI.html#GUI.MainWindow.relationship_slider_changed">relationship_slider_changed() (GUI.MainWindow method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="GUI.html#GUI.MainWindow.reset">reset() (GUI.MainWindow method)</a>
-
-      <ul>
-        <li><a href="VisPyStack.html#VisPyStack.Canvas.reset">(VisPyStack.Canvas method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="GUI.html#GUI.MainWindow.saved">saved() (GUI.MainWindow method)</a>
-</li>
-      <li><a href="GUI.html#GUI.MainWindow.show_color_settings">show_color_settings() (GUI.MainWindow method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="GUI.html#GUI.MainWindow.show_relationship_slider">show_relationship_slider() (GUI.MainWindow method)</a>
-</li>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.size">size (ParticleSystem.ParticleSystem property)</a>
-</li>
-      <li><a href="GUI.html#GUI.MainWindow.staticMetaObject">staticMetaObject (GUI.MainWindow attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="U">U</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="VisPyStack.html#VisPyStack.Canvas.update_positions">update_positions() (VisPyStack.Canvas method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ParticleSystem.html#ParticleSystem.ParticleSystem.update_velocities_collisions">update_velocities_collisions() (ParticleSystem.ParticleSystem method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="V">V</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    VisPyStack
-
-      <ul>
-        <li><a href="VisPyStack.html#module-VisPyStack">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
+</section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ParticleSystem.html" class="btn btn-neutral float-left" title="ParticleSystem module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 
