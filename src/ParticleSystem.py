@@ -616,9 +616,20 @@ class ParticleSystem:
 
 if __name__ == "__main__":
     import threading
-    part_sys = ParticleSystem(1000, 800, [[(1.0, 0.0, 0.0, 1.0), 750, 1.0, 1], [(0.0, 0.0, 1.0, 1.0), 750, 1.0, 1]], {(1, 1): -1, (1, 2): 1, (2, 2): 0}, radius=1, delta_t = 0.0166)
-    def repeat(n_times_left):
+    color_distribution = {
+        "key1": { "color": (1.0, 0.0, 0.0, 1.0), "n": 375, "mass": 1, "bounciness": 1.0,},
+        "key2": { "color": (0.0, 0.0, 1.0, 1.0),"n": 375,"mass": 1,"bounciness": 1.0,}
+    }
+    
+    relationships = {
+        (1, 1): {"value": 0},
+        (1, 2): {"value": 0},
+        (2, 1): {"value": 0},
+        (2, 2): {"value": 0},
+    }
+    part_sys = ParticleSystem(1000, 800, color_distribution, relationships, radius=1, delta_t = 0.0166)
+    def rapat(n_times_left):
         if n_times_left > 0:
-            threading.Timer(0.0166, repeat, (n_times_left - 1)).start()
+            threading.Timer(0.0166, rapat, (n_times_left - 1)).start()
         part_sys.move_particles()
-    repeat(1000)
+    rapat(1000)
