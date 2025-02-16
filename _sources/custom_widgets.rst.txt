@@ -1,0 +1,21 @@
+custom\_widgets package
+=======================
+
+Submodules
+----------
+
+custom\_widgets.Widgets module
+------------------------------
+
+.. automodule:: custom_widgets.Widgets
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: custom_widgets
+   :members:
+   :undoc-members:
+   :show-inheritance:
