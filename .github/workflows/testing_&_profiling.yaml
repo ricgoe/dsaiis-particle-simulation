@@ -2,7 +2,7 @@ name: Testing & Profiling
 on:
   push:
     branches:
-      - Testing
+      - main
     paths-ignore:
       - 'profiling/**'
 
