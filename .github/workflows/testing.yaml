@@ -38,7 +38,7 @@ jobs:
         run: pytest
   
   Profiling:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest #ubuntu-latest
     permissions:
       contents: write
     
@@ -59,11 +59,11 @@ jobs:
           pip install -r requirements.txt 
           pip install snakeviz
       
-      - name: Install system dependencies for OpenGL
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libegl1
-          sudo apt-get install -y libxcb-cursor-dev
+      #- name: Install system dependencies for OpenGL
+      #  run: |
+      #    sudo apt-get update
+      #    sudo apt-get install -y libegl1
+      #    sudo apt-get install -y libxcb-cursor-dev
 
       - name: Profile GUI and internal references
         run: |
