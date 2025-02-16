@@ -68,7 +68,7 @@ jobs:
       - name: Profile GUI and internal references
         run: |
           mkdir -p profiling
-          python -m cProfile -o ../profiling/profiled.dat src/ParticleSystem.py 
+          python -m cProfile -o profiling/profiled.dat src/ParticleSystem.py 
       
       - name: Display code-profile
         working-directory: profiling
