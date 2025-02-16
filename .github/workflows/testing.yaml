@@ -57,8 +57,26 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt 
+          pip install snakeviz
       
       - name: Install system dependencies for OpenGL
         run: |
           sudo apt-get update
           sudo apt-get install -y libegl1
+          apt-get install python-profiler
+
+      - name: Profile GUI and internal references
+        working-dir: src
+        run: |
+          mkdir -p profiling
+          python -m cProfile -o ../profiling/profiled.dat GUI.py 
+      
+      - name: Display code-profile
+        working-dir: profiling
+        run: snakeviz --outfile=profile_code.html profiled.dat
+
+      - name: Upload code profiling report as HTML
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-profiling-report
+          path: profiling/profile_code.html
