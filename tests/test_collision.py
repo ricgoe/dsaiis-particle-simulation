@@ -1,6 +1,10 @@
 import numpy as np
 import pytest
-from src.particle_system import ParticleSystem
+import sys
+import os
+sys.path.insert(0, os.path.abspath('../src'))
+from ParticleSystem import ParticleSystem
+
 
 def test_collision_detection():
     ps = ParticleSystem(
