@@ -2,7 +2,7 @@ name: Linting
 on:
   push:
     branches:
-      - Linting
+      - main
 
 jobs:
   Code-Linting:
