@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from src.particle_system import ParticleSystem
+from src.ParticleSystem import ParticleSystem
 
 def test_collision_detection():
     ps = ParticleSystem(
