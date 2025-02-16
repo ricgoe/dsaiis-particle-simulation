@@ -65,7 +65,6 @@
 </li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">ParticleSystem module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ParticleSystem.ParticleSystem"><code class="docutils literal notranslate"><span class="pre">ParticleSystem</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.angle_between"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.angle_between()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.check_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.check_collisions()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.colors"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.colors</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.delta_t"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.delta_t</span></code></a></li>
@@ -73,7 +72,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.init_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.init_particles()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.interaction_matrix"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.interaction_matrix</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.move_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.move_particles()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.particles</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.positions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.positions</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.size"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.size</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ParticleSystem.ParticleSystem.update_velocities_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.update_velocities_collisions()</span></code></a></li>
@@ -134,88 +132,167 @@
 <span id="particlesystem-module"></span><h1>ParticleSystem module<a class="headerlink" href="#module-ParticleSystem" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="ParticleSystem.ParticleSystem">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ParticleSystem.</span></span><span class="sig-name descname"><span class="pre">ParticleSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_distribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brownian_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ParticleSystem.</span></span><span class="sig-name descname"><span class="pre">ParticleSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_distribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brownian_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.angle_between">
-<span class="sig-name descname"><span class="pre">angle_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.angle_between"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.angle_between" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.check_collisions">
 <span class="sig-name descname"><span class="pre">check_collisions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.check_collisions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.check_collisions" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.colors">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">colors</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.colors" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.delta_t">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delta_t</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.delta_t" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles">
-<span class="sig-name descname"><span class="pre">get_brwn_increment_from_involved_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collision_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.get_brwn_increment_from_involved_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.init_particles">
-<span class="sig-name descname"><span class="pre">init_particles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.init_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.init_particles" title="Link to this definition"></a></dt>
-<dd><p>Each particle row: [x, y]
-Each color row: [r, g, b, a]</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.interaction_matrix">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interaction_matrix</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.interaction_matrix" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.move_particles">
-<span class="sig-name descname"><span class="pre">move_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_interaction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.move_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.move_particles" title="Link to this definition"></a></dt>
-<dd><p>Moves particles for one timestep and updates their velocities based on collision responses.
-The velocity is set in the constructor. The energy stored in the system stays the same, because only the angles change.</p>
-<p>The method uses the current velocity to update particle positions, detects collisions, and then
-updates the velocity for each colliding pair by calling update_velocities_collisions.
-The particles’ positions are then updated with the velocities changed in their angles.</p>
+<dd><p>Detects collisions between particles using a spatial tree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Nones</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>np.ndarray</em>) – A 2D array of particle positions.</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – The effective radius used for collision detection.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing:
+- i_idx : np.ndarray of indices for the first particle in each colliding pair.
+- j_idx : np.ndarray of indices for the second particle.
+- distances : np.ndarray of distances between colliding particles.
+- normals : np.ndarray of unit vectors pointing from the second particle to the first.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.particles">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">particles</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.particles" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.colors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">colors</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.colors" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the colors of the particles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A 2D array of shape (N, 4) containing the RGBA colors of the particles.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.delta_t">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delta_t</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.delta_t" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the current time step used for particle movement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The time step delta.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles">
+<span class="sig-name descname"><span class="pre">get_brwn_increment_from_involved_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collision_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.get_brwn_increment_from_involved_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles" title="Link to this definition"></a></dt>
+<dd><p>Retrieves unique indices of particles involved in collisions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collision_data</strong> (<em>tuple</em>) – A tuple containing collision information, typically indices of colliding particle pairs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of unique particle indices that were involved in collisions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.init_particles">
+<span class="sig-name descname"><span class="pre">init_particles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.init_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.init_particles" title="Link to this definition"></a></dt>
+<dd><p>Initializes particles with random positions and assigns colors, restitution, and mass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>positions</strong> (<em>np.ndarray</em>) – A 2D array of shape (N, 2) containing the (x, y) positions of the particles.</p></li>
+<li><p><strong>colors</strong> (<em>np.ndarray</em>) – A 2D array of shape (N, 4) containing the RGBA colors of the particles.</p></li>
+<li><p><strong>color_indices</strong> (<em>np.ndarray</em>) – A 2D array of shape (N, 1) containing the class index for each particle.</p></li>
+<li><p><strong>restitution</strong> (<em>np.ndarray</em>) – A 1D array of restitution coefficients for the particles.</p></li>
+<li><p><strong>mass</strong> (<em>np.ndarray</em>) – A 1D array of masses for the particles.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.interaction_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interaction_matrix</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.interaction_matrix" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the interaction matrix between particle classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary mapping particle class pairs to their interaction magnitudes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[tuple[int, int], float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.move_particles">
+<span class="sig-name descname"><span class="pre">move_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_interaction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.move_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.move_particles" title="Link to this definition"></a></dt>
+<dd><p>Moves particles for one time step and updates their velocities based on collisions and interactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>skip_interaction</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, skips updating interactions between particles (default is False).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.positions">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.positions" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the current particle positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A 2D array of shape (N, 2) containing the (x, y) positions of the particles.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.size">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#ParticleSystem.ParticleSystem.size" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the size (radius) of each particle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A 1D array filled with the particle radius for each particle.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ParticleSystem.ParticleSystem.update_velocities_collisions">
 <span class="sig-name descname"><span class="pre">update_velocities_collisions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colliding_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'collision'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ParticleSystem.html#ParticleSystem.update_velocities_collisions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParticleSystem.ParticleSystem.update_velocities_collisions" title="Link to this definition"></a></dt>
-<dd><p>Updates velocities (and positions) based on collisions</p>
+<dd><p>Updates particle velocities (and positions) based on collisions or interactions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>positions</strong> (<em>np.ndarray</em>) – Current particle positions.</p></li>
-<li><p><strong>colliding_data</strong> (<em>tuple</em>) – (i_idx, j_idx, distances, normals)</p></li>
-<li><p><strong>mode</strong> (<em>str</em>) – Either “collision” or “interaction”.</p></li>
+<li><p><strong>positions</strong> (<em>np.ndarray</em>) – The current particle positions.</p></li>
+<li><p><strong>colliding_data</strong> (<em>tuple</em>) – A tuple containing indices, distances, and normals of colliding or interacting particles.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – The update mode:
+- “collision”: Handle physical collisions by adjusting positions and velocities.
+- “interaction”: Update velocities based on interactions between particles.
+(default is “collision”).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>

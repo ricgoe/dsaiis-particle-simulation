@@ -62,7 +62,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../ParticleSystem.html">ParticleSystem module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem"><code class="docutils literal notranslate"><span class="pre">ParticleSystem</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.angle_between"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.angle_between()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.check_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.check_collisions()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.colors"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.colors</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.delta_t"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.delta_t</span></code></a></li>
@@ -70,7 +69,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.init_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.init_particles()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.interaction_matrix"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.interaction_matrix</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.move_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.move_particles()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.particles</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.positions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.positions</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.size"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.size</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.update_velocities_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.update_velocities_collisions()</span></code></a></li>
@@ -133,7 +131,36 @@
 <div class="viewcode-block" id="ParticleSystem">
 <a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParticleSystem</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">color_distribution</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">interaction_matrix</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">.5</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">brownian_std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">.01</span><span class="p">,</span> <span class="n">drag</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">min_vel</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_vel</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">color_distribution</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">interaction_matrix</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">.5</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">brownian_std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">.01</span><span class="p">,</span> <span class="n">drag</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">min_vel</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_vel</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new ParticleSystem instance with specified simulation parameters.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : int</span>
+<span class="sd">            The width of the simulation area.</span>
+<span class="sd">        height : int</span>
+<span class="sd">            The height of the simulation area.</span>
+<span class="sd">        color_distribution : list[tuple[tuple[int, int, int, int], int, int, int]]</span>
+<span class="sd">            List of tuples defining the particle classes. Each tuple contains:</span>
+<span class="sd">            - A tuple (r, g, b, a) representing the color.</span>
+<span class="sd">            - An integer representing the number of particles.</span>
+<span class="sd">            - An integer representing the restitution coefficient.</span>
+<span class="sd">            - An integer representing the mass.</span>
+<span class="sd">        interaction_matrix : dict[tuple[int, int], float]</span>
+<span class="sd">            Dictionary mapping a pair of particle class indices to their interaction magnitude.</span>
+<span class="sd">            Positive values indicate attraction, negative values indicate repulsion.</span>
+<span class="sd">        radius : int, optional</span>
+<span class="sd">            The radius of each particle (default is 0.5).</span>
+<span class="sd">        delta_t : float, optional</span>
+<span class="sd">            The time step for particle movement (default is 0.3).</span>
+<span class="sd">        brownian_std : float, optional</span>
+<span class="sd">            Standard deviation for random Brownian motion in particle angles (default is 0.01).</span>
+<span class="sd">        min_vel : float, optional</span>
+<span class="sd">            Minimum initial velocity magnitude (default is -5).</span>
+<span class="sd">        max_vel : float, optional</span>
+<span class="sd">            Maximum initial velocity magnitude (default is 5).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_particles</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_color_index</span> <span class="o">=</span> <span class="kc">None</span>
@@ -150,41 +177,101 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">speeds</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">),</span> <span class="n">speeds</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">)))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interaction_matrix</span> <span class="o">=</span> <span class="n">interaction_matrix</span> <span class="c1"># positive values indicate attraction, negative values indicate repulsion</span>
     
-        
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">particles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_particles</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">positions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the current particle positions.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            A 2D array of shape (N, 2) containing the (x, y) positions of the particles.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_particles</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the colors of the particles.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            A 2D array of shape (N, 4) containing the RGBA colors of the particles.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the size (radius) of each particle.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            A 1D array filled with the particle radius for each particle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_particles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">interaction_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the interaction matrix between particle classes.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[tuple[int, int], float]</span>
+<span class="sd">            Dictionary mapping particle class pairs to their interaction magnitudes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interaction_matrix</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">delta_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the current time step used for particle movement.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The time step delta.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delta_t</span>
     
-    <span class="nd">@particles</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">particles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_particles</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="nd">@positions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets new particle positions.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : np.ndarray</span>
+<span class="sd">            A 2D array of new particle positions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_positions</span> <span class="o">=</span> <span class="n">value</span>
     
     <span class="nd">@interaction_matrix</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">interaction_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets a new interaction matrix.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : dict[tuple[int, int], float]</span>
+<span class="sd">            New dictionary mapping particle class pairs to interaction magnitudes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interaction_matrix</span> <span class="o">=</span> <span class="n">value</span>
         
     <span class="nd">@delta_t</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">delta_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets a new time step for particle movement.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : float</span>
+<span class="sd">            The new time step delta.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_delta_t</span> <span class="o">=</span> <span class="n">value</span>
         
     
@@ -193,51 +280,53 @@
 <a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.init_particles">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_particles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Each particle row: [x, y]</span>
-<span class="sd">        Each color row: [r, g, b, a]</span>
+<span class="sd">        Initializes particles with random positions and assigns colors, restitution, and mass.</span>
 <span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        positions : np.ndarray</span>
+<span class="sd">            A 2D array of shape (N, 2) containing the (x, y) positions of the particles.</span>
+<span class="sd">        colors : np.ndarray</span>
+<span class="sd">            A 2D array of shape (N, 4) containing the RGBA colors of the particles.</span>
+<span class="sd">        color_indices : np.ndarray</span>
+<span class="sd">            A 2D array of shape (N, 1) containing the class index for each particle.</span>
+<span class="sd">        restitution : np.ndarray</span>
+<span class="sd">            A 1D array of restitution coefficients for the particles.</span>
+<span class="sd">        mass : np.ndarray</span>
+<span class="sd">            A 1D array of masses for the particles.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">particles</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> 
-                <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rgba</span><span class="p">),</span> <span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> 
-                <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">idx</span><span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num</span><span class="p">,),</span> <span class="n">restitution</span><span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num</span><span class="p">,),</span> <span class="n">mass</span><span class="p">)</span>
-            <span class="p">)</span> 
-            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">rgba</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">restitution</span><span class="p">,</span> <span class="n">mass</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color_distribution</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="p">]</span>
+        <span class="n">particles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">rgba</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">restitution</span><span class="p">,</span> <span class="n">mass</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color_distribution</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">x_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
+            <span class="n">y_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">))</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rgba</span><span class="p">),</span> <span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">color_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">idx</span><span class="p">)</span>
+            <span class="n">restitutions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num</span><span class="p">,),</span> <span class="n">restitution</span><span class="p">)</span>
+            <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num</span><span class="p">,),</span> <span class="n">mass</span><span class="p">)</span>
+            <span class="n">particles</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">positions</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">color_indices</span><span class="p">,</span> <span class="n">restitutions</span><span class="p">,</span> <span class="n">masses</span><span class="p">))</span>
+            
         <span class="n">positions</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">color_indices</span><span class="p">,</span> <span class="n">restitution</span><span class="p">,</span> <span class="n">mass</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">arrays</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">particles</span><span class="p">))</span>
     
         <span class="k">return</span> <span class="n">positions</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">color_indices</span><span class="p">,</span> <span class="n">restitution</span><span class="p">,</span> <span class="n">mass</span></div>
 
-    
-    
-<div class="viewcode-block" id="ParticleSystem.angle_between">
-<a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.angle_between">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">angle_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="c1"># compute the angle between the positive x-axis and [x, y]</span>
-        <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-        <span class="n">angle_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
-        <span class="k">return</span> <span class="n">angle_deg</span></div>
 
-    
 
 <div class="viewcode-block" id="ParticleSystem.move_particles">
 <a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.move_particles">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">move_particles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skip_interaction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Moves particles for one timestep and updates their velocities based on collision responses.</span>
-<span class="sd">        The velocity is set in the constructor. The energy stored in the system stays the same, because only the angles change.</span>
+<span class="sd">        Moves particles for one time step and updates their velocities based on collisions and interactions.</span>
 <span class="sd">        </span>
-<span class="sd">        The method uses the current velocity to update particle positions, detects collisions, and then</span>
-<span class="sd">        updates the velocity for each colliding pair by calling update_velocities_collisions.</span>
-<span class="sd">        The particles’ positions are then updated with the velocities changed in their angles.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        skip_interaction : bool, optional</span>
+<span class="sd">            If True, skips updating interactions between particles (default is False).</span>
 <span class="sd">        </span>
-<span class="sd">        Returns:</span>
-<span class="sd">            Nones</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-  
         <span class="n">interaction_radius</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
         <span class="n">speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocity</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">nonzero</span> <span class="o">=</span> <span class="n">speeds</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -262,15 +351,6 @@
         <span class="k">if</span> <span class="n">collision_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_particles</span> <span class="o">=</span> <span class="n">new_pos</span>
             <span class="k">return</span>
-
-        <span class="c1"># TODO: not relevant for now, maye later</span>
-        <span class="c1"># increments = self.get_brwn_increment_from_involved_particles(collision_data) # get the delta v&#39;s from the particles that are involved in the collision</span>
-        <span class="c1"># resulting_vector = np.sum(delta_pos[increments], axis=0) # calculate the resulting vector from the brwn increments</span>
-        <span class="c1"># if np.sum(resulting_vector) == 0: # if the resulting vector is zero, there is no movement</span>
-        <span class="c1">#     return</span>
-        <span class="c1"># angle = int(self.angle_between(resulting_vector[0], resulting_vector[1])) # calculate the angle between the resulting vector and the positive x-axis</span>
-        <span class="c1"># if angle &lt;= 90 or angle &gt; 270:</span>
-        <span class="c1">#     colliding_pairs.flip() # if the angle is less than 90 or greater than 270, reverse the order of the colliding pairs</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">update_velocities_collisions</span><span class="p">(</span><span class="n">new_pos</span><span class="p">,</span> <span class="n">collision_data</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;collision&#39;</span><span class="p">)</span>
         <span class="c1"># For interaction mode, assuming check_collisions returns candidate pairs when mode != &#39;collision&#39;</span>
@@ -283,6 +363,19 @@
 <div class="viewcode-block" id="ParticleSystem.get_brwn_increment_from_involved_particles">
 <a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.get_brwn_increment_from_involved_particles">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_brwn_increment_from_involved_particles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_data</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves unique indices of particles involved in collisions.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collision_data : tuple</span>
+<span class="sd">            A tuple containing collision information, typically indices of colliding particle pairs.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Array of unique particle indices that were involved in collisions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">i_idx</span><span class="p">,</span> <span class="n">j_idx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">collision_data</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">i_idx</span><span class="p">,</span> <span class="n">j_idx</span><span class="p">)))</span></div>
 
@@ -291,6 +384,25 @@
 <div class="viewcode-block" id="ParticleSystem.check_collisions">
 <a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.check_collisions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_collisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Detects collisions between particles using a spatial tree.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        positions : np.ndarray</span>
+<span class="sd">            A 2D array of particle positions.</span>
+<span class="sd">        radius : float</span>
+<span class="sd">            The effective radius used for collision detection.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            A tuple containing:</span>
+<span class="sd">            - i_idx : np.ndarray of indices for the first particle in each colliding pair.</span>
+<span class="sd">            - j_idx : np.ndarray of indices for the second particle.</span>
+<span class="sd">            - distances : np.ndarray of distances between colliding particles.</span>
+<span class="sd">            - normals : np.ndarray of unit vectors pointing from the second particle to the first.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># boxsize=[self.width, self.height] is necessary for periodic boundaries</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">boxsize</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">])</span>
         <span class="n">pairs</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query_pairs</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">radius</span><span class="p">)</span>
@@ -322,15 +434,23 @@
 <a class="viewcode-back" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.update_velocities_collisions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_velocities_collisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">colliding_data</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;collision&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updates velocities (and positions) based on collisions</span>
+<span class="sd">        Updates particle velocities (and positions) based on collisions or interactions.</span>
 <span class="sd">        </span>
-<span class="sd">        Parameters:</span>
-<span class="sd">            positions (np.ndarray): Current particle positions.</span>
-<span class="sd">            colliding_data (tuple): (i_idx, j_idx, distances, normals)</span>
-<span class="sd">            mode (str): Either &quot;collision&quot; or &quot;interaction&quot;.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        positions : np.ndarray</span>
+<span class="sd">            The current particle positions.</span>
+<span class="sd">        colliding_data : tuple</span>
+<span class="sd">            A tuple containing indices, distances, and normals of colliding or interacting particles.</span>
+<span class="sd">        mode : str, optional</span>
+<span class="sd">            The update mode:</span>
+<span class="sd">            - &quot;collision&quot;: Handle physical collisions by adjusting positions and velocities.</span>
+<span class="sd">            - &quot;interaction&quot;: Update velocities based on interactions between particles.</span>
+<span class="sd">            (default is &quot;collision&quot;).</span>
 <span class="sd">        </span>
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;collision&quot;</span><span class="p">:</span>
             <span class="n">i_idx</span><span class="p">,</span> <span class="n">j_idx</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">normals</span> <span class="o">=</span> <span class="n">colliding_data</span>
