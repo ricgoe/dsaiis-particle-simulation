@@ -308,8 +308,7 @@ class MainWindow(QMainWindow):
         """Callback of save button
         
         Passes all the user settings to the VisPy Stack
-""" 
-        print(self.color_distrubution)
+        """ 
         self.canvas.insert_data(self.color_distrubution, self.relationships) # load data
         
     def reset(self):

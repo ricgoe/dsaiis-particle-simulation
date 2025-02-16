@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial import cKDTree
+from IntegrityChecks import _validate_particle_entry
 
 class ParticleSystem:
     def __init__(self, width: int, height: int, color_distribution: list[tuple[tuple[int, int, int, int], int, int, int]], interaction_matrix: dict[tuple[int, int], float], radius: int = .5, delta_t: float = 0.3, brownian_std: float = 20, min_vel: float = -10, max_vel: float = 10):
@@ -75,7 +76,9 @@ class ParticleSystem:
         speeds = np.random.uniform(min_vel, max_vel, self._particles.shape[0])
         angles = np.random.uniform(0, 2 * np.pi, self._particles.shape[0])
         self._velocity = np.column_stack((speeds * np.cos(angles), speeds * np.sin(angles)))
-        self._interaction_matrix = self.create_interaction_matrix(interaction_matrix) # positive values indicate attraction, negative values indicate repulsion
+        self._interaction_matrix = interaction_matrix#self.create_interaction_matrix(interaction_matrix) # positive values indicate attraction, negative values indicate repulsion
+        # self._interaction_matrix = self.create_interaction_matrix(interaction_matrix) # positive values indicate attraction, negative values indicate repulsion
+        print(self._interaction_matrix)
         #self._interaction_matrix = interaction_matrix # needed for other interaction solution
         self._half_life: float = .04
         self._friction_fact = np.pow(0.5, self.delta_t/self._half_life)
@@ -197,15 +200,18 @@ class ParticleSystem:
         mass : np.ndarray
             A 1D array of masses for the particles.
         """
+        
         particles = []
-        for idx, (rgba, num, restitution, mass) in enumerate(self._color_distribution, start=1):
-            x_coords = np.random.uniform(0, self._width, size=num)
-            y_coords = np.random.uniform(0, self._height, size=num)
+
+        for idx, val in enumerate(self._color_distribution.values(), start=1):
+            _validate_particle_entry(val["color"], val["n"], val["bounciness"], val["mass"])
+            x_coords = np.random.uniform(0, self._width, size=val["n"])
+            y_coords = np.random.uniform(0, self._height, size=val["n"])
             positions = np.column_stack((x_coords, y_coords))
-            colors = np.tile(np.array(rgba), (num, 1))
-            color_indices = np.full((num, 1), idx)
-            restitutions = np.full((num,), restitution)
-            masses = np.full((num,), mass)
+            colors = np.tile(np.array(val["color"]), (val["n"], 1))
+            color_indices = np.full((val["n"], 1), idx)
+            restitutions = np.full((val["n"],), val["bounciness"])
+            masses = np.full((val["n"],), val["mass"])
             particles.append((positions, colors, color_indices, restitutions, masses))
             
         positions, colors, color_indices, restitution, mass = map(lambda arrays: np.concatenate(arrays, axis=0), zip(*particles))
@@ -246,7 +252,7 @@ class ParticleSystem:
         acc = np.random.normal(0, self._brownian_std, self._particles.shape)
         self._velocity += self._velocity + acc * self._delta_t # update velocities
         delta_pos = self._velocity*self._delta_t
-        new_pos = np.mod(self._particles + delta_pos, (self._width, self._height))
+        new_pos = self._wrap_around(self._particles + delta_pos)
         # detect collisions with tentative new positions
         collision_data: np.ndarray = self.check_collisions(new_pos, radius=self._interaction_radius) # sorted from left to right and bottom to top
         if collision_data.size == 0:
@@ -261,13 +267,11 @@ class ParticleSystem:
 
 
     def create_interaction_matrix(self, matrix: dict):
-        
         int_matrix = np.zeros((len(self._color_distribution), len(self._color_distribution)), dtype=float)
         for (i, j), val in matrix.items():
             i0 = i - 1
             j0 = j - 1
-            int_matrix[i0, j0] = val/5
-            int_matrix[j0, i0] = val/5
+            int_matrix[i0, j0] = val['value']/5
         return int_matrix
     
     
@@ -385,7 +389,7 @@ class ParticleSystem:
             # colors_j = self._color_index[valid_j, 0]
             # min_colors = np.minimum(colors_i, colors_j)
             # max_colors = np.maximum(colors_i, colors_j)
-            # lookup = np.vectorize(lambda a, b: self._interaction_matrix[(a, b)])
+            # lookup = np.vectorize(lambda a, b: self._interaction_matrix[(a, b)]["value"])
             # interaction_magnitudes = lookup(min_colors, max_colors)
 
             # # repulsive interactions, adjust desired angle by π
@@ -412,8 +416,23 @@ class ParticleSystem:
             # self._velocity[valid_i, 1] = speed_i * np.sin(new_angle_i)
             # self._velocity[valid_j, 0] = speed_j * np.cos(new_angle_j)
             # self._velocity[valid_j, 1] = speed_j * np.sin(new_angle_j)
-            
-            # self._particles = np.mod(self._particles + self._velocity*self.delta_t, (self._width, self._height))
+    
+    def _wrap_around(self, positions)-> np.ndarray:
+        """
+        Wraps particle positions around the canvas.
+        
+        Parameters
+        ----------
+        positions : np.ndarray
+            A 2D array of particle positions.
+        
+        Returns
+        -------
+        np.ndarray
+            A 2D array of particle positions with wrapping applied.
+        """
+        wrapped_positions = np.mod(positions, (self._width, self._height))
+        return wrapped_positions
 
 
     def force(self, dist: np.ndarray, int_coef: np.ndarray) -> np.ndarray:
@@ -487,7 +506,8 @@ class ParticleSystem:
         -------
         None
         """
-        int_coef = self._interaction_matrix[(self._color_index[i_idx]-1, self._color_index[j_idx]-1)]
+        interaction_matrix = self.create_interaction_matrix(self._interaction_matrix)
+        int_coef = interaction_matrix[self._color_index[i_idx]-1, self._color_index[j_idx]-1]
         forces = self.force(distances, int_coef)
         forces_norm = -normals*forces[:, None]
         acc = np.zeros(self._particles.shape)
@@ -499,13 +519,106 @@ class ParticleSystem:
         self._particles = np.mod(self._particles + self._velocity*self.delta_t, (self._width, self._height))
 
 
+    @DeprecationWarning
+    def dep_update_velocities_collisions(self, positions: np.ndarray, colliding_data: np.ndarray, mode: str = "collision") -> None:
+        """
+        Updates particle velocities (and positions) based on collisions or interactions.
+        
+        Parameters
+        ----------
+        positions : np.ndarray
+            The current particle positions.
+        colliding_data : tuple
+            A tuple containing indices, distances, and normals of colliding or interacting particles.
+        mode : str, optional
+            The update mode:
+            - "collision": Handle physical collisions by adjusting positions and velocities.
+            - "interaction": Update velocities and positions based on interactions between particles.
+            (default is "collision").
+        
+        Returns
+        -------
+        None
+        """
+        i_idx, j_idx = colliding_data[:,0].astype(int), colliding_data[:,1].astype(int)
+        normals = colliding_data[:,3:]
+        distances = colliding_data[:,2]
+        if mode == "collision":
+            # calculate overlap (depth) for each collision
+            depth = 2 * self._radius - distances
+            self._particles[i_idx] = positions[i_idx] + 0.5 * depth[:, None] * normals
+            self._particles[j_idx] = positions[j_idx] - 0.5 * depth[:, None] * normals
+            # calculate the relative velocity for each colliding pair
+            v_rel = self._velocity[j_idx] - self._velocity[i_idx]
+            # minimum restitution
+            e = np.minimum(self._restitution[i_idx], self._restitution[j_idx])
+            # compute the component of the relative velocity along the collision normal
+            dot = np.sum(v_rel * normals, axis=1)
+            # compute impulse magnitude for each collision pair
+            factor = -(1 + e) * dot
+            denom = (1 / self._mass[i_idx]) + (1 / self._mass[j_idx])
+            factor /= denom  # shape (K,)
+            
+            self._velocity[i_idx] -= (factor / self._mass[i_idx])[:, None] * normals
+            self._velocity[j_idx] += (factor / self._mass[j_idx])[:, None] * normals
+            
+        elif mode == 'interaction':
+
+            # compute vector from particle j to particle i
+            direction = self._particles[i_idx] - self._particles[j_idx]  # shape (n, 2)
+            norms = np.linalg.norm(direction, axis=1)  # shape (n,)
+
+            valid = norms > 0
+            if not np.any(valid):
+                return 
+
+            valid_i = i_idx[valid]
+            valid_j = j_idx[valid]
+            direction_valid = direction[valid]
+            norms_valid = norms[valid]
+            normals = direction_valid / norms_valid[:, None]
+
+            # compute desired angles from the normals
+            desired_angles = np.arctan2(normals[:, 1], normals[:, 0])
+
+            colors_i = self._color_index[valid_i, 0]
+            colors_j = self._color_index[valid_j, 0]
+            min_colors = np.minimum(colors_i, colors_j)
+            max_colors = np.maximum(colors_i, colors_j)
+            lookup = np.vectorize(lambda a, b: self._interaction_matrix[(a, b)]["value"])
+            interaction_magnitudes = lookup(min_colors, max_colors)
+
+            # repulsive interactions, adjust desired angle by π
+            repulsive = interaction_magnitudes < 0
+            desired_angles[repulsive] = (desired_angles[repulsive] + np.pi) % (2 * np.pi)
+
+            # get current angles of velocities for particles i and j
+            current_angles_i = np.arctan2(self._velocity[valid_i, 1], self._velocity[valid_i, 0])
+            current_angles_j = np.arctan2(self._velocity[valid_j, 1], self._velocity[valid_j, 0])
+
+            alpha = np.where(interaction_magnitudes > 0,
+                            0.05 * np.abs(interaction_magnitudes),
+                            0.1 * np.abs(interaction_magnitudes))
+
+            # compute new angles by blending the current angles toward the desired angle
+            new_angle_i = current_angles_i + alpha * ((((desired_angles - current_angles_i + np.pi) % (2 * np.pi)) - np.pi))
+            new_angle_j = current_angles_j + alpha * ((((desired_angles - current_angles_j + np.pi) % (2 * np.pi)) - np.pi))
+
+            speed_i = np.linalg.norm(self._velocity[valid_i], axis=1)
+            speed_j = np.linalg.norm(self._velocity[valid_j], axis=1)
+
+            # update velocities with the new directions
+            self._velocity[valid_i, 0] = speed_i * np.cos(new_angle_i)
+            self._velocity[valid_i, 1] = speed_i * np.sin(new_angle_i)
+            self._velocity[valid_j, 0] = speed_j * np.cos(new_angle_j)
+            self._velocity[valid_j, 1] = speed_j * np.sin(new_angle_j)
+        
+
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=1000, height=1000, color_distribution=[((1, 0, 0, 1), 5, 1, 1)], radius=5, interaction_matrix={(1, 1): 1})
-    part_sys.positions = np.array([[999, 999], [1, 1], [.25, .25]])
-    colli: np.ndarray = part_sys.check_collisions(part_sys.positions, radius=5)
-    print(colli)
-    a = np.full(colli.shape[0], 2)
-    print(part_sys.force(colli[:,2], a, interaction_radius=5))
-    part_sys.calculate_interaction_accelerations(colli[:,0].astype(int), colli[:,1].astype(int), colli[:,2], colli[:,3:])
-    
-    
+    import threading
+    part_sys = ParticleSystem(1000, 800, [[(1.0, 0.0, 0.0, 1.0), 750, 1.0, 1], [(0.0, 0.0, 1.0, 1.0), 750, 1.0, 1]], {(1, 1): -1, (1, 2): 1, (2, 2): 0}, radius=1, delta_t = 0.0166)
+    def repeat(n_times_left):
+        if n_times_left > 0:
+            threading.Timer(0.0166, repeat, (n_times_left - 1)).start()
+        part_sys.move_particles()
+    repeat(1000)
