@@ -65,10 +65,9 @@ jobs:
           sudo apt-get install -y libegl1
 
       - name: Profile GUI and internal references
-        working-directory: src
         run: |
           mkdir -p profiling
-          python -m cProfile -o ../profiling/profiled.dat GUI.py 
+          python -m cProfile -o ../profiling/profiled.dat src/GUI.py 
       
       - name: Display code-profile
         working-directory: profiling
