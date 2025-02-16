@@ -1,6 +1,19 @@
 from ParticleSystem import ParticleSystem
 import numpy as np
 
+color_distribution = {
+    "key1": { "color": (1.0, 0.0, 0.0, 1.0), "n": 375, "mass": 1, "bounciness": 1.0,}
+}
+
+relationships = {
+    (1, 1): {"value": 0},
+    (1, 2): {"value": 0},
+    (2, 1): {"value": 0},
+    (2, 2): {"value": 0},
+}
+
+
+
 def test_update_velocities_collisions_single():
     """
       - Particle 0 at [1.0, 1.0]
@@ -31,9 +44,9 @@ def test_update_velocities_collisions_single():
     ps = ParticleSystem(
         width=10,
         height=10,
-        color_distribution=[((1, 0, 0, 1), 2, 0.5, 1)],
+        color_distribution=color_distribution,
         radius=1,
-        interaction_matrix={(1, 1): 1}
+        interaction_matrix=relationships
     )
     
     # set state variables to match scenario
@@ -46,18 +59,13 @@ def test_update_velocities_collisions_single():
     diff = ps.positions[0] - ps.positions[1]
     distance = np.linalg.norm(diff)
     normal = diff / distance if distance != 0 else np.array([0.0, 0.0])
-    colliding_data = (
-        np.array([0]),                # i_idx
-        np.array([1]),                # j_idx
-        np.array([distance]),         # distances
-        np.array([normal])            # normals
-    )
-    
+    colliding_data = np.asarray([[0,1,distance, *normal]])
+
     pos = ps.positions.copy()
     # update velocities and positions
     ps.update_velocities_collisions(pos, colliding_data, mode="collision")
     # Expected updated positions.
-    depth = 2 * ps.radius - distance  # 2 - 0.5 = 1.5
+    depth = 2 * ps._radius - distance  # 2 - 0.5 = 1.5
     expected_p0 = pos[0] + 0.5 * depth * normal  # [1,1] + 0.75*[-1,0] = [0.25, 1]
     expected_p1 = pos[1] - 0.5 * depth * normal  # [1.5,1] - (-0.75,0) = [2.25, 1]
     

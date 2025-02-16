@@ -77,11 +77,8 @@ class ParticleSystem:
         angles = np.random.uniform(0, 2 * np.pi, self._particles.shape[0])
         self._velocity = np.column_stack((speeds * np.cos(angles), speeds * np.sin(angles)))
         self._interaction_matrix = interaction_matrix#self.create_interaction_matrix(interaction_matrix) # positive values indicate attraction, negative values indicate repulsion
-        # self._interaction_matrix = self.create_interaction_matrix(interaction_matrix) # positive values indicate attraction, negative values indicate repulsion
-        print(self._interaction_matrix)
-        #self._interaction_matrix = interaction_matrix # needed for other interaction solution
         self._half_life: float = .04
-        self._friction_fact = np.pow(0.5, self.delta_t/self._half_life)
+        self._friction_fact = pow(0.5, self.delta_t/self._half_life)
         self._interaction_radius = 100*self._radius
         self._beta = 0.3
 
@@ -272,6 +269,7 @@ class ParticleSystem:
             i0 = i - 1
             j0 = j - 1
             int_matrix[i0, j0] = val['value']/5
+            
         return int_matrix
     
     
@@ -368,54 +366,6 @@ class ParticleSystem:
         elif mode == 'interaction':
             self.calculate_interaction_accelerations(i_idx, j_idx, distances, normals)
 
-            # # compute vector from particle j to particle i
-            # direction = self._particles[i_idx] - self._particles[j_idx]  # shape (n, 2)
-            # norms = np.linalg.norm(direction, axis=1)  # shape (n,)
-
-            # valid = norms > 0
-            # if not np.any(valid):
-            #     return 
-
-            # valid_i = i_idx[valid]
-            # valid_j = j_idx[valid]
-            # direction_valid = direction[valid]
-            # norms_valid = norms[valid]
-            # normals = direction_valid / norms_valid[:, None]
-
-            # # compute desired angles from the normals
-            # desired_angles = np.arctan2(normals[:, 1], normals[:, 0])
-
-            # colors_i = self._color_index[valid_i, 0]
-            # colors_j = self._color_index[valid_j, 0]
-            # min_colors = np.minimum(colors_i, colors_j)
-            # max_colors = np.maximum(colors_i, colors_j)
-            # lookup = np.vectorize(lambda a, b: self._interaction_matrix[(a, b)]["value"])
-            # interaction_magnitudes = lookup(min_colors, max_colors)
-
-            # # repulsive interactions, adjust desired angle by π
-            # repulsive = interaction_magnitudes < 0
-            # desired_angles[repulsive] = (desired_angles[repulsive] + np.pi) % (2 * np.pi)
-
-            # # get current angles of velocities for particles i and j
-            # current_angles_i = np.arctan2(self._velocity[valid_i, 1], self._velocity[valid_i, 0])
-            # current_angles_j = np.arctan2(self._velocity[valid_j, 1], self._velocity[valid_j, 0])
-
-            # alpha = np.where(interaction_magnitudes > 0,
-            #                 0.05 * np.abs(interaction_magnitudes),
-            #                 0.1 * np.abs(interaction_magnitudes))
-
-            # # compute new angles by blending the current angles toward the desired angle
-            # new_angle_i = current_angles_i + alpha * ((((desired_angles - current_angles_i + np.pi) % (2 * np.pi)) - np.pi))
-            # new_angle_j = current_angles_j + alpha * ((((desired_angles - current_angles_j + np.pi) % (2 * np.pi)) - np.pi))
-
-            # speed_i = np.linalg.norm(self._velocity[valid_i], axis=1)
-            # speed_j = np.linalg.norm(self._velocity[valid_j], axis=1)
-
-            # # update velocities with the new directions
-            # self._velocity[valid_i, 0] = speed_i * np.cos(new_angle_i)
-            # self._velocity[valid_i, 1] = speed_i * np.sin(new_angle_i)
-            # self._velocity[valid_j, 0] = speed_j * np.cos(new_angle_j)
-            # self._velocity[valid_j, 1] = speed_j * np.sin(new_angle_j)
     
     def _wrap_around(self, positions)-> np.ndarray:
         """
@@ -630,6 +580,6 @@ if __name__ == "__main__":
     part_sys = ParticleSystem(1000, 800, color_distribution, relationships, radius=1, delta_t = 0.0166)
     def rapat(n_times_left):
         if n_times_left > 0:
-            threading.Timer(0.0166, rapat, (n_times_left - 1)).start()
+            threading.Timer(0.0166, rapat, args=[n_times_left - 1]).start()
         part_sys.move_particles()
     rapat(1000)
