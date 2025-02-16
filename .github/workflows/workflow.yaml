@@ -1,0 +1,57 @@
+name: Sphinx-Documentation
+on: 
+  push:
+    branches:
+      - Documentation
+ 
+jobs:
+  Generating Documentation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check Repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      
+      - name: Install system dependencies for OpenGL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+      
+      - name: Install Code-Dependencies
+        run: |
+          pip install sphinx sphinx-rtd-theme
+          pip install -r requirements.txt
+      
+      - name: Generate API Documentation
+        working-directory: docs
+        run: |
+          sphinx-apidoc -f -o . ../src
+      
+      - name: Build Docs
+        working-directory: docs
+        run: |
+          sphinx-build -b html . build
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build
+          keep_files: false
+        
+
+
+
+
+
