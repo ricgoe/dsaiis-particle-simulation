@@ -63,9 +63,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../IntegrityChecks.html">IntegrityChecks module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ParticleSystem.html">ParticleSystem module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem"><code class="docutils literal notranslate"><span class="pre">ParticleSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.calculate_interaction_accelerations"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.calculate_interaction_accelerations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.check_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.check_collisions()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.colors"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.colors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.create_interaction_matrix"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.create_interaction_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.delta_t"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.delta_t</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.dep_update_velocities_collisions"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.dep_update_velocities_collisions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.force"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.force()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.init_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.init_particles()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.interaction_matrix"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.interaction_matrix</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ParticleSystem.html#ParticleSystem.ParticleSystem.move_particles"><code class="docutils literal notranslate"><span class="pre">ParticleSystem.move_particles()</span></code></a></li>
@@ -466,8 +470,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback of save button</span>
 <span class="sd">        </span>
 <span class="sd">        Passes all the user settings to the VisPy Stack</span>
-<span class="sd">&quot;&quot;&quot;</span> 
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">insert_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_distrubution</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="p">)</span> <span class="c1"># load data</span></div>
 
         
