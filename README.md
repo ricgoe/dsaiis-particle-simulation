@@ -65,8 +65,7 @@ pip install -r requirements.txt
     #### 2.1 Collision Handling:
     -  When two particles collide, their velocities are updated using an impulse-based method based on this fromula:
 
-        $ j = \frac{- (1 + e) ( \mathbf{v}_1^{AB} \cdot \mathbf{n} )}{ \mathbf{n} \cdot \mathbf{n} \left( \frac{1}{M^A} + \frac{1}{M^B} \right) } $
-      
+        <img src="image-4.png" alt="alt-text" width="200"/>
     
         - $j$ is the impulse magnitude.
         - $e$ is the coefficient of restitution.
@@ -87,12 +86,7 @@ pip install -r requirements.txt
     
         <img src="image-1.png" alt="alt-text" width="300"/>
 
-        $ F(r, a) =
-        \begin{cases}
-        a \cdot \left(\frac{r}{\beta} - 1\right), & r < \beta \\
-        a \cdot \left(1 - \frac{|2r - 1 - \beta|}{1 - \beta}\right), & \beta < r < 1 \\
-        0, & \text{otherwise}
-        \end{cases} $
+        <img src="image.png" alt="alt-text" width="300"/>
 
         - $r$ is the distance between particles
         - $a$ is the attraction factor of the interaction matrix
@@ -100,10 +94,10 @@ pip install -r requirements.txt
 
     - The acceleration is defined by this function:
     
-        $\ddot{x}_i = r_{\text{max}} \sum_j \frac{\vec{r}_{i,j}}{r_{i,j}} F\left(\frac{r_{ij}}{r_{\text{max}}}, a\right)$
+        <img src="image-2.png" alt="alt-text" width="300"/>
 
         - $j$ are all particles in the interaction radius
-        - $\frac{\vec{r}_{i,j}}{r_{i,j}}$ is the unit vector, pointing in the direction of the other particle
+        - <img src="image-3.png" alt="alt-text" width="20"/> is the unit vector, pointing in the direction of the other particle
         - $r_{\text{max}}$ is the interaction radius
 
     - The movement of each particle depends on the calculated forces and attraction.
