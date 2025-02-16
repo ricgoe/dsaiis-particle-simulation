@@ -9,7 +9,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../src')) #add path to source code, so that Sphinx can find it
 if "src" in sys.modules:
-    del sys.modules["src"]
+    del sys.modules["src"] 
 
 project = "DSAIIS Particle Simulation"
 author = "Richard Bihlmeier, Jannis Bollien, Jochen Hartlieb, Marcel Hilgers, Emil Ötting"
