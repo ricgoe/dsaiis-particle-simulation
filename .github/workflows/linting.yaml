@@ -1,0 +1,33 @@
+name: Linting
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Code-Linting:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install system dependencies for OpenGL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install Code-Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install ruff
+      
+      - name: Linting
+        run: ruff check 
