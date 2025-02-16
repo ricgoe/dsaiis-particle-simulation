@@ -2,7 +2,7 @@ name: Sphinx-Documentation
 on: 
   push:
     branches:
-      - Documentation
+      - main
  
 jobs:
   Generating-Documentation:
