@@ -130,9 +130,9 @@ class MainWindow(QMainWindow):
                         rel_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
                         rel_btn.clicked.connect(lambda _, i=i, j=j: self.show_relationship_slider(i, j))
                         self.rel_layout.addWidget(rel_btn, i, j)
-                        entry = self.relationships.get((min(i, j), max(i, j)), { "button": [], "value": 0 })
+                        entry = self.relationships.get((i, j), { "button": [], "value": 0 })
                         entry["button"].append(rel_btn)
-                        self.relationships[(min(i, j), max(i, j))] = entry
+                        self.relationships[(i, j)] = entry
             if len(self.color_distrubution) == 1:
                 self.save_btn.show()
                 self.reset_btn.show()
@@ -155,10 +155,10 @@ class MainWindow(QMainWindow):
         pop = PopupWidget(self)
         pop.setStyleSheet("background-color: #31313a;")
         lyt = QVBoxLayout(pop)
-        label = QLabel(str(self.relationships[(min(i, j), max(i, j))]["value"]), styleSheet="color: white;", alignment=Qt.AlignCenter)
+        label = QLabel(str(self.relationships[(i, j)]["value"]), styleSheet="color: white;", alignment=Qt.AlignCenter)
         slider = QSlider(Qt.Horizontal)
         slider.setRange(-int(RELATIONSHIPS/2), int(RELATIONSHIPS/2))
-        slider.setValue(self.relationships[(min(i, j), max(i, j))]["value"])
+        slider.setValue(self.relationships[(i, j)]["value"])
         slider.valueChanged.connect(lambda val: self.relationship_slider_changed(val, label, i, j))
         lyt.addWidget(slider)
         lyt.addWidget(label)
@@ -178,10 +178,10 @@ class MainWindow(QMainWindow):
         j : int
             Second color index
         """
-        for btn in self.relationships[(min(i, j), max(i, j))]["button"]:
+        for btn in self.relationships[(i, j)]["button"]:
             btn.setStyleSheet(f"background-color: {self.get_cmap_color(val)}; margin: 0; padding: 0; border-radius: 0;")
         label.setText(str(val))
-        self.relationships[(min(i, j), max(i, j))]["value"] = val
+        self.relationships[(i, j)]["value"] = val
                 
     def show_color_settings(self, btn: QPushButton, boxes=list[QWidget]):
         """Opens a popup window with color, mass and restitution setting for a particle class

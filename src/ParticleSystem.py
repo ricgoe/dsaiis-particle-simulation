@@ -169,7 +169,7 @@ class ParticleSystem:
         particles = []
 
         for idx, val in enumerate(self._color_distribution.values(), start=1):
-            _validate_particle_entry(rgba, num, restitution, mass)
+            _validate_particle_entry(val["color"], val["n"], val["bounciness"], val["mass"])
             x_coords = np.random.uniform(0, self.width, size=val["n"])
             y_coords = np.random.uniform(0, self.height, size=val["n"])
             positions = np.column_stack((x_coords, y_coords))
