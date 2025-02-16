@@ -10,7 +10,7 @@ cat << EOF > conf.py #Following content until 'EOF' is written into conf.py file
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../ParticleLifeSimulator')) #add path to source code, so that Sphinx can find it
+sys.path.insert(0, os.path.abspath('../')) #add path to source code, so that Sphinx can find it
 
 project = "DSAIIS Particle Simulation"
 author = "Richard Bihlmeier, Jannis Bollien, Jochen Hartlieb, Marcel Hilgers, Emil Ötting"
