@@ -79,4 +79,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           repository: ./profiling
-          commit_message: update-profiling-html
+          commit_message: automated-update-profiling-html
