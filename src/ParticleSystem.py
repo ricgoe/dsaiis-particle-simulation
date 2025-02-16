@@ -396,4 +396,4 @@ if __name__ == "__main__":
         if n_times_left > 0:
             threading.Timer(0.0166, repeat, (n_times_left - 1)).start()
         part_sys.move_particles()
-    repeat(3)
+    repeat(1000)
