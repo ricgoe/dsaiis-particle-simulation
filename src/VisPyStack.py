@@ -62,7 +62,7 @@ class Canvas(scene.SceneCanvas):
 
         #Add particles to canvas
         self.scatter.set_data(pos=self.positions, face_color=self.colors, edge_color=self.colors, size=self.sizes)
-        self.view.camera.zoom(0.65) #Set intial zoom level to cover full canvas
+        self.view.camera.zoom(0.80) #Set intial zoom level to cover full canvas
         self.view.camera.center=(self.native.width()//2, self.native.height()//2)   #Center the camera to middle of canvas
         self.view.add(self.scatter) #Add scatter plot to view to be displayed
 
