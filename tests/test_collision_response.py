@@ -37,7 +37,7 @@ def test_update_velocities_collisions_single():
     )
     
     # set state variables to match scenario
-    ps.positions = np.array([[1.0, 1.0], [1.5, 1.0]], dtype=float)
+    ps._particles = np.array([[1.0, 1.0], [1.5, 1.0]], dtype=float)
     ps._velocity = np.array([[1.0, 0.0], [-1.0, 0.0]], dtype=float)
     ps._restitution = np.array([0.5, 0.5], dtype=float)
     ps._mass = np.array([1.0, 1.0], dtype=float)
@@ -56,7 +56,6 @@ def test_update_velocities_collisions_single():
     pos = ps.positions.copy()
     # update velocities and positions
     ps.update_velocities_collisions(pos, colliding_data, mode="collision")
-    
     # Expected updated positions.
     depth = 2 * ps.radius - distance  # 2 - 0.5 = 1.5
     expected_p0 = pos[0] + 0.5 * depth * normal  # [1,1] + 0.75*[-1,0] = [0.25, 1]
