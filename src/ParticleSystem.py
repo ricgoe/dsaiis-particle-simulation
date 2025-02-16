@@ -390,6 +390,10 @@ class ParticleSystem:
     
 
 if __name__ == "__main__":
-    part_sys = ParticleSystem(width=1000, height=1000, color_distribution=[((1, 0, 0, 1), 5, 1, 1)], radius=1, interaction_matrix={(1, 1): 1})
-    part_sys.particles = np.array([[999, 999], [1, 1], [2, 2]])
-    print(part_sys.check_collisions(part_sys.particles, radius=1))
+    import threading
+    part_sys = ParticleSystem(1000, 800, [[(1.0, 0.0, 0.0, 1.0), 750, 1.0, 1], [(0.0, 0.0, 1.0, 1.0), 750, 1.0, 1]], {(1, 1): -1, (1, 2): 1, (2, 2): 0}, radius=1, delta_t = 0.0166)
+    def repeat(n_times_left):
+        if n_times_left > 0:
+            threading.Timer(0.0166, repeat, (n_times_left - 1)).start()
+        part_sys.move_particles()
+    repeat(1_000)
