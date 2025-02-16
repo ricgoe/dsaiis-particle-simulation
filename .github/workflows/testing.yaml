@@ -36,3 +36,29 @@ jobs:
 
       - name: Run tests
         run: pytest
+  
+  Profiling:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install requirements
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt 
+      
+      - name: Install system dependencies for OpenGL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1
