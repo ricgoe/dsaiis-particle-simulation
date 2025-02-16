@@ -38,7 +38,7 @@ jobs:
         run: pytest
   
   Profiling:
-    runs-on: windows-latest #ubuntu-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     
@@ -57,25 +57,25 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt 
-          pip install snakeviz
+          pip install gprof2dot    
       
-      #- name: Install system dependencies for OpenGL
-      #  run: |
-      #    sudo apt-get update
-      #    sudo apt-get install -y libegl1
-      #    sudo apt-get install -y libxcb-cursor-dev
+      - name: Install system dependencies for OpenGL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1
+          sudo apt-get install graphviz
 
       - name: Profile GUI and internal references
         run: |
           mkdir -p profiling
-          python -m cProfile -o profiling/profiled.dat src/ParticleSystem.py 
+          python -m cProfile -o profiling/profiled.pstats src/ParticleSystem.py 
       
       - name: Display code-profile
         working-directory: profiling
-        run: snakeviz --outfile=profile_code.html profiled.dat
+        run: gprof2dot.py -n0 -e0 -f pstats outputprofiled.pstats | dot -Tpng -o code-profile.png
 
       - name: Upload code profiling report as HTML
         uses: actions/upload-artifact@v4
         with:
           name: code-profiling-report
-          path: profiling/profile_code.html
+          path: profiling/code-profile.png
