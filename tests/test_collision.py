@@ -6,7 +6,7 @@ def test_collision_detection():
     ps = ParticleSystem(
         width=10,
         height=10,
-        color_distribution=[((0, 0, 0), 4, 1, 1)],
+        color_distribution=[((1, 0, 0, 1), 4, 1, 1)],
         radius=1,
         interaction_matrix={(1, 1): 1}
     )
