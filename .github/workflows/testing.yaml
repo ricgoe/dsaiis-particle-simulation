@@ -57,7 +57,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt 
-          pip install gprof2dot    
+          pip install pycallgraph    
       
       - name: Install system dependencies for OpenGL
         run: |
@@ -72,7 +72,7 @@ jobs:
       
       - name: Display code-profile
         working-directory: profiling
-        run: gprof2dot -f pstats profiled.pstats | dot -Tpng -o code-profile.png
+        run: pycallgraph graphviz --output-file=code-profiling.png ../src/ParticleSystem.py
 
       - name: Upload code profiling report as HTML
         uses: actions/upload-artifact@v4
