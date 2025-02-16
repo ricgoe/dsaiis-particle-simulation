@@ -66,13 +66,13 @@ jobs:
           apt-get install python-profiler
 
       - name: Profile GUI and internal references
-        working-dir: src
+        working-directory: src
         run: |
           mkdir -p profiling
           python -m cProfile -o ../profiling/profiled.dat GUI.py 
       
       - name: Display code-profile
-        working-dir: profiling
+        working-directory: profiling
         run: snakeviz --outfile=profile_code.html profiled.dat
 
       - name: Upload code profiling report as HTML
