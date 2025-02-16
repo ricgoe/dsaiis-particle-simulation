@@ -63,7 +63,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libegl1
-          apt-get install python-profiler
 
       - name: Profile GUI and internal references
         working-directory: src
