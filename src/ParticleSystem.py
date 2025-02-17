@@ -300,6 +300,7 @@ class ParticleSystem:
             return np.empty(0)
         
         pairs_arr = np.fromiter((i for pair in pairs for i in pair), dtype=int).reshape(-1, 2)
+        pairs_arr = np.concatenate((pairs_arr, pairs_arr[:, ::-1]), axis=0)
         coll_arr = np.zeros((pairs_arr.shape[0], 5))
         i_idx = pairs_arr[:, 0]
         j_idx = pairs_arr[:, 1]
