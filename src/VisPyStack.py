@@ -89,3 +89,34 @@ class Canvas(scene.SceneCanvas):
         """
         self.timer.stop()   
         self.scatter.parent = None  #remove scatter plot from view
+        
+if __name__ == '__main__':
+    rel = {(1, 1): {'value': 0}, (1, 2): {'value': 2}, (2, 1): {'value': -2}, (2, 2): {'value': 1}, (1, 3): {'value': -2}, (2, 3): {'value': 2}, (3, 1): {'value': 0}, (3, 2): {'value': -2}, (3, 3): {'value': 1}}
+    color_distrubution = {
+        "key0": {
+            "color": (0.2, 0.6, 0, 1.0),
+            "n": 375,
+            "mass": 1,
+            "bounciness": 1.0,
+        },
+        "key1": {
+            "color": (0.2, 0.4, 0.6, 1.0),
+            "n": 375,
+            "mass": 1,
+            "bounciness": 1.0,
+        },
+        "key2": {
+            "color": (0.9, 0.1, 0.1, 1.0),
+            "n": 375,
+            "mass": 1,
+            "bounciness": 1.0,
+        },
+    }
+    canvas = Canvas(bgcolor='#24242b')
+    canvas.show(True)
+    canvas.fullscreen = True
+    canvas.insert_data(color_distrubution, rel)
+    app.run()
+    
+    
+    
